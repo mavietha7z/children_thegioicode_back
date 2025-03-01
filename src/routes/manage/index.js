@@ -16,11 +16,8 @@ import apikeyRouter from './apikey';
 import invoiceRouter from './invoice';
 import paygateRouter from './paygate';
 import pricingRouter from './pricing';
-import partnerRouter from './partner';
-import resourceRouter from './resource';
 import templateRouter from './template';
 import databaseRouter from './database';
-import newsFeedRouter from './newsFeed';
 import userbankRouter from './userbank';
 import localbankRouter from './localbank';
 import bonusPointRouter from './bonusPoint';
@@ -62,13 +59,7 @@ router.use('/invoices', middleware.verifyAuth, invoiceRouter);
 
 router.use('/paygates', middleware.verifyAuth, paygateRouter);
 
-router.use('/partners', middleware.verifyAuth, partnerRouter);
-
-router.use('/resources', middleware.verifyAuth, resourceRouter);
-
 router.use('/templates', middleware.verifyAuth, templateRouter);
-
-router.use('/news-feeds', middleware.verifyAuth, newsFeedRouter);
 
 router.use('/databases', middleware.verifyAuth, databaseRouter);
 

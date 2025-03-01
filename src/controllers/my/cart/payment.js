@@ -1,6 +1,5 @@
 import { Cart } from '~/models/cart';
 import { Order } from '~/models/order';
-import { sendMessageBotTelegramApp } from '~/bot';
 import { CartProduct } from '~/models/cartProduct';
 import { configCreateLog, configGetDiscountRulePartner } from '~/configs';
 import { serviceUserCreateNewInvoice } from '~/services/user/createInvoice';
@@ -159,11 +158,6 @@ const controlUserPaymentCart = async (req, res) => {
 
         newInvoice.data.description = `Hoá đơn thanh toán đơn hàng #${newOrder.id}`;
         await newInvoice.data.save();
-
-        // Bot telegram
-        sendMessageBotTelegramApp(
-            `Khác hàng: \n ${req.user.email} \n ${req.user.full_name} \n\n Thanh toán giỏ hàng và tạo đơn #${newOrder.id} thành công`,
-        );
 
         res.status(200).json({
             status: 200,

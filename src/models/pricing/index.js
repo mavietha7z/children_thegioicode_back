@@ -15,7 +15,7 @@ const pricingSchema = new Schema({
     },
     service_type: {
         type: String,
-        enum: ['Template', 'Source', 'CloudServerProduct', 'ResourceProduct'],
+        enum: ['Template', 'Source', 'CloudServerProduct'],
         required: true,
     },
     cycles_id: {

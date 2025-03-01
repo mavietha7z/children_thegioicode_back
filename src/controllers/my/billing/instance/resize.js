@@ -7,7 +7,6 @@ import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
 import { CloudServerPartner } from '~/models/cloudServerPartner';
 import { serviceAuthManageVPS } from '~/services/virtualizor/api';
-import { serviceUserVerifyTokenPartner } from '~/middleware/cloudServer';
 import { serviceUserCreateNewInvoice } from '~/services/user/createInvoice';
 import {
     serviceCalculateUpgradeCost,

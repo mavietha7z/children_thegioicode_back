@@ -7,7 +7,6 @@ import nodemailer from 'nodemailer';
 import { User } from '~/models/user';
 import { configCreateLog } from '~/configs';
 import contentSendEmail from '~/email/content';
-import { sendMessageBotTelegramApp, sendMessageBotTelegramError } from '~/bot';
 import { serviceFetchExportDatabase, serviceModelMapDatabase } from '../manage/database/export';
 
 const OPTIONS = [
@@ -27,20 +26,16 @@ const OPTIONS = [
     'Localbanks',
     'LoginHistories',
     'Memberships',
-    'NewsFeeds',
     'Notifications',
     'OrderCloudServers',
     'Orders',
     'OrderTemplates',
-    'Partners',
-    'PartnerServices',
     'Paygates',
     'Players',
     'Pricings',
     'Requests',
     'ResourceAccounts',
     'ResourceCategories',
-    'ResourceProducts',
     'Sources',
     'Templates',
     'Tokens',
@@ -54,7 +49,7 @@ const serviceCronBackupDatabase = async () => {
     try {
         // Tạo folder backup với định dạng yyyy-mm-dd-HH-ss
         const timestamp = moment(new Date()).format('YYYY-MM-DD-HH-mm');
-        const backupDir = path.resolve(`./src/files/backup/thegioicode_${timestamp}`);
+        const backupDir = path.resolve(`./src/files/backup/netcode_${timestamp}`);
         if (!fs.existsSync(backupDir)) {
             fs.mkdirSync(backupDir, { recursive: true });
         }
@@ -73,7 +68,7 @@ const serviceCronBackupDatabase = async () => {
         }
 
         // Nén folder backup thành file .zip
-        const zipFilePath = path.resolve(`./src/files/backup/thegioicode_${timestamp}.zip`);
+        const zipFilePath = path.resolve(`./src/files/backup/netcode_${timestamp}.zip`);
         const output = fs.createWriteStream(zipFilePath);
         const archive = archiver('zip', { zlib: { level: 9 } });
 
@@ -82,7 +77,7 @@ const serviceCronBackupDatabase = async () => {
         await archive.finalize();
 
         // Gửi email kèm file backup .zip
-        const auth = await User.findOne({ email: 'support@thegioicode.com' }).select('id email full_name');
+        const auth = await User.findOne({ email: 'support@netcode.vn' }).select('id email full_name');
         if (!auth) {
             return;
         }
@@ -104,19 +99,19 @@ const serviceCronBackupDatabase = async () => {
 
         const contentMail = contentSendEmail(
             auth.email,
-            `Đây là dữ liệu được backup database Thegioicode ngày ${moment(new Date()).format('YYYY-MM-DD HH:mm')}`,
+            `Đây là dữ liệu được backup database Netcode ngày ${moment(new Date()).format('YYYY-MM-DD HH:mm')}`,
             moment(new Date()).format('YYYY-MM-DD HH:mm'),
             favicon_url,
         );
 
         await transporter.sendMail({
-            from: `"Thegioicode" <${sendmail_config.email}>`,
+            from: `"Netcode" <${sendmail_config.email}>`,
             to: auth.email,
-            subject: `Backup database Thegioicode ${moment(new Date()).format('YYYY-MM-DD HH:mm')}`,
+            subject: `Backup database Netcode ${moment(new Date()).format('YYYY-MM-DD HH:mm')}`,
             html: contentMail,
             attachments: [
                 {
-                    filename: `thegioicode_${timestamp}.zip`,
+                    filename: `netcode_${timestamp}.zip`,
                     path: zipFilePath,
                 },
             ],
@@ -125,11 +120,7 @@ const serviceCronBackupDatabase = async () => {
         // Xóa folder và file backup tạm sau khi gửi email
         fs.rmSync(backupDir, { recursive: true, force: true });
         fs.unlinkSync(zipFilePath);
-
-        // Bot telegram
-        sendMessageBotTelegramApp(`Đã gửi backup database ngày ${moment(new Date()).format('DD/MM/YYYY')} đến email ${auth.email}.`);
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi cron backup database: \n ${error.message}`);
         configCreateLog('services/cron/database.log', 'serviceCronBackupDatabase', error.message);
     }
 };

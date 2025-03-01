@@ -10,7 +10,6 @@ import { CloudServerPartner } from '~/models/cloudServerPartner';
 import { serviceUserCreateNewInvoice } from '../user/createInvoice';
 import { serviceCreateNotificationUser } from '../user/notification';
 import { serviceAuthRemoveDomainFromCloudflare } from '../my/template/payment';
-import { sendMessageBotTelegramApp, sendMessageBotTelegramError } from '~/bot';
 import { serviceAuthDeleteVPS, serviceAuthSuspendAndUnsuspendVPS } from '../virtualizor/api';
 
 const serviceAutoRenewOrderTemplate = async (order) => {
@@ -29,7 +28,7 @@ const serviceAutoRenewOrderTemplate = async (order) => {
                 order.user_id._id,
                 'Email',
                 'Số dư ví không đủ thanh toán',
-                `Quý khách đang có đơn tạo website sắp hết hạn và đã bật gia hạn tự động nhưng số dư ví không đủ để thanh toán. Quý khách chủ động gia hạn tại đường dẫn: https://thegioicode.com/billing/templates/${order.id}`,
+                `Quý khách đang có đơn tạo website sắp hết hạn và đã bật gia hạn tự động nhưng số dư ví không đủ để thanh toán. Quý khách chủ động gia hạn tại đường dẫn: https://netcode.vn/billing/templates/${order.id}`,
                 'Dịch vụ sẽ chuyển trạng thái hết hạn và bị xoá sau 1 ngày nếu quý khách không chủ động gia hạn.',
             );
 
@@ -38,17 +37,12 @@ const serviceAutoRenewOrderTemplate = async (order) => {
                 order.user_id._id,
                 'Web',
                 'Số dư ví không đủ thanh toán',
-                `Kính chào quý khách ${order.user_id.full_name}. Quý khách đang có đơn tạo website sắp hết hạn và đã bật gia hạn tự động nhưng số dư ví không đủ để thanh toán. Quý khách chủ động gia hạn tại đường dẫn: https://thegioicode.com/billing/templates/${order.id}. Trân trọng!`,
+                `Kính chào quý khách ${order.user_id.full_name}. Quý khách đang có đơn tạo website sắp hết hạn và đã bật gia hạn tự động nhưng số dư ví không đủ để thanh toán. Quý khách chủ động gia hạn tại đường dẫn: https://netcode.vn/billing/templates/${order.id}. Trân trọng!`,
             );
 
             order.status = 'expired';
             order.updated_at = Date.now();
             await order.save();
-
-            // Bot telegram
-            sendMessageBotTelegramApp(
-                `Khác hàng: \n ${order.user_id.email} \n ${order.user_id.full_name} \n\n Đơn hàng OrderTemplate #${order.id} tự động gia hạn nhưng số dư ví không đủ thanh toán`,
-            );
 
             return;
         }
@@ -146,7 +140,7 @@ const serviceAutoRenewOrderTemplate = async (order) => {
             order.user_id._id,
             'Email',
             'Tự động gia hạn dịch vụ',
-            `Quý khách có đơn tạo website đã hết hạn và được gia hạn tự động thành công. Xem thêm thông tin tại: https://thegioicode.com/billing/orders/${newOrder.id}`,
+            `Quý khách có đơn tạo website đã hết hạn và được gia hạn tự động thành công. Xem thêm thông tin tại: https://netcode.vn/billing/orders/${newOrder.id}`,
             'Hoá đơn gia hạn đã xuất không thể hoàn tác.',
         );
 
@@ -159,17 +153,11 @@ const serviceAutoRenewOrderTemplate = async (order) => {
                 newInvoice.data.id
             } với tổng số tiền ${convertCurrency(
                 Math.abs(newInvoice.data.total_payment),
-            )} đã được thanh toán thành công. Xem thêm thông tin tại: https://thegioicode.com/billing/invoices/${
+            )} đã được thanh toán thành công. Xem thêm thông tin tại: https://netcode.vn/billing/invoices/${
                 newInvoice.data.id
             }. Trân trọng!`,
         );
-
-        // Bot telegram
-        sendMessageBotTelegramApp(
-            `Khác hàng: \n ${order.user_id.email} \n ${order.user_id.full_name} \n\n Đơn hàng OrderTemplate #${order.id} tự động gia hạn thành công. Mã hoá đơn #${newInvoice.data.id}`,
-        );
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi tự động gia hạn OrderTemplate: \n ${error.message}`);
         configCreateLog('services/cron/expired.log', 'serviceAutoRenewOrderTemplate', error.message);
     }
 };
@@ -190,7 +178,7 @@ const serviceAutoRenewOrderCloudServer = async (order) => {
                 order.user_id._id,
                 'Email',
                 'Số dư ví không đủ thanh toán',
-                `Quý khách đang có đơn máy chủ sắp hết hạn và đã bật gia hạn tự động nhưng số dư ví không đủ để thanh toán. Quý khách chủ động gia hạn tại đường dẫn: https://thegioicode.com/billing/instances/${order.id}`,
+                `Quý khách đang có đơn máy chủ sắp hết hạn và đã bật gia hạn tự động nhưng số dư ví không đủ để thanh toán. Quý khách chủ động gia hạn tại đường dẫn: https://netcode.vn/billing/instances/${order.id}`,
                 'Máy chủ sẽ chuyển trạng thái hết hạn và bị xoá sau 1 ngày nếu quý khách không chủ động gia hạn.',
             );
 
@@ -199,17 +187,12 @@ const serviceAutoRenewOrderCloudServer = async (order) => {
                 order.user_id._id,
                 'Web',
                 'Số dư ví không đủ thanh toán',
-                `Kính chào quý khách ${order.user_id.full_name}. Quý khách đang có đơn máy chủ sắp hết hạn và đã bật gia hạn tự động nhưng số dư ví không đủ để thanh toán. Quý khách chủ động gia hạn tại đường dẫn: https://thegioicode.com/billing/instances/${order.id}. Trân trọng!`,
+                `Kính chào quý khách ${order.user_id.full_name}. Quý khách đang có đơn máy chủ sắp hết hạn và đã bật gia hạn tự động nhưng số dư ví không đủ để thanh toán. Quý khách chủ động gia hạn tại đường dẫn: https://netcode.vn/billing/instances/${order.id}. Trân trọng!`,
             );
 
             order.status = 'expired';
             order.updated_at = Date.now();
             await order.save();
-
-            // Bot telegram
-            sendMessageBotTelegramApp(
-                `Khác hàng: \n ${order.user_id.email} \n ${order.user_id.full_name} \n\n Đơn hàng OrderCloudServer #${order.id} tự động gia hạn nhưng số dư ví không đủ thanh toán`,
-            );
 
             return;
         }
@@ -304,7 +287,7 @@ const serviceAutoRenewOrderCloudServer = async (order) => {
             order.user_id._id,
             'Email',
             'Tự động gia hạn dịch vụ',
-            `Quý khách có đơn máy chủ đã hết hạn và được gia hạn tự động thành công. Xem thêm thông tin tại: https://thegioicode.com/billing/orders/${newOrder.id}`,
+            `Quý khách có đơn máy chủ đã hết hạn và được gia hạn tự động thành công. Xem thêm thông tin tại: https://netcode.vn/billing/orders/${newOrder.id}`,
             'Hoá đơn gia hạn đã xuất không thể hoàn tác.',
         );
 
@@ -317,17 +300,11 @@ const serviceAutoRenewOrderCloudServer = async (order) => {
                 newInvoice.data.id
             } với tổng số tiền ${convertCurrency(
                 Math.abs(newInvoice.data.total_payment),
-            )} đã được thanh toán thành công. Xem thêm thông tin tại: https://thegioicode.com/billing/invoices/${
+            )} đã được thanh toán thành công. Xem thêm thông tin tại: https://netcode.vn/billing/invoices/${
                 newInvoice.data.id
             }. Trân trọng!`,
         );
-
-        // Bot telegram
-        sendMessageBotTelegramApp(
-            `Khác hàng: \n ${order.user_id.email} \n ${order.user_id.full_name} \n\n Đơn hàng OrderCloudServer #${order.id} tự động gia hạn thành công. Mã hoá đơn #${newInvoice.data.id}`,
-        );
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi tự động gia hạn Cloud Server: \n ${error.message}`);
         configCreateLog('services/cron/expired.log', 'serviceAutoRenewOrderCloudServer', error.message);
     }
 };
@@ -374,7 +351,7 @@ const serviceCronExpiredOrders = async () => {
                     order.user_id._id,
                     'Email',
                     'Thông báo dịch vụ sắp hết hạn',
-                    `Quý khách đang có đơn tạo website sắp hết hạn, thời gian còn lại ngày ${hoursLeft} giờ ${minutesLeft} phút. Quý khách chủ động gia hạn tại đường dẫn: https://thegioicode.com/billing/templates/${order.id}`,
+                    `Quý khách đang có đơn tạo website sắp hết hạn, thời gian còn lại ngày ${hoursLeft} giờ ${minutesLeft} phút. Quý khách chủ động gia hạn tại đường dẫn: https://netcode.vn/billing/templates/${order.id}`,
                     'Dịch vụ sẽ chuyển trạng thái hết hạn và bị xoá sau 1 ngày.',
                 );
 
@@ -383,7 +360,7 @@ const serviceCronExpiredOrders = async () => {
                     order.user_id._id,
                     'Web',
                     'Thông báo dịch vụ sắp hết hạn',
-                    `Kính chào quý khách ${order.user_id.full_name}. Quý khách đang có đơn tạo website sắp hết hạn, thời gian còn lại ngày ${hoursLeft} giờ ${minutesLeft} phút. Quý khách chủ động gia hạn tại đường dẫn: https://thegioicode.com/billing/templates/${order.id}. Trân trọng!`,
+                    `Kính chào quý khách ${order.user_id.full_name}. Quý khách đang có đơn tạo website sắp hết hạn, thời gian còn lại ngày ${hoursLeft} giờ ${minutesLeft} phút. Quý khách chủ động gia hạn tại đường dẫn: https://netcode.vn/billing/templates/${order.id}. Trân trọng!`,
                 );
             }
 
@@ -395,11 +372,6 @@ const serviceCronExpiredOrders = async () => {
                     await serviceAutoRenewOrderTemplate(order);
                 } else {
                     // Hết hạn và không bật tự động gia hạn
-
-                    // Bot telegram
-                    sendMessageBotTelegramApp(
-                        `Khác hàng: \n ${order.user_id.email} \n ${order.user_id.full_name} \n\n Đơn hàng OrderTemplate #${order.id} đã hết hạn`,
-                    );
 
                     order.status = 'expired';
                     order.updated_at = Date.now();
@@ -438,7 +410,7 @@ const serviceCronExpiredOrders = async () => {
                     order.user_id._id,
                     'Email',
                     'Thông báo máy chủ sắp bị xóa',
-                    `Quý khách đang có đơn máy chủ sắp hết hạn, thời gian còn lại ngày ${hoursLeft} giờ ${minutesLeft} phút. Quý khách chủ động gia hạn tại đường dẫn: https://thegioicode.com/billing/instances/${order.id}`,
+                    `Quý khách đang có đơn máy chủ sắp hết hạn, thời gian còn lại ngày ${hoursLeft} giờ ${minutesLeft} phút. Quý khách chủ động gia hạn tại đường dẫn: https://netcode.vn/billing/instances/${order.id}`,
                     'Máy chủ sẽ chuyển trạng thái hết hạn và bị xoá sau 1 ngày.',
                 );
 
@@ -447,7 +419,7 @@ const serviceCronExpiredOrders = async () => {
                     order.user_id._id,
                     'Web',
                     'Thông báo dịch vụ sắp hết hạn',
-                    `Kính chào quý khách ${order.user_id.full_name}. Quý khách đang có đơn máy chủ sắp hết hạn, thời gian còn lại ngày ${hoursLeft} giờ ${minutesLeft} phút. Quý khách chủ động gia hạn tại đường dẫn: https://thegioicode.com/billing/instances/${order.id}. Trân trọng!`,
+                    `Kính chào quý khách ${order.user_id.full_name}. Quý khách đang có đơn máy chủ sắp hết hạn, thời gian còn lại ngày ${hoursLeft} giờ ${minutesLeft} phút. Quý khách chủ động gia hạn tại đường dẫn: https://netcode.vn/billing/instances/${order.id}. Trân trọng!`,
                 );
             }
 
@@ -472,11 +444,6 @@ const serviceCronExpiredOrders = async () => {
                         order.order_info.order_id,
                         'suspend',
                     );
-
-                    // Bot telegram
-                    sendMessageBotTelegramApp(
-                        `Khác hàng: \n ${order.user_id.email} \n ${order.user_id.full_name} \n\n Đơn hàng OrderCloudServer #${order.id} đã hết hạn`,
-                    );
                 }
             }
 
@@ -493,7 +460,6 @@ const serviceCronExpiredOrders = async () => {
             }
         }
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi cron Order: \n ${error.message}`);
         configCreateLog('services/cron/expired.log', 'serviceCronExpiredOrders', error.message);
     }
 };
@@ -517,7 +483,6 @@ const serviceCronExpiredBonusPoints = async () => {
             }
         }
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi cron điểm thưởng hết hạn: \n ${error.message}`);
         configCreateLog('services/cron/expired.log', 'serviceCronExpiredBonusPoints', error.message);
     }
 };

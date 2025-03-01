@@ -9,14 +9,10 @@ import { Request } from '~/models/request';
 import { Invoice } from '~/models/invoice';
 import { configCreateLog } from '~/configs';
 import { Userbank } from '~/models/userbank';
-import { NewsFeed } from '~/models/newsFeed';
-import { BonusPoint } from '~/models/bonusPoint';
 import { LoginHistory } from '~/models/loginHistory';
 import { Notification } from '~/models/notification';
 import { WalletHistory } from '~/models/walletHistory';
 import { OrderTemplate } from '~/models/orderTemplate';
-import { ResourceProduct } from '~/models/resourceProduct';
-import { ResourceAccount } from '~/models/resourceAccount';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 
 const controlAuthDestroyUser = async (req, res) => {
@@ -32,18 +28,14 @@ const controlAuthDestroyUser = async (req, res) => {
 
         await Promise.all([
             Apikey.deleteMany({ user_id }),
-            BonusPoint.deleteMany({ user_id }),
             Cart.findOneAndDelete({ user_id }),
             OrderCloudServer.deleteMany({ user_id }),
             Invoice.deleteMany({ user_id }),
             LoginHistory.deleteMany({ user_id }),
-            NewsFeed.deleteMany({ user_id }),
             Notification.deleteMany({ user_id }),
             Order.deleteMany({ user_id }),
             OrderTemplate.deleteMany({ user_id }),
             Request.deleteMany({ user_id }),
-            ResourceAccount.deleteMany({ user_id }),
-            ResourceProduct.deleteMany({ user_id }),
             Source.deleteMany({ user_id }),
             Token.deleteMany({ user_id }),
             Userbank.deleteMany({ user_id }),

@@ -99,8 +99,8 @@ const controlCallbackRecharge = async (req, res) => {
             'service',
             [
                 {
-                    title: 'Nạp thêm số dư ví Thegioicode',
-                    description: `Nạp thêm ${convertCurrency(amountAfterPromotion)} vào số dư ví Thegioicode`,
+                    title: 'Nạp thêm số dư ví Netcode',
+                    description: `Nạp thêm ${convertCurrency(amountAfterPromotion)} vào số dư ví Netcode`,
                     unit_price: amountAfterPromotion,
                     quantity: 1,
                     fees: 0,
@@ -110,12 +110,11 @@ const controlCallbackRecharge = async (req, res) => {
                 },
             ],
             [],
-            paygate.bonus_point,
             amountAfterPromotion,
             amountAfterPromotion,
             'bank_transfer',
             optionPaygate.userbank_id._id,
-            'Hoá đơn nạp tiền vào ví Thegioicode',
+            'Hoá đơn nạp tiền vào ví Netcode',
             true,
         );
         if (!newInvoice.success) {
@@ -129,11 +128,9 @@ const controlCallbackRecharge = async (req, res) => {
             user._id,
             'Email',
             'Thông báo nạp tiền thành công',
-            `Quý khách đã nạp thành công số tiền ${convertCurrency(
-                amountAfterPromotion,
-            )} vào ví tài khoản Thegioicode, hoá đơn nạp tiền số #${
+            `Quý khách đã nạp thành công số tiền ${convertCurrency(amountAfterPromotion)} vào ví tài khoản Netcode, hoá đơn nạp tiền số #${
                 newInvoice.data.id
-            }. Xem thêm thông tin tại: https://thegioicode.com/billing/invoices/${newInvoice.data.id}`,
+            }. Xem thêm thông tin tại: https://netcode.vn/billing/invoices/${newInvoice.data.id}`,
             'Hoá đơn nạp tiền đã xuất không thể hoàn tác.',
         );
 
@@ -144,9 +141,9 @@ const controlCallbackRecharge = async (req, res) => {
             'Thông báo nạp tiền thành công',
             `Kính chào quý khách ${user.full_name}. Quý khách đã nạp thành công số tiền ${convertCurrency(
                 amountAfterPromotion,
-            )} vào ví tài khoản Thegioicode, hoá đơn nạp tiền số #${
+            )} vào ví tài khoản Netcode, hoá đơn nạp tiền số #${
                 newInvoice.data.id
-            }. Xem thêm thông tin tại: https://thegioicode.com/billing/invoices/${newInvoice.data.id}. Trân trọng!`,
+            }. Xem thêm thông tin tại: https://netcode.vn/billing/invoices/${newInvoice.data.id}. Trân trọng!`,
         );
 
         wallet.notification_sent = false;

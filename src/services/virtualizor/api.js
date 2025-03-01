@@ -1,5 +1,4 @@
 import { configCreateLog } from '~/configs';
-import { sendMessageBotTelegramError } from '~/bot';
 import { VirtualizorAPI } from '~/services/virtualizor/constructor';
 
 // Lấy ID người dùng
@@ -35,7 +34,6 @@ export const serverAuthCheckUserVPS = async (hostname, api_key, api_pass, user) 
 
         return userID;
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi thêm user vào VPS: \n\n ${error.message}`);
         configCreateLog('services/my/cloudServer/virtualizorAPI.log', 'serverAuthCheckUserVPS', error.message);
         return null;
     }
@@ -50,7 +48,6 @@ export const serviceAuthCreateVPS = async (hostname, api_key, api_pass, data) =>
 
         return result;
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi tạo mới VPS: \n\n ${error.message}`);
         configCreateLog('services/my/cloudServer/virtualizorAPI.log', 'serviceAuthCreateVPS', error.message);
         return null;
     }
@@ -65,7 +62,6 @@ export const serviceAuthGetStatusVPS = async (hostname, api_key, api_pass, serve
 
         return result;
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi lấy trạng thái VPS: \n\n ${error.message}`);
         configCreateLog('services/my/cloudServer/virtualizorAPI.log', 'serviceAuthGetStatusVPS', error.message);
         return null;
     }
@@ -80,7 +76,6 @@ export const serviceAuthDeleteVPS = async (hostname, api_key, api_pass, id) => {
 
         return result.done;
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi xoá VPS: \n\n ${error.message}`);
         configCreateLog('services/my/cloudServer/virtualizorAPI.log', 'serviceAuthDeleteVPS', error.message);
         return null;
     }
@@ -95,7 +90,6 @@ export const serviceAuthGetVPSById = async (hostname, api_key, api_pass, id) => 
 
         return result;
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi lấy VPS theo ID: \n\n ${error.message}`);
         configCreateLog('services/my/cloudServer/virtualizorAPI.log', 'serviceAuthGetVPSById', error.message);
         return null;
     }
@@ -110,7 +104,6 @@ export const serviceAuthActionVPSById = async (hostname, api_key, api_pass, acti
 
         return result;
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi stop start VPS theo ID: \n\n ${error.message}`);
         configCreateLog('services/my/cloudServer/virtualizorAPI.log', 'serviceAuthActionVPSById', error.message);
         return null;
     }
@@ -125,7 +118,6 @@ export const serviceAuthRebuildVPS = async (hostname, api_key, api_pass, data) =
 
         return result;
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi rebuild VPS: \n\n ${error.message}`);
         configCreateLog('services/my/cloudServer/virtualizorAPI.log', 'serviceAuthRebuildVPS', error.message);
         return null;
     }
@@ -140,7 +132,6 @@ export const serviceAuthManageVPS = async (hostname, api_key, api_pass, id, data
 
         return result;
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi resize VPS: \n\n ${error.message}`);
         configCreateLog('services/my/cloudServer/virtualizorAPI.log', 'serviceAuthManageVPS', error.message);
         return null;
     }
@@ -155,7 +146,6 @@ export const serviceAuthSuspendAndUnsuspendVPS = async (hostname, api_key, api_p
 
         return result;
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi resize VPS: \n\n ${error.message}`);
         configCreateLog('services/my/cloudServer/virtualizorAPI.log', 'serviceAuthManageVPS', error.message);
         return null;
     }

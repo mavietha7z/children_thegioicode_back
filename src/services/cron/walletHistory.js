@@ -5,7 +5,6 @@ import { WalletHistory } from '~/models/walletHistory';
 import { configCreateLog, convertCurrency } from '~/configs';
 import { serviceUserCreateNewInvoice } from '../user/createInvoice';
 import { serviceCreateNotificationUser } from '~/services/user/notification';
-import { sendMessageBotTelegramApp, sendMessageBotTelegramError } from '~/bot';
 
 const services = [
     { title: 'API Check Login Garena', service: 'Service\\Apis\\Garena_login' },
@@ -85,7 +84,7 @@ const serviceCronWalletHistory = async () => {
                         newInvoice.data.id
                     } với tổng số tiền ${convertCurrency(
                         Math.abs(totalSpent),
-                    )} đã được thanh toán thành công. Xem thêm thông tin tại: https://thegioicode.com/billing/invoices/${
+                    )} đã được thanh toán thành công. Xem thêm thông tin tại: https://netcode.vn/billing/invoices/${
                         newInvoice.data.id
                     }. Trân trọng!`,
                 );
@@ -98,13 +97,7 @@ const serviceCronWalletHistory = async () => {
         if (result.deletedCount < 1) {
             return;
         }
-
-        // Bot telegram
-        sendMessageBotTelegramApp(
-            `Xoá dữ liệu WalletHistory ngày ${moment(new Date()).format('DD/MM/YYYY')} với ${result.deletedCount} dữ liệu`,
-        );
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi cron biến động số dư: \n ${error.message}`);
         configCreateLog('services/cron/walletHistory.log', 'serviceCronWalletHistory', error.message);
     }
 };

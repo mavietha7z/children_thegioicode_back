@@ -1,7 +1,6 @@
 import fetch from 'node-fetch';
 
 import { configCreateLog } from '~/configs';
-import { sendMessageBotTelegramError } from '~/bot';
 
 const serviceFetchLoginFreeFire = async (url, config, retries = 3, timeout = 5000) => {
     const controller = new AbortController();
@@ -30,7 +29,6 @@ const serviceFetchLoginFreeFire = async (url, config, retries = 3, timeout = 500
         if (retries > 0) {
             return serviceFetchLoginFreeFire(url, config, retries - 1, timeout);
         } else {
-            sendMessageBotTelegramError(`Lỗi đăng nhập Free Fire: \n\n ${error.message}`);
             configCreateLog('services/v2/freefire.log', 'serviceFetchLoginFreeFire', error.message);
 
             return { success: false, status: 400, error: 'Lỗi đăng nhập vui lòng thử lại', retries };

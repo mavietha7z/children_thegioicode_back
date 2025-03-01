@@ -3,7 +3,6 @@ import { Source } from '~/models/source';
 import { Cycles } from '~/models/cycles';
 import { configCreateLog } from '~/configs';
 import { Template } from '~/models/template';
-import { ResourceProduct } from '~/models/resourceProduct';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
 
 const controlAuthSearchCoupon = async (req, res) => {
@@ -16,19 +15,13 @@ const controlAuthSearchCoupon = async (req, res) => {
 
         let data = [];
         if (type === 'service') {
-            if (!['Source', 'ResourceProduct', 'Template', 'CloudServerProduct'].includes(service_type)) {
+            if (!['Source', 'Template', 'CloudServerProduct'].includes(service_type)) {
                 return res.status(400).json({ error: 'Tham số truy vấn không hợp lệ' });
             }
 
             if (service_type === 'Source') {
                 const sources = await Source.find({}).select('id title').sort({ priority: 1 });
                 data = sources.map((source) => ({ id: source._id, title: source.title }));
-            }
-
-            if (service_type === 'ResourceProduct') {
-                const resources = await ResourceProduct.find({}).select('id title').sort({ priority: 1 });
-
-                data = resources.map((resource) => ({ id: resource._id, title: resource.title }));
             }
 
             if (service_type === 'Template') {

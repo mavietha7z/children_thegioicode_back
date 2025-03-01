@@ -53,7 +53,7 @@ const validatorAuthCreatePricing = async (req, res, next) => {
     if (typeof cancellation_fee !== 'number' || cancellation_fee < 0 || cancellation_fee > 100) {
         return res.status(400).json({ error: 'Phí hủy phải là số và và từ 1 -> 100' });
     }
-    if (!service_type || !['Template', 'Source', 'CloudServerProduct', 'ResourceProduct'].includes(service_type)) {
+    if (!service_type || !['Template', 'Source', 'CloudServerProduct'].includes(service_type)) {
         return res.status(400).json({ error: 'Loại dịch vụ cần thêm giá không hợp lệ' });
     }
 

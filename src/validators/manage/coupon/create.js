@@ -23,7 +23,7 @@ const validatorAuthCreateCoupon = async (req, res, next) => {
     if (!apply_services || typeof apply_services !== 'object') {
         return res.status(400).json({ error: 'Dịch vụ được giảm giá không hợp lệ' });
     }
-    if (!['Source', 'CloudServerProduct', 'ResourceProduct', 'Template'].includes(service_type)) {
+    if (!['Source', 'CloudServerProduct', 'Template'].includes(service_type)) {
         return res.status(400).json({ error: 'Loại dịch vụ giảm giá không hợp lệ' });
     }
 

@@ -16,7 +16,7 @@ const couponSchema = new Schema({
     ],
     service_type: {
         type: String,
-        enum: ['Source', 'CloudServerProduct', 'ResourceProduct', 'Template'],
+        enum: ['Source', 'CloudServerProduct', 'Template'],
         required: true,
     },
     code: {

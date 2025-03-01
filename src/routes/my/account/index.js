@@ -1,7 +1,6 @@
 import express from 'express';
 
 import { controlUserUpdateProfile } from '~/controllers/my/account/profile';
-import { controlUserCreatePartner } from '~/controllers/my/account/partner';
 import { controlUserGetHistoryLogin } from '~/controllers/my/account/historyLogin';
 import { controlUserGetApiKeys, controlUserUpdateApiKey } from '~/controllers/my/account/apikey';
 import { controlUserChangePassword, controlUserVerifyPassword } from '~/controllers/my/account/password';
@@ -18,8 +17,6 @@ import { validatorUserEnable2Fa, validatorUserVerify2Fa } from '~/validators/my/
 const router = express.Router();
 
 router.get('/apikey', controlUserGetApiKeys);
-
-router.post('/partner', controlUserCreatePartner);
 
 router.get('/notifications', controlUserGetNotifications);
 

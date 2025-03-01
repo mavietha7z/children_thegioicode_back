@@ -9,7 +9,6 @@ import { Wallet } from '~/models/wallet';
 import { Apikey } from '~/models/apikey';
 import { sendEmailNotification } from '~/email';
 import { Membership } from '~/models/membership';
-import { sendMessageBotTelegramApp } from '~/bot';
 import { configCreateLog, generateRandomNumber } from '~/configs';
 import { serviceCreateUniqueUsernameUser } from '~/services/user/username';
 import { serviceCreateNotificationUser } from '~/services/user/notification';
@@ -55,7 +54,7 @@ const controlUserSendEmailVerifyRegister = async (req, res) => {
             sendmail_config.email,
             sendmail_config.password,
             email,
-            'Mã xác nhận tài khoản Thegioicode',
+            'Mã xác nhận tài khoản Netcode',
             `Mã xác thực của quý khách là: <b>${token}</b>`,
             'Mã xác thực sẽ có hạn trong 5 phút từ thời điểm quý khách nhận được email này.',
         );
@@ -149,11 +148,8 @@ const controlUserRegisterAccount = async (req, res) => {
             newUser._id,
             'Web',
             'Chúc mừng quý khách đăng ký tài khoản thành công!',
-            `Kính chào quý khách ${newUser.full_name}. Cảm ơn quý khách đã đăng ký tài khoản tại Thegioicode xin mời quý khách sử dụng dịch vụ của Thegioicode. Trân trọng!`,
+            `Kính chào quý khách ${newUser.full_name}. Cảm ơn quý khách đã đăng ký tài khoản tại Netcode xin mời quý khách sử dụng dịch vụ của Netcode. Trân trọng!`,
         );
-
-        // Bot telegram
-        sendMessageBotTelegramApp(`Tài khoản mới: \n ${newUser.email} \n ${newUser.full_name} \n ${newUser.register_type}`);
 
         res.status(200).json({
             status: 200,

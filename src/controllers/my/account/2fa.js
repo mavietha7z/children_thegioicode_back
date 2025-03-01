@@ -18,8 +18,8 @@ const controlUserEnable2Fa = async (req, res) => {
         };
         if (two_factor_auth_type === 'Google') {
             const secret = speakeasy.generateSecret({
-                name: `Thegioicode:${email}`,
-                issuer: 'Thegioicode',
+                name: `Netcode:${email}`,
+                issuer: 'Netcode',
             });
 
             twoFactorAuth = {
@@ -53,7 +53,7 @@ const controlUserEnable2Fa = async (req, res) => {
         res.status(200).json({
             data,
             status: 200,
-            message: 'Bạn đã bật xác thực hai yếu tố Thegioicode',
+            message: 'Bạn đã bật xác thực hai yếu tố Netcode',
         });
     } catch (error) {
         configCreateLog('controllers/my/account/2fa.log', 'controlUserEnable2Fa', error.message);

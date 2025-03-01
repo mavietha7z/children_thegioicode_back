@@ -3,7 +3,6 @@ import moment from 'moment-timezone';
 import { User } from '~/models/user';
 import { Wallet } from '~/models/wallet';
 import { BonusPoint } from '~/models/bonusPoint';
-import { sendMessageBotTelegramError } from '~/bot';
 import { serviceMembershipUser } from './membership';
 import { WalletHistory } from '~/models/walletHistory';
 import { configCreateLog, convertCurrency } from '~/configs';
@@ -139,7 +138,7 @@ const serviceCreateWalletHistoryUser = async (user_id, walletHistory, bonusHisto
                     user_id,
                     'Email',
                     title,
-                    `Số dư tài khoản của quý khách hiện tại là <b>${amountConvert}</b> và có thể sẽ hết sau ${hoursRemaining} giờ tới. Để tránh việc dịch vụ đang sử dụng của bạn bị vô hiệu hoá, vui lòng nạp thêm tiền tại đây: https://thegioicode.com/billing`,
+                    `Số dư tài khoản của quý khách hiện tại là <b>${amountConvert}</b> và có thể sẽ hết sau ${hoursRemaining} giờ tới. Để tránh việc dịch vụ đang sử dụng của bạn bị vô hiệu hoá, vui lòng nạp thêm tiền tại đây: https://netcode.vn/billing`,
                     'Số giờ còn lại được tính dựa trên các dịch vụ của bạn đang sử dụng, số dư có thể hết sớm hơn dự kiến.',
                 );
 
@@ -148,7 +147,7 @@ const serviceCreateWalletHistoryUser = async (user_id, walletHistory, bonusHisto
                     user_id,
                     'Web',
                     title,
-                    `Kính chào quý khách ${user.full_name}. Số dư tài khoản Thegioicode của bạn hiện tại là ${amountConvert} và có thể sẽ hết sau ${hoursRemaining} giờ tới. Để tránh việc dịch vụ đang sử dụng của bạn bị vô hiệu hoá, vui lòng nạp thêm tiền tại đây https://thegioicode.com/billing. Số giờ còn lại được tính dựa trên các dịch vụ của bạn đang sử dụng, số dư có thể hết sớm hơn dự kiến. Trân trọng!`,
+                    `Kính chào quý khách ${user.full_name}. Số dư tài khoản Netcode của bạn hiện tại là ${amountConvert} và có thể sẽ hết sau ${hoursRemaining} giờ tới. Để tránh việc dịch vụ đang sử dụng của bạn bị vô hiệu hoá, vui lòng nạp thêm tiền tại đây https://netcode.vn/billing. Số giờ còn lại được tính dựa trên các dịch vụ của bạn đang sử dụng, số dư có thể hết sớm hơn dự kiến. Trân trọng!`,
                 );
 
                 if (isSendMail) {
@@ -177,7 +176,6 @@ const serviceCreateWalletHistoryUser = async (user_id, walletHistory, bonusHisto
 
         return true;
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi tạo biến động số dư: \n\n ${error.message}`);
         configCreateLog('services/user/walletHistory.log', 'serviceCreateWalletHistoryUser', error.message);
 
         return false;

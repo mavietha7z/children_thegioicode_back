@@ -1,10 +1,9 @@
 import { User } from '~/models/user';
 import { Wallet } from '~/models/wallet';
 import { Invoice } from '~/models/invoice';
+import { configCreateLog } from '~/configs';
 import { isValidMongoId } from '~/validators';
-import { configCreateLog, convertCurrency } from '~/configs';
 import { serviceCreateWalletHistoryUser } from './walletHistory';
-import { sendMessageBotTelegramApp, sendMessageBotTelegramError } from '~/bot';
 
 const requiredKeys = ['title', 'description', 'unit_price', 'quantity', 'fees', 'cycles', 'discount', 'total_price'];
 
@@ -151,15 +150,8 @@ const serviceUserCreateNewInvoice = async (
             await newInvoice.save();
         }
 
-        // Bot telegram
-        const messageBotTele = `Khách hàng: \n ${user.email} \n ${user.full_name} \n\n Xuất hoá đơn mã #${
-            newInvoice.id
-        } với số tiền thanh toán ${convertCurrency(Math.abs(total_payment))}. \n\n Nội dung: ${newInvoice.description}`;
-        sendMessageBotTelegramApp(messageBotTele);
-
         return { success: true, message: 'Tạo hoá đơn thanh toán thành công', data: newInvoice };
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi khách hàng tạo hoá đơn: \n\n ${error.message}`);
         configCreateLog('services/user/createInvoice.log', 'serviceUserCreateNewInvoice', error.message);
 
         return { success: false, message: 'Lỗi xử lý hoá đơn thanh toán', data: null };

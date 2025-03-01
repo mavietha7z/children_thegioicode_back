@@ -2,7 +2,6 @@ import { User } from '~/models/user';
 import { Wallet } from '~/models/wallet';
 import { configCreateLog } from '~/configs';
 import { Membership } from '~/models/membership';
-import { sendMessageBotTelegramError } from '~/bot';
 import { serviceCreateNotificationUser } from './notification';
 
 const serviceMembershipUser = async (user_id) => {
@@ -73,7 +72,6 @@ const serviceMembershipUser = async (user_id) => {
             await user.save();
         }
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi xử lý membership: \n\n ${error.message}`);
         configCreateLog('services/user/membership.log', 'serviceMembershipUser', error.message);
     }
 };

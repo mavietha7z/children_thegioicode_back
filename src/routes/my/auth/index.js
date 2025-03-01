@@ -3,7 +3,6 @@ import middleware from '~/middleware';
 
 import { controlUserLogout } from '~/controllers/my/auth/logout';
 import { controlUserGetCurrent } from '~/controllers/my/auth/currentUser';
-import { controlUserLoginGoogle } from '~/controllers/my/auth/loginGoogle';
 import { controlUserLoginByEmail } from '~/controllers/my/auth/loginEmail';
 import { controlUserSendCodeVerifyEmail } from '~/controllers/my/auth/sendCode';
 import { controlUserVerifyLoginEmail } from '~/controllers/my/auth/verifyLoginEmail';
@@ -16,8 +15,6 @@ import { validatorRegister } from '~/validators/auth/register';
 const router = express.Router();
 
 router.get('/current-user', controlUserGetCurrent);
-
-router.post('/login-google', controlUserLoginGoogle);
 
 router.post('/verify-otp', controlUserVerifyOtpPassword);
 

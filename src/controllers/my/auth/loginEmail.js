@@ -90,7 +90,7 @@ const controlUserLoginByEmail = async (req, res) => {
                     req.device.client.version
                 } Thời gian: ${moment(new Date()).format(
                     'DD/MM/YYYY HH:mm:ss',
-                )}. Nếu truy cập trên đúng là từ quý khách, vui lòng bỏ qua thông báo này. Ngược lại, Thegioicode đề nghị quý khách đăng nhập lại và thực hiện đổi mật khẩu. Trân trọng!`,
+                )}. Nếu truy cập trên đúng là từ quý khách, vui lòng bỏ qua thông báo này. Ngược lại, Netcode đề nghị quý khách đăng nhập lại và thực hiện đổi mật khẩu. Trân trọng!`,
             );
         }
 

@@ -4,7 +4,6 @@ import { Invoice } from '~/models/invoice';
 import { convertCurrency } from '~/configs';
 import { configCreateLog } from '~/configs';
 import { isValidDataId } from '~/validators';
-import { sendMessageBotTelegramApp } from '~/bot';
 import { serviceUserPaymentOrderOrInvoice } from '~/services/user/payment';
 import { serviceCreateNotificationUser } from '~/services/user/notification';
 import { serviceCreateWalletHistoryUser } from '~/services/user/walletHistory';
@@ -117,7 +116,7 @@ const controlUserPaymentInvoice = async (req, res) => {
             `Hoá đơn mã #${invoice.id} đã được xuất`,
             `Kính chào quý khách ${req.user.full_name}. Hoá đơn sử dụng dịch vụ số #${invoice.id} với tổng số tiền ${convertCurrency(
                 Math.abs(invoice.total_payment),
-            )} đã được thanh toán thành công. Xem thêm thông tin tại: https://thegioicode.com/billing/invoices/${invoice.id}. Trân trọng!`,
+            )} đã được thanh toán thành công. Xem thêm thông tin tại: https://netcode.vn/billing/invoices/${invoice.id}. Trân trọng!`,
         );
 
         const data = {
@@ -135,11 +134,6 @@ const controlUserPaymentInvoice = async (req, res) => {
             processed_at: invoice.processed_at,
             total_payment: invoice.total_payment,
         };
-
-        // Bot telegram
-        sendMessageBotTelegramApp(
-            `Khác hàng: \n ${req.user.email} \n ${req.user.full_name} \n\n Thanh toán hoá đơn #${invoice_id} thành công`,
-        );
 
         res.status(200).json({
             data,

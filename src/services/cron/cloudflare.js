@@ -1,5 +1,4 @@
 import { configCreateLog } from '~/configs';
-import { sendMessageBotTelegramError } from '~/bot';
 import { OrderTemplate } from '~/models/orderTemplate';
 import { serviceUserAddDomainToCloudflare, serviceUserCheckDomainStatusOnCloudflare } from '~/services/my/template/payment';
 
@@ -126,7 +125,6 @@ const serviceCronCloudflare = async () => {
             await order.save();
         }
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi cron Cloudflare: \n ${error.message}`);
         configCreateLog('services/cron/cloudflare.log', 'serviceCronCloudflare', error.message);
     }
 };

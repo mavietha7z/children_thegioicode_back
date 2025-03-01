@@ -1,9 +1,7 @@
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
 
-import { Api } from '~/models/api';
 import { configCreateLog } from '~/configs';
-import { sendMessageBotTelegramError } from '~/bot';
 import { serviceGetDatadomeGarena, serviceGetHeadersGarena } from './datadome';
 
 const encryptPassword = (password, preV1, preV2) => {
@@ -121,7 +119,6 @@ const serviceV2GarenaLogin = async (username, password, httpAgent, currentApi) =
             data: result.data,
         };
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi đăng nhập Garena: \n\n ${error.message}`);
         configCreateLog('services/v2/freefire.log', 'serviceV2GarenaLogin', error.message);
 
         return {

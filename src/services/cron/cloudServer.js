@@ -1,5 +1,4 @@
 import { configCreateLog } from '~/configs';
-import { sendMessageBotTelegramError } from '~/bot';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { serviceAuthGetStatusVPS } from '../virtualizor/api';
 import { CloudServerPartner } from '~/models/cloudServerPartner';
@@ -74,7 +73,6 @@ const serviceCronCloudServer = async () => {
             await order.save();
         }
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi cron Cloud Server: \n ${error.message}`);
         configCreateLog('services/cron/cloudServer.log', 'serviceCronCloudServer', error.message);
     }
 };

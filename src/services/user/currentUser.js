@@ -3,7 +3,6 @@ import moment from 'moment';
 import { Wallet } from '~/models/wallet';
 import { configCreateLog } from '~/configs';
 import { CartProduct } from '~/models/cartProduct';
-import { sendMessageBotTelegramError } from '~/bot';
 import { Notification } from '~/models/notification';
 
 const serviceGetCurrentUser = async (user) => {
@@ -82,7 +81,6 @@ const serviceGetCurrentUser = async (user) => {
 
         return data;
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi get current user: \n\n ${error.message}`);
         configCreateLog('services/user/currentUser.log', 'serviceGetCurrentUser', error.message);
         return null;
     }

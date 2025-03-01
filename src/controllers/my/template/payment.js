@@ -2,7 +2,6 @@ import { Order } from '~/models/order';
 import { Wallet } from '~/models/wallet';
 import { Pricing } from '~/models/pricing';
 import { Template } from '~/models/template';
-import { sendMessageBotTelegramApp } from '~/bot';
 import { OrderTemplate } from '~/models/orderTemplate';
 import { configCreateLog, convertCurrency } from '~/configs';
 import { serverUserCalculateExpired } from '~/services/user/calculate';
@@ -160,7 +159,7 @@ const controlUserPaymentTemplate = async (req, res) => {
             req.user.id,
             'Email',
             'Xác nhận đơn hàng tạo website',
-            `Hệ thống đã tạo đơn thành công, Quý khách vui lòng truy cập đường dẫn sau để xác nhận đơn hàng theo yêu cầu: https://thegioicode.com/billing/templates/${newOrderTemplate.id}.`,
+            `Hệ thống đã tạo đơn thành công, Quý khách vui lòng truy cập đường dẫn sau để xác nhận đơn hàng theo yêu cầu: https://netcode.vn/billing/templates/${newOrderTemplate.id}.`,
             'Hoá đơn thanh toán đã xuất không thể hoàn tác.',
         );
 
@@ -173,14 +172,9 @@ const controlUserPaymentTemplate = async (req, res) => {
                 newInvoice.data.id
             } với tổng số tiền ${convertCurrency(
                 Math.abs(newInvoice.data.total_payment),
-            )} đã được thanh toán thành công. Xem thêm thông tin tại đường dẫn sau: https://thegioicode.com/billing/invoices/${
+            )} đã được thanh toán thành công. Xem thêm thông tin tại đường dẫn sau: https://netcode.vn/billing/invoices/${
                 newInvoice.data.id
             }. Trân trọng!`,
-        );
-
-        // Bot telegram
-        sendMessageBotTelegramApp(
-            `Khác hàng: \n ${req.user.email} \n ${req.user.full_name} \n\n Tạo đơn OrderTemplate với mã đơn #${newOrderTemplate.id}`,
         );
 
         res.status(200).json({

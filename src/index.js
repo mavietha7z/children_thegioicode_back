@@ -58,7 +58,7 @@ app.use(morgan('common'));
 configViewEngine(app);
 
 // Connect database
-connect('mongodb://127.0.0.1:27017/children-thegioicode')
+connect('mongodb://127.0.0.1:27017/netcode')
     .then(async () => {
         console.log('Connecting to database successfully');
     })

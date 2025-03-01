@@ -63,7 +63,7 @@ const contentSendEmail = (email, content, note, favicon_url) => {
                                                                 "
                                                                 data-bit="iit"
                                                                 tabindex="0"
-                                                                alt="Thegioicode"
+                                                                alt="Netcode"
                                                             />
                                                         </center>
                                                         <h3
@@ -76,7 +76,7 @@ const contentSendEmail = (email, content, note, favicon_url) => {
                                                                 word-wrap: normal;
                                                             "
                                                         >
-                                                            Thegioicode
+                                                            Netcode
                                                         </h3>
                                                         <p
                                                             style="
@@ -128,10 +128,10 @@ const contentSendEmail = (email, content, note, favicon_url) => {
                                                                     Nếu quý khách có bất kỳ câu hỏi hoặc thắc mắc nào hãy liên hệ
                                                                     với chúng tôi qua hòm thư:
                                                                     <a
-                                                                        href="mailto:support@thegioicode.com"
+                                                                        href="mailto:noreply@netcode.vn"
                                                                         style="color: #00aa9d; text-decoration: none"
                                                                         target="_blank"
-                                                                        >support@thegioicode.com</a
+                                                                        >noreply@netcode.vn</a
                                                                     >
                                                                 </p>
                                                                 <p

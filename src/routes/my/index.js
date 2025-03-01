@@ -10,7 +10,6 @@ import sourceRouter from './source';
 import accountRouter from './account';
 import billingRouter from './billing';
 import templateRouter from './template';
-import resourceRouter from './resource';
 import cloudServerRouter from './cloudServer';
 
 const router = express.Router();
@@ -24,8 +23,6 @@ router.use('/auth', authRouter);
 router.use('/sources', sourceRouter);
 
 router.use('/templates', templateRouter);
-
-router.use('/resources', resourceRouter);
 
 router.use('/cloud-server', cloudServerRouter);
 

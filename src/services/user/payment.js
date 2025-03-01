@@ -1,7 +1,6 @@
 import { Pricing } from '~/models/pricing';
 import { configCreateLog } from '~/configs';
 import { CartProduct } from '~/models/cartProduct';
-import { sendMessageBotTelegramError } from '~/bot';
 import { OrderTemplate } from '~/models/orderTemplate';
 import { serverUserCalculateExpired } from './calculate';
 import { OrderCloudServer } from '~/models/orderCloudServer';
@@ -98,7 +97,6 @@ const serviceUserPaymentOrderOrInvoice = async (product, order, invoice) => {
 
         return { success: true, status: 200 };
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi thanh toán hoá đơn hoặc đơn hàng: \n\n ${error.message}`);
         configCreateLog('services/user/payment.log', 'serviceUserPaymentOrderOrInvoice', error.message);
 
         return { success: false, status: 400, message: 'Lỗi xử lý hoá đơn thanh toán' };

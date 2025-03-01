@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 import { configCreateLog } from '~/configs';
-import { sendMessageBotTelegramError } from '~/bot';
 
 // Thêm tên miền vào cloudflare
 const serviceUserAddDomainToCloudflare = async (domain) => {
@@ -35,7 +34,6 @@ const serviceUserAddDomainToCloudflare = async (domain) => {
             return { status: 400, success: false, message: 'Tên miền đã tồn tại trên Cloudflare của chúng tôi' };
         }
 
-        sendMessageBotTelegramError(`Lỗi thêm tên miền vào Cloudflare: \n\n ${error.message}`);
         configCreateLog('services/my/template/payment.log', 'serviceUserAddDomainToCloudflare', error.message);
         return { status: 500, success: false, message: 'Lỗi thêm tên miền vào Cloudflare' };
     }
@@ -68,7 +66,6 @@ const serviceUserCheckDomainStatusOnCloudflare = async (zoneId) => {
             return { status: 404, success: true, message: 'Tên miền chưa được thêm vào Cloudflare của chúng tôi' };
         }
 
-        sendMessageBotTelegramError(`Lỗi kiểm tra trạng thái tên miền trên Cloudflare: \n\n ${error.message}`);
         configCreateLog('services/my/template/payment.log', 'serviceUserCheckDomainStatusOnCloudflare', error.message);
         return { status: 500, success: false, message: 'Lỗi kiểm tra trạng thái tên miền trên Cloudflare' };
     }
@@ -95,7 +92,6 @@ const serviceAuthRemoveDomainFromCloudflare = async (zoneId) => {
             return { status: response.status, success: false, message: 'Lỗi xoá tên miền khỏi Cloudflare' };
         }
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi xoá tên miền khỏi Cloudflare: \n\n ${error.message}`);
         configCreateLog('services/my/template/payment.log', 'serviceAuthRemoveDomainFromCloudflare', error.message);
         return { status: 500, success: false, message: 'Lỗi xoá tên miền khỏi Cloudflare' };
     }

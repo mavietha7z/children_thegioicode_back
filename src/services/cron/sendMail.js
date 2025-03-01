@@ -1,7 +1,6 @@
 import { App } from '~/models/app';
 import { configCreateLog } from '~/configs';
 import { sendEmailNotification } from '~/email';
-import { sendMessageBotTelegramError } from '~/bot';
 import { Notification } from '~/models/notification';
 
 const SAFE_INTERVAL = 10000;
@@ -54,7 +53,6 @@ const serviceCronSendMail = async () => {
 
         await email.save();
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi cron gửi email: \n ${error.message}`);
         configCreateLog('services/cron/sendmail.log', 'serviceCronSendMail', error.message);
     }
 };

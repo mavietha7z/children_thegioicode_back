@@ -1,8 +1,6 @@
 import { Cart } from '~/models/cart';
 import { configCreateLog } from '~/configs';
-import { sendMessageBotTelegramApp } from '~/bot';
 import { CartProduct } from '~/models/cartProduct';
-import { serviceUserVerifyTokenPartner } from '~/middleware/cloudServer';
 
 const serviceUserAddCloudServerToCart = async (user, body, validate) => {
     try {
@@ -58,11 +56,6 @@ const serviceUserAddCloudServerToCart = async (user, body, validate) => {
                 status: 'pending',
             }).save();
         }
-
-        // Bot telegram
-        sendMessageBotTelegramApp(
-            `Khác hàng: \n ${user.email} \n ${user.full_name} \n\n Thêm đơn Cloud Server #${image.title} vào giỏ hàng`,
-        );
 
         return {
             status: 200,

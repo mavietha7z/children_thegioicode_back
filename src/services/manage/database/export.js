@@ -13,10 +13,8 @@ import { Request } from '~/models/request';
 import { Invoice } from '~/models/invoice';
 import { Paygate } from '~/models/paygate';
 import { Pricing } from '~/models/pricing';
-import { Partner } from '~/models/partner';
 import { Userbank } from '~/models/userbank';
 import { Template } from '~/models/template';
-import { NewsFeed } from '~/models/newsFeed';
 import { Localbank } from '~/models/localbank';
 import { Membership } from '~/models/membership';
 import { BonusPoint } from '~/models/bonusPoint';
@@ -25,11 +23,7 @@ import { LoginHistory } from '~/models/loginHistory';
 import { Notification } from '~/models/notification';
 import { WalletHistory } from '~/models/walletHistory';
 import { OrderTemplate } from '~/models/orderTemplate';
-import { PartnerService } from '~/models/partnerService';
-import { ResourceAccount } from '~/models/resourceAccount';
-import { ResourceProduct } from '~/models/resourceProduct';
 import { CloudServerPlan } from '~/models/cloudServerPlan';
-import { ResourceCategory } from '~/models/resourceCategory';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerImage } from '~/models/cloudServerImage';
 import { CloudServerRegion } from '~/models/cloudServerRegion';
@@ -52,10 +46,8 @@ const serviceModelMapDatabase = {
     Requests: { model: Request, type: 'Requests' },
     Paygates: { model: Paygate, type: 'Paygates' },
     Pricings: { model: Pricing, type: 'Pricings' },
-    Partners: { model: Partner, type: 'Partners' },
     Userbanks: { model: Userbank, type: 'Userbanks' },
     Templates: { model: Template, type: 'Templates' },
-    NewsFeeds: { model: NewsFeed, type: 'NewsFeeds' },
     Localbanks: { model: Localbank, type: 'Localbanks' },
     BonusPoints: { model: BonusPoint, type: 'BonusPoints' },
     Memberships: { model: Membership, type: 'Memberships' },
@@ -64,13 +56,9 @@ const serviceModelMapDatabase = {
     LoginHistories: { model: LoginHistory, type: 'LoginHistories' },
     OrderTemplates: { model: OrderTemplate, type: 'OrderTemplates' },
     WalletHistories: { model: WalletHistory, type: 'WalletHistories' },
-    PartnerServices: { model: PartnerService, type: 'PartnerServices' },
-    ResourceAccounts: { model: ResourceAccount, type: 'ResourceAccounts' },
-    ResourceProducts: { model: ResourceProduct, type: 'ResourceProducts' },
     CloudServerPlans: { model: CloudServerPlan, type: 'CloudServerPlans' },
     CloudServerImages: { model: CloudServerImage, type: 'CloudServerImages' },
     OrderCloudServers: { model: OrderCloudServer, type: 'OrderCloudServers' },
-    ResourceCategories: { model: ResourceCategory, type: 'ResourceCategories' },
     CloudServerRegions: { model: CloudServerRegion, type: 'CloudServerRegions' },
     CloudServerPartners: { model: CloudServerPartner, type: 'CloudServerPartners' },
     CloudServerProducts: { model: CloudServerProduct, type: 'CloudServerProducts' },
@@ -99,18 +87,13 @@ const serviceFetchExportDatabase = async (model, type) => {
             type === 'Wallets' ||
             type === 'Invoices' ||
             type === 'Requests' ||
-            type === 'Partners' ||
             type === 'Userbanks' ||
-            type === 'NewsFeeds' ||
             type === 'BonusPoints' ||
             type === 'CartProducts' ||
             type === 'Notifications' ||
             type === 'LoginHistories' ||
             type === 'OrderTemplates' ||
-            type === 'PartnerServices' ||
             type === 'WalletHistories' ||
-            type === 'ResourceAccounts' ||
-            type === 'ResourceProducts' ||
             type === 'OrderCloudServers'
         ) {
             tempData.user_id = { $oid: data.user_id };
@@ -181,18 +164,6 @@ const serviceFetchExportDatabase = async (model, type) => {
             if (data.userbank_id) {
                 tempData.userbank_id = { $oid: data.userbank_id };
             }
-        }
-
-        // NewsFeeds
-        if (type === 'NewsFeeds') {
-            tempData.likes = data.likes.map((like) => {
-                const { user_id, created_at } = like;
-
-                return {
-                    user_id: { $oid: user_id },
-                    created_at: { $date: created_at },
-                };
-            });
         }
 
         // Notifications
@@ -271,16 +242,6 @@ const serviceFetchExportDatabase = async (model, type) => {
         if (type === 'Pricings') {
             tempData.service_id = { $oid: data.service_id };
             tempData.cycles_id = { $oid: data.cycles_id };
-        }
-
-        // ResourceAccounts
-        if (type === 'ResourceAccounts') {
-            tempData.product_id = { $oid: data.product_id };
-        }
-
-        // ResourceProducts
-        if (type === 'ResourceProducts') {
-            tempData.category_id = { $oid: data.category_id };
         }
 
         // Tokens

@@ -108,7 +108,7 @@ const serviceUserSendOtpVerifyEmail = async (user_id, module) => {
         await serviceCreateNotificationUser(
             user_id,
             'Email',
-            'Mã xác nhận tài khoản Thegioicode',
+            'Mã xác nhận tài khoản Netcode',
             `Mã xác thực của quý khách là: <b>${token}</b>`,
             'Mã xác thực sẽ có hạn trong 5 phút từ thời điểm quý khách nhận được email này.',
         );

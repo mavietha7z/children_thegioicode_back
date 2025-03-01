@@ -1,7 +1,7 @@
 import { Cart } from '~/models/cart';
 import { Pricing } from '~/models/pricing';
 import { CartProduct } from '~/models/cartProduct';
-import { configCreateLog, configGetDiscountRulePartner } from '~/configs';
+import { configCreateLog } from '~/configs';
 
 const controlUserGetCart = async (req, res) => {
     try {

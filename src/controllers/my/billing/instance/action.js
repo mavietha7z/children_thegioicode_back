@@ -5,7 +5,6 @@ import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
 import { CloudServerPartner } from '~/models/cloudServerPartner';
 import { serviceAuthActionVPSById } from '~/services/virtualizor/api';
-import { serviceUserVerifyTokenPartner } from '~/middleware/cloudServer';
 
 const controlUserBillingActionInstance = async (req, res) => {
     try {

@@ -1,6 +1,5 @@
 import { App } from '~/models/app';
 import { configCreateLog } from '~/configs';
-import { sendMessageBotTelegramError } from '~/bot';
 import { Notification } from '~/models/notification';
 
 const serviceCreateNotificationUser = async (user_id, service, title, content, note = null) => {
@@ -32,7 +31,6 @@ const serviceCreateNotificationUser = async (user_id, service, title, content, n
 
         return true;
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi tạo thông báo người dùng: \n\n ${error.message}`);
         configCreateLog('services/user/notification.log', 'serviceCreateNotificationUser', error.message);
         return false;
     }

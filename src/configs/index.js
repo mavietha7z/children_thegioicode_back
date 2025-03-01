@@ -80,15 +80,3 @@ export const configCreateLog = (fileName, func, message) => {
         }
     });
 };
-
-export const configGetDiscountRulePartner = (serviceUsed, rules) => {
-    let applicableDiscount = 0;
-
-    for (const rule of rules) {
-        if (serviceUsed >= rule.service) {
-            applicableDiscount = rule.discount;
-        }
-    }
-
-    return applicableDiscount;
-};

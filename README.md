@@ -88,59 +88,59 @@ sudo apt install -y \
 ### Tạo thư mục admin và cấp quyền
 
 ```
-mkdir -p /var/www/thegioicode/admin/html
+mkdir -p /var/www/netcode/admin/html
 ```
 
 ```
-chown -R $USER:$USER /var/www/thegioicode/admin/html
+chown -R $USER:$USER /var/www/netcode/admin/html
 ```
 
 ```
-chmod -R 755 /var/www/thegioicode
+chmod -R 755 /var/www/netcode
 ```
 
 ### Tạo thư mục back và cấp quyền
 
 ```
-mkdir -p /var/www/thegioicode/back/html
+mkdir -p /var/www/netcode/back/html
 ```
 
 ```
-chown -R $USER:$USER /var/www/thegioicode/back/html
+chown -R $USER:$USER /var/www/netcode/back/html
 ```
 
 ```
-chmod -R 755 /var/www/thegioicode/back
+chmod -R 755 /var/www/netcode/back
 ```
 
 ### Tạo thư mục client và cấp quyền
 
 ```
-mkdir -p /var/www/thegioicode/client/html
+mkdir -p /var/www/netcode/client/html
 ```
 
 ```
-chown -R $USER:$USER /var/www/thegioicode/client/html
+chown -R $USER:$USER /var/www/netcode/client/html
 ```
 
 ```
-chmod -R 755 /var/www/thegioicode/client
+chmod -R 755 /var/www/netcode/client
 ```
 
 ### Cấu hình nginx app
 
 ```
-vi /etc/nginx/sites-enabled/thegioicode-app
+vi /etc/nginx/sites-enabled/netcode-app
 ```
 
 ```
 server {
         listen 80;
         listen [::]:80;
-        server_name thegioicode.com;
+        server_name Netcode.vn;
 
         location / {
-                root /var/www/thegioicode/client/html;
+                root /var/www/netcode/client/html;
                 index index.html index.htm index.nginx-debian.html;
                 try_files $uri /index.html;
         }
@@ -154,7 +154,7 @@ server {
                 proxy_pass http://localhost:8080;
         }
         location /api {
-                root /var/www/thegioicode/back/html;
+                root /var/www/netcode/back/html;
                 index index.js index.html index.htm index.nginx-debian.html;
                 proxy_pass http://localhost:8080;
                 proxy_http_version 1.1;
@@ -169,16 +169,16 @@ server {
 ### Cấu hình nginx admin
 
 ```
-vi /etc/nginx/sites-enabled/thegioicode-admin
+vi /etc/nginx/sites-enabled/netcode-admin
 ```
 
 ```
 server {
         listen 80;
         listen [::]:80;
-        server_name manage.thegioicode.com;
+        server_name manage.Netcode.vn;
 
-        root /var/www/thegioicode/admin/html;
+        root /var/www/netcode/admin/html;
         index index.html index.htm index.nginx-debian.html;
 
         location / {
@@ -239,153 +239,141 @@ mongo
 ```
 
 ```
-use thegioicode
+use netcode
 ```
 
 <sub>Tải lên các file dữ liệu có sẵn</sub>
 
 ```
-mongoimport --db thegioicode --collection apikeys --file /var/www/thegioicode/back/html/apikeys.json --jsonArray
+mongoimport --db netcode --collection apikeys --file /var/www/netcode/back/html/apikeys.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection apis --file /var/www/thegioicode/back/html/apis.json --jsonArray
+mongoimport --db netcode --collection apis --file /var/www/netcode/back/html/apis.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection apps --file /var/www/thegioicode/back/html/apps.json --jsonArray
+mongoimport --db netcode --collection apps --file /var/www/netcode/back/html/apps.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection bonuspoints --file /var/www/thegioicode/back/html/bonuspoints.json --jsonArray
+mongoimport --db netcode --collection bonuspoints --file /var/www/netcode/back/html/bonuspoints.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection carts --file /var/www/thegioicode/back/html/carts.json --jsonArray
+mongoimport --db netcode --collection carts --file /var/www/netcode/back/html/carts.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection cloudserverimages --file /var/www/thegioicode/back/html/cloudserverimages.json --jsonArray
+mongoimport --db netcode --collection cloudserverimages --file /var/www/netcode/back/html/cloudserverimages.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection cloudserverpartners --file /var/www/thegioicode/back/html/cloudserverpartners.json --jsonArray
+mongoimport --db netcode --collection cloudserverpartners --file /var/www/netcode/back/html/cloudserverpartners.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection cloudserverplans --file /var/www/thegioicode/back/html/cloudserverplans.json --jsonArray
+mongoimport --db netcode --collection cloudserverplans --file /var/www/netcode/back/html/cloudserverplans.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection cloudserverproducts --file /var/www/thegioicode/back/html/cloudserverproducts.json --jsonArray
+mongoimport --db netcode --collection cloudserverproducts --file /var/www/netcode/back/html/cloudserverproducts.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection cloudserverregions --file /var/www/thegioicode/back/html/cloudserverregions.json --jsonArray
+mongoimport --db netcode --collection cloudserverregions --file /var/www/netcode/back/html/cloudserverregions.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection cycles --file /var/www/thegioicode/back/html/cycles.json --jsonArray
+mongoimport --db netcode --collection cycles --file /var/www/netcode/back/html/cycles.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection invoices --file /var/www/thegioicode/back/html/invoices.json --jsonArray
+mongoimport --db netcode --collection invoices --file /var/www/netcode/back/html/invoices.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection localbanks --file /var/www/thegioicode/back/html/localbanks.json --jsonArray
+mongoimport --db netcode --collection localbanks --file /var/www/netcode/back/html/localbanks.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection loginhistories --file /var/www/thegioicode/back/html/loginhistories.json --jsonArray
+mongoimport --db netcode --collection loginhistories --file /var/www/netcode/back/html/loginhistories.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection memberships --file /var/www/thegioicode/back/html/memberships.json --jsonArray
+mongoimport --db netcode --collection memberships --file /var/www/netcode/back/html/memberships.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection newsfeeds --file /var/www/thegioicode/back/html/newsfeeds.json --jsonArray
+mongoimport --db netcode --collection newsfeeds --file /var/www/netcode/back/html/newsfeeds.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection notifications --file /var/www/thegioicode/back/html/notifications.json --jsonArray
+mongoimport --db netcode --collection notifications --file /var/www/netcode/back/html/notifications.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection ordercloudservers --file /var/www/thegioicode/back/html/ordercloudservers.json --jsonArray
+mongoimport --db netcode --collection ordercloudservers --file /var/www/netcode/back/html/ordercloudservers.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection orders --file /var/www/thegioicode/back/html/orders.json --jsonArray
+mongoimport --db netcode --collection orders --file /var/www/netcode/back/html/orders.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection ordertemplates --file /var/www/thegioicode/back/html/ordertemplates.json --jsonArray
+mongoimport --db netcode --collection ordertemplates --file /var/www/netcode/back/html/ordertemplates.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection partners --file /var/www/thegioicode/back/html/partners.json --jsonArray
+mongoimport --db netcode --collection partners --file /var/www/netcode/back/html/partners.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection partnerservices --file /var/www/thegioicode/back/html/partnerservices.json --jsonArray
+mongoimport --db netcode --collection partnerservices --file /var/www/netcode/back/html/partnerservices.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection paygates --file /var/www/thegioicode/back/html/paygates.json --jsonArray
+mongoimport --db netcode --collection paygates --file /var/www/netcode/back/html/paygates.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection players --file /var/www/thegioicode/back/html/players.json --jsonArray
+mongoimport --db netcode --collection players --file /var/www/netcode/back/html/players.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection pricings --file /var/www/thegioicode/back/html/pricings.json --jsonArray
+mongoimport --db netcode --collection pricings --file /var/www/netcode/back/html/pricings.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection requests --file /var/www/thegioicode/back/html/requests.json --jsonArray
+mongoimport --db netcode --collection requests --file /var/www/netcode/back/html/requests.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection resourceaccounts --file /var/www/thegioicode/back/html/resourceaccounts.json --jsonArray
+mongoimport --db netcode --collection sources --file /var/www/netcode/back/html/sources.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection resourcecategories --file /var/www/thegioicode/back/html/resourcecategories.json --jsonArray
+mongoimport --db netcode --collection templates --file /var/www/netcode/back/html/templates.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection resourceproducts --file /var/www/thegioicode/back/html/resourceproducts.json --jsonArray
+mongoimport --db netcode --collection tokens --file /var/www/netcode/back/html/tokens.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection sources --file /var/www/thegioicode/back/html/sources.json --jsonArray
+mongoimport --db netcode --collection userbanks --file /var/www/netcode/back/html/userbanks.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection templates --file /var/www/thegioicode/back/html/templates.json --jsonArray
+mongoimport --db netcode --collection users --file /var/www/netcode/back/html/users.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection tokens --file /var/www/thegioicode/back/html/tokens.json --jsonArray
+mongoimport --db netcode --collection wallethistories --file /var/www/netcode/back/html/wallethistories.json --jsonArray
 ```
 
 ```
-mongoimport --db thegioicode --collection userbanks --file /var/www/thegioicode/back/html/userbanks.json --jsonArray
-```
-
-```
-mongoimport --db thegioicode --collection users --file /var/www/thegioicode/back/html/users.json --jsonArray
-```
-
-```
-mongoimport --db thegioicode --collection wallethistories --file /var/www/thegioicode/back/html/wallethistories.json --jsonArray
-```
-
-```
-mongoimport --db thegioicode --collection wallets --file /var/www/thegioicode/back/html/wallets.json --jsonArray
+mongoimport --db netcode --collection wallets --file /var/www/netcode/back/html/wallets.json --jsonArray
 ```
 
 <sub>Giới hạn log của PM2</sub>

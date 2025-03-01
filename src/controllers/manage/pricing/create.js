@@ -4,7 +4,6 @@ import { Pricing } from '~/models/pricing';
 import { configCreateLog } from '~/configs';
 import { Template } from '~/models/template';
 import { isValidMongoId } from '~/validators';
-import { ResourceProduct } from '~/models/resourceProduct';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
 
 const controlAuthCreatePricing = async (req, res) => {
@@ -50,12 +49,6 @@ const controlAuthCreatePricing = async (req, res) => {
             service = await CloudServerProduct.findById(service_id).select('id title');
             if (!service) {
                 return res.status(404).json({ error: 'Gói cấu hình cần thêm giá không tồn tại' });
-            }
-        }
-        if (service_type === 'ResourceProduct') {
-            service = await ResourceProduct.findById(service_id).select('id title');
-            if (!service) {
-                return res.status(404).json({ error: 'Sản phẩm cần thêm giá không tồn tại' });
             }
         }
 

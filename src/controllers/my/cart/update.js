@@ -2,7 +2,6 @@ import { Cart } from '~/models/cart';
 import { Pricing } from '~/models/pricing';
 import { configCreateLog } from '~/configs';
 import { isValidDataId } from '~/validators';
-import { sendMessageBotTelegramApp } from '~/bot';
 import { CartProduct } from '~/models/cartProduct';
 
 const controlUserClearCart = async (req, res) => {
@@ -10,9 +9,6 @@ const controlUserClearCart = async (req, res) => {
         const data = req.body;
 
         await CartProduct.deleteMany({ id: { $in: data } });
-
-        // Bot telegram
-        sendMessageBotTelegramApp(`Khác hàng: \n ${req.user.email} \n ${req.user.full_name} \n\n Xoá đơn hàng trong giỏ hàng thành công`);
 
         res.status(200).json({
             status: 200,

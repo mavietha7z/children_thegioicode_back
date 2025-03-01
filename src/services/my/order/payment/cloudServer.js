@@ -3,7 +3,6 @@ import { CartProduct } from '~/models/cartProduct';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { serverUserCalculateExpired } from '~/services/user/calculate';
 import { serviceCreateNotificationUser } from '~/services/user/notification';
-import { sendMessageBotTelegramApp, sendMessageBotTelegramError } from '~/bot';
 import { serverAuthCheckUserVPS, serviceAuthCreateVPS } from '~/services/virtualizor/api';
 import { generateVncPassword, randomPasswordCloudServer } from '../../cloudServer/random';
 
@@ -110,18 +109,12 @@ const serviceUserPaymentOrderRegisterCloudServer = async (order_id, invoice) => 
             cartProduct.user_id._id,
             'Email',
             'Thông tin máy chủ Cloud Server',
-            `Hệ thống đã khởi tạo thành công dịch vụ Cloud Server với các thông tin như sau: <br /><br /> IPv4: ${instance.ips[0]} <br /> Username: root <br /> Password: ${passwordCloudServer} <br /> Port: 22 <br /><br /> Xem thêm thông tin tại: https://thegioicode.com/billing/instances/${newOrderCloudServer.id}`,
+            `Hệ thống đã khởi tạo thành công dịch vụ Cloud Server với các thông tin như sau: <br /><br /> IPv4: ${instance.ips[0]} <br /> Username: root <br /> Password: ${passwordCloudServer} <br /> Port: 22 <br /><br /> Xem thêm thông tin tại: https://netcode.vn/billing/instances/${newOrderCloudServer.id}`,
             'Hoá đơn thanh toán đã xuất không thể hoàn tác.',
-        );
-
-        // Bot telegram
-        sendMessageBotTelegramApp(
-            `Khác hàng: \n ${cartProduct.user_id.email} \n ${cartProduct.user_id.full_name} \n\n Khởi tạo Cloud Server với mã đơn #${newOrderCloudServer.id}`,
         );
 
         return { success: true, status: 200 };
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi đăng ký Cloud Server: \n\n ${error.message}`);
         configCreateLog('services/my/order/payment/cloudServer.log', 'serviceUserPaymentOrderRegisterCloudServer', error.message);
         return { success: false, status: 400, error: 'Lỗi đăng ký máy chủ' };
     }

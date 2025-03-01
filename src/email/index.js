@@ -20,7 +20,7 @@ const sendEmailNotification = async (host, port, secure, user, pass, email, subj
         const contentMail = contentSendEmail(email, content, note, app.favicon_url);
 
         const result = await transporter.sendMail({
-            from: `"Thegioicode" <${user}>`,
+            from: `"Netcode" <${user}>`,
             to: email,
             subject,
             html: contentMail,

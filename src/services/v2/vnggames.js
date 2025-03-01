@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 import { configCreateLog } from '~/configs';
-import { sendMessageBotTelegramError } from '~/bot';
 
 const serviceGetClientKey = async (frontID) => {
     const data = `shopfrontID=${frontID}`;
@@ -101,7 +100,6 @@ const serviceLoginVngGamesByQuick = async (roleID, frontID) => {
             success: true,
         };
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi đăng nhập VngGames Quick: \n\n ${error.message}`);
         configCreateLog('services/v2/vnggames.log', 'serviceLoginVngGamesByQuick', error.message);
         return {
             data: null,
@@ -166,7 +164,6 @@ const serviceLoginVngGamesByRole = async (roleID, shopfrontID) => {
             success: true,
         };
     } catch (error) {
-        sendMessageBotTelegramError(`Lỗi đăng nhập VngGames Role: \n\n ${error.message}`);
         configCreateLog('services/v2/vnggames.log', 'serviceLoginVngGamesByRole', error.message);
         return {
             data: null,

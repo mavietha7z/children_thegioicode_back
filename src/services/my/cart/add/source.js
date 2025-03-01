@@ -2,7 +2,6 @@ import { Cart } from '~/models/cart';
 import { Source } from '~/models/source';
 import { Pricing } from '~/models/pricing';
 import { configCreateLog } from '~/configs';
-import { sendMessageBotTelegramApp } from '~/bot';
 import { CartProduct } from '~/models/cartProduct';
 
 const serviceUserAddSourceToCart = async (user, id) => {
@@ -49,9 +48,6 @@ const serviceUserAddSourceToCart = async (user, id) => {
 
         source.purchase_count += 1;
         await source.save();
-
-        // Bot telegram
-        sendMessageBotTelegramApp(`Khác hàng: \n ${user.email} \n ${user.full_name} \n\n Thêm Source #${source.id} vào giỏ hàng`);
 
         return {
             status: 200,

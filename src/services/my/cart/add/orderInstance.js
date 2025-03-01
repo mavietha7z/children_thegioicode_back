@@ -1,11 +1,9 @@
 import { Cart } from '~/models/cart';
 import { Pricing } from '~/models/pricing';
 import { configCreateLog } from '~/configs';
-import { sendMessageBotTelegramApp } from '~/bot';
 import { CartProduct } from '~/models/cartProduct';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
-import { serviceUserVerifyTokenPartner } from '~/middleware/cloudServer';
 
 const serviceUserAddOrderInstanceToCart = async (user, id) => {
     try {
@@ -84,11 +82,6 @@ const serviceUserAddOrderInstanceToCart = async (user, id) => {
                 status: 'pending',
             }).save();
         }
-
-        // Bot telegram
-        sendMessageBotTelegramApp(
-            `Khác hàng: \n ${user.email} \n ${user.full_name} \n\n Thêm đơn OrderCloudServer #${order.id} vào giỏ hàng`,
-        );
 
         return {
             status: 200,
