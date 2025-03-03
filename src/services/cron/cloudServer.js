@@ -1,7 +1,7 @@
 import { configCreateLog } from '~/configs';
 import { OrderCloudServer } from '~/models/orderCloudServer';
-import { serviceAuthGetStatusVPS } from '../virtualizor/api';
-import { CloudServerPartner } from '~/models/cloudServerPartner';
+import { serviceAuthGetStatusVPS } from '../partner/cloudServer';
+import { CloudServerPartner } from '~/models/partner';
 
 function getVpsStatus(vpsIds, result) {
     const statuses = {};

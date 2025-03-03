@@ -1,7 +1,7 @@
 import { Pricing } from '~/models/pricing';
 import { configCreateLog } from '~/configs';
-import { CloudServerPlan } from '~/models/cloudServerPlan';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
+import { isValidDataId } from '~/validators';
 
 const calculateCyclesPayments = (products) => {
     const cycleMap = new Map();
@@ -45,17 +45,18 @@ const controlUserGetCloudServerProducts = async (req, res) => {
     try {
         const { plan_id } = req.params;
 
+        if (!isValidDataId(plan_id)) {
+            return res.status(400).json({
+                error: 'Tham số truy vấn không hợp lệ',
+            });
+        }
+
         let partnerDiscount = 0;
         if (req.discount && req.discount > 0) {
             partnerDiscount = req.discount;
         }
 
-        const plan = await CloudServerPlan.findOne({ id: plan_id, status: true }).select('id title');
-        if (!plan) {
-            return res.status(404).json({ error: 'Máy chủ cần truy vấn không tồn tại hoặc đã bị tắt' });
-        }
-
-        const products = await CloudServerProduct.find({ plan_id: plan._id, status: true })
+        const products = await CloudServerProduct.find({ plan_id, status: true })
             .select(
                 'id title core memory disk bandwidth network_speed network_port network_inter customize sold_out ipv4 ipv6 status description',
             )

@@ -8,6 +8,11 @@ const cloudServerRegionSchema = new Schema({
         required: true,
         immutable: true,
     },
+    partner_id: {
+        type: Number,
+        unique: true,
+        required: true,
+    },
     title: {
         type: String,
         required: true,
@@ -22,9 +27,24 @@ const cloudServerRegionSchema = new Schema({
     },
     plans: [
         {
-            type: Schema.Types.ObjectId,
-            ref: 'CloudServerPlan',
-            required: true,
+            _id: false,
+            id: {
+                type: Number,
+                unique: true,
+                required: true,
+            },
+            title: {
+                type: String,
+                required: true,
+            },
+            image_url: {
+                type: String,
+                required: true,
+            },
+            description: {
+                type: String,
+                required: true,
+            },
         },
     ],
     status: {

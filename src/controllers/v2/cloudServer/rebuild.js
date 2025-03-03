@@ -3,8 +3,8 @@ import { configCreateLog } from '~/configs';
 import { isValidDataId } from '~/validators';
 import { CloudServerImage } from '~/models/cloudServerImage';
 import { OrderCloudServer } from '~/models/orderCloudServer';
-import { CloudServerPartner } from '~/models/cloudServerPartner';
-import { serviceAuthRebuildVPS } from '~/services/virtualizor/api';
+import { CloudServerPartner } from '~/models/partner';
+import { serviceAuthRebuildVPS } from '~/services/partner/cloudServer';
 
 const controlV2CloudServerRebuild = async (req, res) => {
     try {

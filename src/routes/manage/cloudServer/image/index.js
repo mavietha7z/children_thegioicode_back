@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { controlAuthGetCloudServerImages } from '~/controllers/manage/cloudServer/image/get';
-import { controlAuthCreateCloudServerImage } from '~/controllers/manage/cloudServer/image/create';
+import { controlAuthAsyncCloudServerImage } from '~/controllers/manage/cloudServer/image/async';
 import { controlAuthUpdateCloudServerImage } from '~/controllers/manage/cloudServer/image/update';
 import { controlAuthDestroyCloudServerImage } from '~/controllers/manage/cloudServer/image/destroy';
 
@@ -9,7 +9,7 @@ import { validatorCheckPages, validatorMongoId } from '~/validators';
 
 const router = express.Router();
 
-router.post('/create', controlAuthCreateCloudServerImage);
+router.get('/async', controlAuthAsyncCloudServerImage);
 
 router.get('/', validatorCheckPages, controlAuthGetCloudServerImages);
 

@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { generateRandomNumber } from '~/configs';
 
-const cloudServerPartnerSchema = new Schema({
+const partnerSchema = new Schema({
     id: {
         type: Number,
         unique: true,
@@ -16,25 +16,21 @@ const cloudServerPartnerSchema = new Schema({
         type: String,
         required: true,
     },
-    key: {
+    token: {
         type: String,
         required: true,
     },
-    password: {
-        type: String,
-        required: true,
+    difference_cloud_server: {
+        type: Number,
+        default: 0,
     },
-    node_select: {
-        type: String,
-        required: true,
+    difference_public_api: {
+        type: Number,
+        default: 0,
     },
     status: {
         type: Boolean,
         default: true,
-    },
-    description: {
-        type: String,
-        default: '',
     },
     created_at: {
         type: Date,
@@ -46,7 +42,7 @@ const cloudServerPartnerSchema = new Schema({
     },
 });
 
-cloudServerPartnerSchema.pre('validate', async function (next) {
+partnerSchema.pre('validate', async function (next) {
     if (this.isNew && !this.id) {
         let id;
         let unique = false;
@@ -54,7 +50,7 @@ cloudServerPartnerSchema.pre('validate', async function (next) {
         while (!unique) {
             id = generateRandomNumber(8, 8);
 
-            const exist = await mongoose.models.CloudServerPartner.findOne({ id });
+            const exist = await mongoose.models.Partner.findOne({ id });
             if (!exist) {
                 unique = true;
             }
@@ -66,4 +62,4 @@ cloudServerPartnerSchema.pre('validate', async function (next) {
     next();
 });
 
-export const CloudServerPartner = mongoose.model('CloudServerPartner', cloudServerPartnerSchema);
+export const Partner = mongoose.model('Partner', partnerSchema);

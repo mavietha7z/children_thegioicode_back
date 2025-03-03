@@ -8,15 +8,16 @@ const cloudServerImageSchema = new Schema({
         required: true,
         immutable: true,
     },
+    partner_id: {
+        type: Number,
+        unique: true,
+        required: true,
+    },
     title: {
         type: String,
         required: true,
     },
     group: {
-        type: String,
-        required: true,
-    },
-    code: {
         type: String,
         required: true,
     },

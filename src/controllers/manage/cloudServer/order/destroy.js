@@ -1,7 +1,7 @@
 import { configCreateLog } from '~/configs';
 import { OrderCloudServer } from '~/models/orderCloudServer';
-import { CloudServerPartner } from '~/models/cloudServerPartner';
-import { serviceAuthDeleteVPS } from '~/services/virtualizor/api';
+import { CloudServerPartner } from '~/models/partner';
+import { serviceAuthDeleteVPS } from '~/services/partner/cloudServer';
 
 const controlAuthDestroyCloudServerOrder = async (req, res) => {
     try {

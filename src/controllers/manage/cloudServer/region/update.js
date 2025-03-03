@@ -9,7 +9,7 @@ const controlAuthUpdateCloudServerRegion = async (req, res) => {
             return res.status(400).json({ error: 'Tham số truy vấn không hợp lệ' });
         }
 
-        const region = await CloudServerRegion.findById(id).populate({ path: 'plans', select: 'id title image_url' });
+        const region = await CloudServerRegion.findById(id);
         if (!region) {
             return res.status(404).json({ error: 'Khu vực cần cập nhật không tồn tại' });
         }

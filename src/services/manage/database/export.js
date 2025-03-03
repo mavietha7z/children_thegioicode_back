@@ -23,11 +23,10 @@ import { LoginHistory } from '~/models/loginHistory';
 import { Notification } from '~/models/notification';
 import { WalletHistory } from '~/models/walletHistory';
 import { OrderTemplate } from '~/models/orderTemplate';
-import { CloudServerPlan } from '~/models/cloudServerPlan';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerImage } from '~/models/cloudServerImage';
 import { CloudServerRegion } from '~/models/cloudServerRegion';
-import { CloudServerPartner } from '~/models/cloudServerPartner';
+import { CloudServerPartner } from '~/models/partner';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
 
 const serviceModelMapDatabase = {
@@ -56,7 +55,6 @@ const serviceModelMapDatabase = {
     LoginHistories: { model: LoginHistory, type: 'LoginHistories' },
     OrderTemplates: { model: OrderTemplate, type: 'OrderTemplates' },
     WalletHistories: { model: WalletHistory, type: 'WalletHistories' },
-    CloudServerPlans: { model: CloudServerPlan, type: 'CloudServerPlans' },
     CloudServerImages: { model: CloudServerImage, type: 'CloudServerImages' },
     OrderCloudServers: { model: OrderCloudServer, type: 'OrderCloudServers' },
     CloudServerRegions: { model: CloudServerRegion, type: 'CloudServerRegions' },

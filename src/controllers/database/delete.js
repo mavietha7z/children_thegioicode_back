@@ -13,6 +13,7 @@ import { Request } from '~/models/request';
 import { Invoice } from '~/models/invoice';
 import { Paygate } from '~/models/paygate';
 import { Pricing } from '~/models/pricing';
+import { Partner } from '~/models/partner';
 import { Template } from '~/models/template';
 import { Userbank } from '~/models/userbank';
 import { Localbank } from '~/models/localbank';
@@ -23,11 +24,9 @@ import { LoginHistory } from '~/models/loginHistory';
 import { Notification } from '~/models/notification';
 import { WalletHistory } from '~/models/walletHistory';
 import { OrderTemplate } from '~/models/orderTemplate';
-import { CloudServerPlan } from '~/models/cloudServerPlan';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerImage } from '~/models/cloudServerImage';
 import { CloudServerRegion } from '~/models/cloudServerRegion';
-import { CloudServerPartner } from '~/models/cloudServerPartner';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
 
 const controlDeleteAllDatabase = async (req, res) => {
@@ -39,8 +38,6 @@ const controlDeleteAllDatabase = async (req, res) => {
         await CartProduct.deleteMany({});
         await Cart.deleteMany({});
         await CloudServerImage.deleteMany({});
-        await CloudServerPartner.deleteMany({});
-        await CloudServerPlan.deleteMany({});
         await CloudServerProduct.deleteMany({});
         await CloudServerRegion.deleteMany({});
         await OrderCloudServer.deleteMany({});
@@ -52,6 +49,7 @@ const controlDeleteAllDatabase = async (req, res) => {
         await Notification.deleteMany({});
         await Order.deleteMany({});
         await OrderTemplate.deleteMany({});
+        await Partner.deleteMany({});
         await Paygate.deleteMany({});
         await Player.deleteMany({});
         await Pricing.deleteMany({});

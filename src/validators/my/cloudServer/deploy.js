@@ -1,10 +1,9 @@
 import { Pricing } from '~/models/pricing';
 import { isValidDataId } from '~/validators';
-import { CloudServerPlan } from '~/models/cloudServerPlan';
 import { CloudServerImage } from '~/models/cloudServerImage';
 import { CloudServerRegion } from '~/models/cloudServerRegion';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
-import { CloudServerPartner } from '~/models/cloudServerPartner';
+import { CloudServerPartner } from '~/models/partner';
 
 const validateDisplayName = (names) => {
     for (const name of names) {

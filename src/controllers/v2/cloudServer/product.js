@@ -1,6 +1,5 @@
 import { Pricing } from '~/models/pricing';
 import { configCreateLog } from '~/configs';
-import { CloudServerPlan } from '~/models/cloudServerPlan';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
 
 const controlV2CloudServerGetProducts = async (req, res) => {

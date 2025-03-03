@@ -6,8 +6,8 @@ import { configCreateLog } from '~/configs';
 import { isValidDataId } from '~/validators';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
-import { CloudServerPartner } from '~/models/cloudServerPartner';
-import { serviceAuthManageVPS } from '~/services/virtualizor/api';
+import { CloudServerPartner } from '~/models/partner';
+import { serviceAuthManageVPS } from '~/services/partner/cloudServer';
 import { serviceUserCreateNewInvoice } from '~/services/user/createInvoice';
 import {
     serviceCalculateUpgradeCost,

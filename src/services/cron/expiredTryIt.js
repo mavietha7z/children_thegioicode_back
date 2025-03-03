@@ -5,10 +5,10 @@ import { Wallet } from '~/models/wallet';
 import { configCreateLog, convertCurrency } from '~/configs';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { serverUserCalculateExpired } from '../user/calculate';
-import { CloudServerPartner } from '~/models/cloudServerPartner';
+import { CloudServerPartner } from '~/models/partner';
 import { serviceUserCreateNewInvoice } from '../user/createInvoice';
 import { serviceCreateNotificationUser } from '../user/notification';
-import { serviceAuthDeleteVPS, serviceAuthSuspendAndUnsuspendVPS } from '../virtualizor/api';
+import { serviceAuthDeleteVPS, serviceAuthSuspendAndUnsuspendVPS } from '../partner/cloudServer';
 
 const serviceAutoRenewOrderCloudServer = async (order) => {
     try {

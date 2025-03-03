@@ -6,7 +6,7 @@ import { configCreateLog } from '~/configs';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { serviceUserCreateNewInvoice } from '~/services/user/createInvoice';
 import { validatorUserDeployCloudServer } from '~/validators/my/cloudServer/deploy';
-import { serverAuthCheckUserVPS, serviceAuthCreateVPS } from '~/services/virtualizor/api';
+import { serverAuthCheckUserVPS, serviceAuthCreateVPS } from '~/services/partner/cloudServer';
 import { generateVncPassword, randomPasswordCloudServer } from '~/services/my/cloudServer/random';
 import { serverUserCalculateExpired, serviceCalculateTotalDiscount } from '~/services/user/calculate';
 

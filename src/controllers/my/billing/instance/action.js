@@ -3,8 +3,8 @@ import { configCreateLog } from '~/configs';
 import { isValidDataId } from '~/validators';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
-import { CloudServerPartner } from '~/models/cloudServerPartner';
-import { serviceAuthActionVPSById } from '~/services/virtualizor/api';
+import { CloudServerPartner } from '~/models/partner';
+import { serviceAuthActionVPSById } from '~/services/partner/cloudServer';
 
 const controlUserBillingActionInstance = async (req, res) => {
     try {

@@ -2,8 +2,8 @@ import moment from 'moment';
 import { configCreateLog } from '~/configs';
 import { isValidDataId } from '~/validators';
 import { OrderCloudServer } from '~/models/orderCloudServer';
-import { CloudServerPartner } from '~/models/cloudServerPartner';
-import { serviceAuthActionVPSById } from '~/services/virtualizor/api';
+import { CloudServerPartner } from '~/models/partner';
+import { serviceAuthActionVPSById } from '~/services/partner/cloudServer';
 
 const controlV2CloudServerAction = async (req, res) => {
     try {

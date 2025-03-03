@@ -2,8 +2,8 @@ import { configCreateLog } from '~/configs';
 import { isValidDataId } from '~/validators';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerImage } from '~/models/cloudServerImage';
-import { CloudServerPartner } from '~/models/cloudServerPartner';
-import { serviceAuthRebuildVPS } from '~/services/virtualizor/api';
+import { CloudServerPartner } from '~/models/partner';
+import { serviceAuthRebuildVPS } from '~/services/partner/cloudServer';
 
 const controlUserBillingRebuildInstance = async (req, res) => {
     try {

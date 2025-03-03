@@ -3,14 +3,13 @@ import { User } from '~/models/user';
 import { Pricing } from '~/models/pricing';
 import { configCreateLog } from '~/configs';
 import { isValidMongoId } from '~/validators';
-import { CloudServerPlan } from '~/models/cloudServerPlan';
+import { CloudServerPartner } from '~/models/partner';
 import { CloudServerImage } from '~/models/cloudServerImage';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerRegion } from '~/models/cloudServerRegion';
-import { CloudServerPartner } from '~/models/cloudServerPartner';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
 import { serviceUserCalculateExpiredTryIt } from '~/services/user/calculate';
-import { serverAuthCheckUserVPS, serviceAuthCreateVPS } from '~/services/virtualizor/api';
+import { serverAuthCheckUserVPS, serviceAuthCreateVPS } from '~/services/partner/cloudServer';
 import { generateVncPassword, randomPasswordCloudServer } from '~/services/my/cloudServer/random';
 
 const controlAuthCreateCloudServerOrder = async (req, res) => {

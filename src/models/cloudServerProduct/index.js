@@ -8,16 +8,16 @@ const loudServerProductSchema = new Schema({
         required: true,
         immutable: true,
     },
+    partner_id: {
+        type: Number,
+        unique: true,
+        required: true,
+    },
     plan_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'CloudServerPlan',
+        type: Number,
         required: true,
     },
     title: {
-        type: String,
-        required: true,
-    },
-    code: {
         type: String,
         required: true,
     },
@@ -86,32 +86,6 @@ const loudServerProductSchema = new Schema({
     customize: {
         type: Boolean,
         default: false,
-    },
-    customize_config: {
-        min_core: {
-            type: Number,
-            default: 1,
-        },
-        max_core: {
-            type: Number,
-            default: 16,
-        },
-        min_memory: {
-            type: Number,
-            default: 1,
-        },
-        max_memory: {
-            type: Number,
-            default: 32,
-        },
-        min_disk: {
-            type: Number,
-            default: 20,
-        },
-        max_disk: {
-            type: Number,
-            default: 240,
-        },
     },
     sold_out: {
         type: Boolean,

@@ -63,28 +63,6 @@ npm i pm2 -g
 sudo timedatectl set-timezone Asia/Ho_Chi_Minh
 ```
 
-<sub>Tải puppeteer</sub>
-
-```
-sudo apt update
-sudo apt install chromium-browser
-sudo apt install -y \
-        wget \
-        curl \
-        gnupg \
-        ca-certificates \
-        libx11-dev \
-        libx264-dev \
-        libnss3 \
-        fonts-liberation \
-        libappindicator3-1 \
-        libasound2 \
-        libxtst6 \
-        libxss1 \
-        libdbus-1-3 \
-        libgbm1
-```
-
 ### Tạo thư mục admin và cấp quyền
 
 ```
@@ -269,10 +247,6 @@ mongoimport --db netcode --collection cloudserverimages --file /var/www/netcode/
 ```
 
 ```
-mongoimport --db netcode --collection cloudserverpartners --file /var/www/netcode/back/html/cloudserverpartners.json --jsonArray
-```
-
-```
 mongoimport --db netcode --collection cloudserverplans --file /var/www/netcode/back/html/cloudserverplans.json --jsonArray
 ```
 
@@ -305,10 +279,6 @@ mongoimport --db netcode --collection memberships --file /var/www/netcode/back/h
 ```
 
 ```
-mongoimport --db netcode --collection newsfeeds --file /var/www/netcode/back/html/newsfeeds.json --jsonArray
-```
-
-```
 mongoimport --db netcode --collection notifications --file /var/www/netcode/back/html/notifications.json --jsonArray
 ```
 
@@ -326,10 +296,6 @@ mongoimport --db netcode --collection ordertemplates --file /var/www/netcode/bac
 
 ```
 mongoimport --db netcode --collection partners --file /var/www/netcode/back/html/partners.json --jsonArray
-```
-
-```
-mongoimport --db netcode --collection partnerservices --file /var/www/netcode/back/html/partnerservices.json --jsonArray
 ```
 
 ```

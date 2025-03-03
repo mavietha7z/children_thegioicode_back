@@ -1,11 +1,11 @@
+import { Partner } from '~/models/partner';
 import { configCreateLog } from '~/configs';
-import { CloudServerPartner } from '~/models/cloudServerPartner';
 
-const controlAuthDestroyCloudServerPartner = async (req, res) => {
+const controlAuthDestroyPartner = async (req, res) => {
     try {
         const { id } = req.query;
 
-        const partner = await CloudServerPartner.findByIdAndDelete(id);
+        const partner = await Partner.findByIdAndDelete(id);
         if (!partner) {
             return res.status(404).json({
                 error: 'Đối tác cần xoá không tồn tại',
@@ -17,9 +17,9 @@ const controlAuthDestroyCloudServerPartner = async (req, res) => {
             message: `Xoá đối tác #${partner.id} thành công`,
         });
     } catch (error) {
-        configCreateLog('controllers/manage/cloudServer/partner/destroy.log', 'controlAuthDestroyCloudServerPartner', error.message);
+        configCreateLog('controllers/manage/partner/destroy.log', 'controlAuthDestroyPartner', error.message);
         res.status(500).json({ error: 'Lỗi hệ thống vui lòng thử lại sau' });
     }
 };
 
-export { controlAuthDestroyCloudServerPartner };
+export { controlAuthDestroyPartner };

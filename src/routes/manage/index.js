@@ -16,6 +16,7 @@ import apikeyRouter from './apikey';
 import invoiceRouter from './invoice';
 import paygateRouter from './paygate';
 import pricingRouter from './pricing';
+import partnerRouter from './partner';
 import templateRouter from './template';
 import databaseRouter from './database';
 import userbankRouter from './userbank';
@@ -52,6 +53,8 @@ router.use('/sources', middleware.verifyAuth, sourceRouter);
 router.use('/wallets', middleware.verifyAuth, walletRouter);
 
 router.use('/coupons', middleware.verifyAuth, couponRouter);
+
+router.use('/partners', middleware.verifyAuth, partnerRouter);
 
 router.use('/pricings', middleware.verifyAuth, pricingRouter);
 

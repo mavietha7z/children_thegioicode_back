@@ -1,8 +1,8 @@
 import { configCreateLog } from '~/configs';
 import { isValidMongoId } from '~/validators';
 import { OrderCloudServer } from '~/models/orderCloudServer';
-import { CloudServerPartner } from '~/models/cloudServerPartner';
-import { serviceAuthActionVPSById, serviceAuthManageVPS } from '~/services/virtualizor/api';
+import { CloudServerPartner } from '~/models/partner';
+import { serviceAuthActionVPSById, serviceAuthManageVPS } from '~/services/partner/cloudServer';
 
 const controlAuthChangePasswordCloudServerOrder = async (req, res) => {
     try {

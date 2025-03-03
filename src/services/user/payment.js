@@ -4,8 +4,8 @@ import { CartProduct } from '~/models/cartProduct';
 import { OrderTemplate } from '~/models/orderTemplate';
 import { serverUserCalculateExpired } from './calculate';
 import { OrderCloudServer } from '~/models/orderCloudServer';
-import { CloudServerPartner } from '~/models/cloudServerPartner';
-import { serviceAuthSuspendAndUnsuspendVPS } from '../virtualizor/api';
+import { CloudServerPartner } from '~/models/partner';
+import { serviceAuthSuspendAndUnsuspendVPS } from '../partner/cloudServer';
 import { serviceUserPaymentOrderRegisterCloudServer } from '../my/order/payment/cloudServer';
 
 const serviceUserPaymentOrderOrInvoice = async (product, order, invoice) => {
