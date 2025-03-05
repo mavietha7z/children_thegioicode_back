@@ -5,7 +5,7 @@ const serviceAuthGetApikeys = (apikeys = []) => {
         const data = apikeys.map((item) => {
             const {
                 id,
-                use,
+                used,
                 status,
                 _id: key,
                 webhooks,
@@ -22,7 +22,7 @@ const serviceAuthGetApikeys = (apikeys = []) => {
             return {
                 id,
                 key,
-                use,
+                used,
                 user,
                 apikey,
                 status,

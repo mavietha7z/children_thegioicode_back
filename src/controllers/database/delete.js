@@ -1,3 +1,5 @@
+import { configCreateLog } from '~/configs';
+
 import { Api } from '~/models/api';
 import { App } from '~/models/app';
 import { Cart } from '~/models/cart';
@@ -68,6 +70,7 @@ const controlDeleteAllDatabase = async (req, res) => {
             message: 'Xóa dữ liệu databases thành công',
         });
     } catch (error) {
+        configCreateLog('controllers/database/delete.log', 'controlDeleteAllDatabase', error.message);
         res.status(500).json({ error: 'Lỗi hệ thống vui lòng thử lại sau' });
     }
 };

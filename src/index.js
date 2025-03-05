@@ -10,6 +10,7 @@ import { configViewEngine } from './configs';
 import { startIntervalTasks } from './cron/intervalTasks';
 import { startScheduleTasks } from './cron/scheduleTasks';
 import { controlDeleteAllDatabase } from './controllers/database/delete';
+import { controlAuthInitializeDatabase } from './controllers/database/create';
 
 import v2Router from './routes/v2';
 import myRouter from './routes/my';
@@ -60,6 +61,8 @@ configViewEngine(app);
 // Connect database
 connect('mongodb://127.0.0.1:27017/netcode')
     .then(async () => {
+        await controlAuthInitializeDatabase();
+
         console.log('Connecting to database successfully');
     })
     .catch((err) => {

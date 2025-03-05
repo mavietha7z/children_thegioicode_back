@@ -46,7 +46,7 @@ const apikeySchema = new Schema({
         type: String,
         required: true,
     },
-    use: {
+    used: {
         type: Number,
         default: 0,
     },

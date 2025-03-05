@@ -11,7 +11,7 @@ const controlUserGetApiKeys = async (req, res) => {
                 const checkApi = await Api.findOne({ category: apiKey.category }).select('title');
 
                 return {
-                    use: apiKey.use,
+                    used: apiKey.used,
                     api_key: apiKey.key,
                     status: apiKey.status,
                     category: checkApi.title,

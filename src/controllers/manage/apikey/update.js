@@ -23,13 +23,13 @@ const controlAuthUpdateApikey = async (req, res) => {
             message = 'Bật/Tắt trạng thái apikey thành công';
         }
         if (type === 'info') {
-            const { free_usage, use } = req.body;
+            const { free_usage, used } = req.body;
 
+            apikey.used = used;
             apikey.free_usage = free_usage;
-            apikey.use = use;
 
             data = {
-                use,
+                used,
                 free_usage,
                 id: apikey.id,
                 key: apikey._id,
