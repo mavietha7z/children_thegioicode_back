@@ -33,7 +33,7 @@ const controlGetApisRequests = async (req, res) => {
         const { type, id, service_id } = req.query;
 
         if (type === 'detail' && isValidMongoId(id)) {
-            const data = await Request.findById(id).select('-_id headers params query body proxy response');
+            const data = await Request.findById(id).select('-_id headers params query body response');
 
             return res.status(200).json({
                 status: 200,

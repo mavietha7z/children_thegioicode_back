@@ -32,24 +32,6 @@ const controlAuthInitializeDatabase = async (req, res) => {
             const salt = await bcrypt.genSalt(10);
             const hashed = await bcrypt.hash(infoAuth.password, salt);
 
-            const notification_configs = [
-                {
-                    name: 'Email',
-                    is_active: false,
-                    secret_code: null,
-                },
-                {
-                    name: 'Telegram',
-                    is_active: false,
-                    secret_code: null,
-                },
-                {
-                    name: 'Web',
-                    is_active: true,
-                    secret_code: null,
-                },
-            ];
-
             const memberships = await Membership.find({}).sort({ achieve_point: 1 }).limit(2);
             if (memberships.length < 2) {
                 return;
@@ -70,7 +52,6 @@ const controlAuthInitializeDatabase = async (req, res) => {
                 first_name: infoAuth.first_name,
                 password: hashed,
                 email_verified: true,
-                notification_configs,
                 register_type: 'email',
                 admin: infoAuth.admin,
             }).save();

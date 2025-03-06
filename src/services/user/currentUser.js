@@ -25,17 +25,8 @@ const serviceGetCurrentUser = async (user) => {
             last_login_at,
             phone_verified,
             email_verified,
-            account_configs,
             two_factor_auth,
-            notification_configs,
         } = user;
-
-        const notifications = notification_configs.map((notification) => {
-            return {
-                name: notification.name,
-                is_active: notification.is_active,
-            };
-        });
 
         const cart_count = await CartProduct.countDocuments({ user_id, status: 'pending' });
         const notificationCount = await Notification.countDocuments({ user_id, service: 'Web', unread: true });
@@ -66,11 +57,9 @@ const serviceGetCurrentUser = async (user) => {
             avatar_url,
             cart_count,
             phone_number,
-            notifications,
             register_type,
             phone_verified,
             email_verified,
-            account_configs,
             notification_count: notificationCount,
             two_factor_auth: two_factor_auth.is_active,
             date_joined: moment(created_at).format('DD/MM/YYYY HH:mm'),

@@ -97,23 +97,6 @@ const userSchema = new Schema({
         type: String,
         default: '',
     },
-    notification_configs: [
-        {
-            _id: false,
-            name: {
-                type: String,
-                required: true,
-            },
-            is_active: {
-                type: Boolean,
-                default: false,
-            },
-            secret_code: {
-                type: String,
-                default: null,
-            },
-        },
-    ],
     two_factor_auth: {
         name: {
             type: String,
@@ -127,18 +110,6 @@ const userSchema = new Schema({
         secret_code: {
             type: String,
             default: null,
-        },
-    },
-    account_configs: {
-        language: {
-            type: String,
-            enum: ['vi', 'en'],
-            default: 'vi',
-        },
-        mode: {
-            type: String,
-            enum: ['dark', 'light'],
-            default: 'light',
         },
     },
     location: {

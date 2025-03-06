@@ -8,22 +8,26 @@ import { serviceCreateNotificationUser } from '~/services/user/notification';
 
 const controlCallbackRecharge = async (req, res) => {
     try {
-        const { status, data } = req.body;
+        const { error, data } = req.body;
 
         const token = req.headers['secure-token'];
-        if (!token || token !== '@ha2cm#2004') {
+        if (!token) {
             return res.status(401).json({
                 error: 'error_require_token',
             });
         }
-
-        if (!status || status !== 200) {
+        if (typeof error !== 'number' || error !== 0) {
             return res.status(400).json({
-                error: `request_failed_status_${status || 400}`,
+                error: `request_failed_status_${error || 400}`,
+            });
+        }
+        if (!data[0]) {
+            return res.status(400).json({
+                error: 'Dữ liệu yêu cầu không hợp lệ',
             });
         }
 
-        const { amount, description, localbank_interbank_code } = data;
+        const { amount, description } = data[0];
 
         const paygate = await Paygate.findOne({ callback_code: 'bank_transfer', status: true })
             .select('name service callback_code bonus_point minimum_payment maximum_payment promotion status options')
@@ -55,7 +59,7 @@ const controlCallbackRecharge = async (req, res) => {
 
         let optionPaygate = null;
         for (let option of paygate.options) {
-            if (option.userbank_id.localbank_id.interbank_code === localbank_interbank_code && option.userbank_id.localbank_id.status) {
+            if (option.userbank_id.localbank_id.interbank_code === token && option.userbank_id.localbank_id.status) {
                 optionPaygate = option;
                 break;
             }
@@ -110,6 +114,7 @@ const controlCallbackRecharge = async (req, res) => {
                 },
             ],
             [],
+            0,
             amountAfterPromotion,
             amountAfterPromotion,
             'bank_transfer',

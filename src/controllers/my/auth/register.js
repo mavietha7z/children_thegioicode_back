@@ -84,24 +84,6 @@ const controlUserRegisterAccount = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashed = await bcrypt.hash(password, salt);
 
-        const notification_configs = [
-            {
-                name: 'Email',
-                is_active: false,
-                secret_code: null,
-            },
-            {
-                name: 'Telegram',
-                is_active: false,
-                secret_code: null,
-            },
-            {
-                name: 'Web',
-                is_active: true,
-                secret_code: null,
-            },
-        ];
-
         const memberships = await Membership.find({}).sort({ achieve_point: 1 }).limit(2);
         const membership = {
             current: memberships[0]._id,
@@ -118,7 +100,6 @@ const controlUserRegisterAccount = async (req, res) => {
             role: ['user'],
             password: hashed,
             status: 'activated',
-            notification_configs,
             email_verified: true,
         }).save();
 
