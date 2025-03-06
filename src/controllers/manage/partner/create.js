@@ -3,7 +3,7 @@ import { configCreateLog } from '~/configs';
 
 const controlAuthCreatePartner = async (req, res) => {
     try {
-        const { name, url, token, difference_public_api, difference_cloud_server } = req.body;
+        const { name, url, token } = req.body;
 
         const isPartner = await Partner.findOne({});
         if (isPartner) {
@@ -14,8 +14,6 @@ const controlAuthCreatePartner = async (req, res) => {
             url,
             name,
             token,
-            difference_public_api,
-            difference_cloud_server,
         }).save();
 
         const data = {
@@ -24,8 +22,6 @@ const controlAuthCreatePartner = async (req, res) => {
             token,
             id: newPartner.id,
             key: newPartner._id,
-            difference_public_api,
-            difference_cloud_server,
             status: newPartner.status,
             created_at: newPartner.created_at,
             updated_at: newPartner.updated_at,

@@ -20,14 +20,6 @@ const partnerSchema = new Schema({
         type: String,
         required: true,
     },
-    difference_cloud_server: {
-        type: Number,
-        default: 0,
-    },
-    difference_public_api: {
-        type: Number,
-        default: 0,
-    },
     status: {
         type: Boolean,
         default: true,

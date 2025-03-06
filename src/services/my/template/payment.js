@@ -10,14 +10,14 @@ const serviceUserAddDomainToCloudflare = async (domain) => {
             {
                 name: domain,
                 account: {
-                    id: 'dd6f3843133126942445ba18e0c5976d',
+                    id: 'bd318f60895b68af24c997f9fabaa4a5',
                 },
                 jump_start: true,
             },
             {
                 headers: {
-                    'X-Auth-Email': 'chuh83571@gmail.com',
-                    'X-Auth-Key': 'f75d38a042c073d8be1e30c4dbe04b3a92eb4',
+                    'X-Auth-Email': 'zhoangtech@gmail.com',
+                    'X-Auth-Key': 'b6dc29d42a6a9964502f05af5bff02411a3b4',
                     'Content-Type': 'application/json',
                 },
             },
@@ -44,8 +44,8 @@ const serviceUserCheckDomainStatusOnCloudflare = async (zoneId) => {
     try {
         const response = await axios.get(`https://api.cloudflare.com/client/v4/zones/${zoneId}`, {
             headers: {
-                'X-Auth-Email': 'chuh83571@gmail.com',
-                'X-Auth-Key': 'f75d38a042c073d8be1e30c4dbe04b3a92eb4',
+                'X-Auth-Email': 'zhoangtech@gmail.com',
+                'X-Auth-Key': 'b6dc29d42a6a9964502f05af5bff02411a3b4',
                 'Content-Type': 'application/json',
             },
         });
@@ -76,8 +76,8 @@ const serviceAuthRemoveDomainFromCloudflare = async (zoneId) => {
     try {
         const response = await axios.delete(`https://api.cloudflare.com/client/v4/zones/${zoneId}`, {
             headers: {
-                'X-Auth-Email': 'chuh83571@gmail.com',
-                'X-Auth-Key': 'f75d38a042c073d8be1e30c4dbe04b3a92eb4',
+                'X-Auth-Email': 'zhoangtech@gmail.com',
+                'X-Auth-Key': 'b6dc29d42a6a9964502f05af5bff02411a3b4',
                 'Content-Type': 'application/json',
             },
         });

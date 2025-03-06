@@ -6,18 +6,7 @@ const controlAuthGetPartners = async (req, res) => {
         const partners = await Partner.find({}).sort({ created_at: -1 });
 
         const data = partners.map((partner) => {
-            const {
-                id,
-                url,
-                name,
-                token,
-                status,
-                _id: key,
-                created_at,
-                updated_at,
-                difference_public_api,
-                difference_cloud_server,
-            } = partner;
+            const { id, url, name, token, status, _id: key, created_at, updated_at } = partner;
 
             return {
                 id,
@@ -28,8 +17,6 @@ const controlAuthGetPartners = async (req, res) => {
                 status,
                 created_at,
                 updated_at,
-                difference_public_api,
-                difference_cloud_server,
             };
         });
 

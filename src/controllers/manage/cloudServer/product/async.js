@@ -33,8 +33,6 @@ const controlAuthAsyncCloudServerProduct = async (req, res) => {
                 for (let l = 0; l < result.data.length; l++) {
                     const product = result.data[l];
 
-                    const partner = await Partner.findOne({}).select('difference_cloud_server');
-
                     const isProduct = await CloudServerProduct.findOne({ partner_id: product.id });
                     if (!isProduct) {
                         const newProduct = await new CloudServerProduct({
@@ -71,7 +69,7 @@ const controlAuthAsyncCloudServerProduct = async (req, res) => {
                                 display_name: pricing.cycles.display_name,
                             });
                             if (cycles) {
-                                const price = (pricing.price += partner.difference_cloud_server);
+                                const price = Math.round(pricing.price / (1 - pricing.discount / 100));
 
                                 await new Pricing({
                                     service_id: newProduct._id,
@@ -79,7 +77,7 @@ const controlAuthAsyncCloudServerProduct = async (req, res) => {
                                     cycles_id: cycles._id,
                                     original_price: pricing.price,
                                     price,
-                                    discount: 0,
+                                    discount: pricing.discount,
                                     creation_fee: 0,
                                     penalty_fee: 0,
                                     renewal_fee: 0,
@@ -124,14 +122,15 @@ const controlAuthAsyncCloudServerProduct = async (req, res) => {
                                 display_name: pricing.cycles.display_name,
                             });
                             if (cycles) {
-                                const price = (pricing.price += partner.difference_cloud_server);
+                                const price = Math.round(pricing.price / (1 - pricing.discount / 100));
 
                                 const currentPricing = await Pricing.findOne({ service_id: isProduct._id, cycles_id: cycles._id });
 
                                 if (currentPricing) {
-                                    currentPricing.original_price = pricing.price;
                                     currentPricing.price = price;
                                     currentPricing.cycles_id = cycles._id;
+                                    currentPricing.discount = pricing.discount;
+                                    currentPricing.original_price = pricing.price;
                                     await currentPricing.save();
                                 }
                             }

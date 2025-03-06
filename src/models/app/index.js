@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { generateRandomNumber, configProcessImageUrlDatabase } from '~/configs';
+import { generateRandomNumber } from '~/configs';
 
 const appSchema = new Schema({
     id: {
@@ -22,17 +22,14 @@ const appSchema = new Schema({
     favicon_url: {
         type: String,
         default: '',
-        set: configProcessImageUrlDatabase,
     },
     website_logo_url: {
         type: String,
         default: '',
-        set: configProcessImageUrlDatabase,
     },
     backend_logo_url: {
         type: String,
         default: '',
-        set: configProcessImageUrlDatabase,
     },
     sendmail_config: {
         partner: {

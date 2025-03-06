@@ -18,7 +18,6 @@ import paygateRouter from './paygate';
 import pricingRouter from './pricing';
 import partnerRouter from './partner';
 import templateRouter from './template';
-import databaseRouter from './database';
 import userbankRouter from './userbank';
 import localbankRouter from './localbank';
 import bonusPointRouter from './bonusPoint';
@@ -63,8 +62,6 @@ router.use('/invoices', middleware.verifyAuth, invoiceRouter);
 router.use('/paygates', middleware.verifyAuth, paygateRouter);
 
 router.use('/templates', middleware.verifyAuth, templateRouter);
-
-router.use('/databases', middleware.verifyAuth, databaseRouter);
 
 router.use('/userbanks', middleware.verifyAuth, userbankRouter);
 

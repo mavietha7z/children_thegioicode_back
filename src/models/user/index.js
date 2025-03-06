@@ -66,7 +66,7 @@ const userSchema = new Schema({
     status: {
         type: String,
         enum: ['activated', 'inactivated', 'blocked'],
-        required: true,
+        default: 'activated',
     },
     membership: {
         current: {

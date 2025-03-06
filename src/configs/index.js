@@ -48,19 +48,6 @@ export const convertCurrency = (number) => {
     return check ? amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'đ' : 'Null';
 };
 
-// Hàm để xử lý URL database
-export function configProcessImageUrlDatabase(imageName) {
-    if (!imageName) {
-        return '';
-    }
-
-    if (imageName.startsWith('http')) {
-        return imageName;
-    } else {
-        return `http://localhost:8080/images/${imageName}`;
-    }
-}
-
 // Ghi log
 export const configCreateLog = (fileName, func, message) => {
     // Đường dẫn đầy đủ đến tập tin log

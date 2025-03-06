@@ -20,13 +20,11 @@ const controlAuthUpdatePartner = async (req, res) => {
         }
 
         if (type === 'info') {
-            const { name, url, token, difference_public_api, difference_cloud_server } = req.body;
+            const { name, url, token } = req.body;
 
             partner.url = url;
             partner.name = name;
             partner.token = token;
-            partner.difference_public_api = difference_public_api;
-            partner.difference_cloud_server = difference_cloud_server;
 
             data = {
                 url,
@@ -34,9 +32,7 @@ const controlAuthUpdatePartner = async (req, res) => {
                 token,
                 key: id,
                 id: partner.id,
-                difference_public_api,
                 status: partner.status,
-                difference_cloud_server,
                 created_at: partner.created_at,
                 updated_at: partner.updated_at,
             };

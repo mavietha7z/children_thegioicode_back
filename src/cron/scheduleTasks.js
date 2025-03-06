@@ -2,7 +2,6 @@ import { scheduleJob } from 'node-schedule';
 
 import { serviceCronPlayers } from '~/services/cron/player';
 import { serviceCronRequests } from '~/services/cron/request';
-import { serviceCronBackupDatabase } from '~/services/cron/database';
 import { serviceCronLoginHistory } from '~/services/cron/loginHistory';
 import { serviceCronNotification } from '~/services/cron/notification';
 import { serviceCronWalletHistory } from '~/services/cron/walletHistory';
@@ -37,11 +36,5 @@ export const startScheduleTasks = () => {
 
         // Notification
         await serviceCronNotification();
-    });
-
-    // Tác vụ chạy lúc 00:20:00 mỗi ngày
-    scheduleJob('20 0 * * *', async () => {
-        // Backup database
-        await serviceCronBackupDatabase();
     });
 };
