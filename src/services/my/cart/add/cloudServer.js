@@ -16,11 +16,6 @@ const serviceUserAddCloudServerToCart = async (user, body, validate) => {
             };
         }
 
-        let partner_service_id = null;
-        if (result.data.service) {
-            partner_service_id = result.data.service._id;
-        }
-
         const cart = await Cart.findOne({ user_id: user.id, status: true }).populate({
             path: 'user_id',
             select: 'id email full_name',
@@ -46,7 +41,6 @@ const serviceUserAddCloudServerToCart = async (user, body, validate) => {
                 product_type: 'CloudServerProduct',
                 pricing_id: pricing._id,
                 quantity: 1,
-                partner_service_id,
                 partner_id: partner._id,
                 plan_id: plan._id,
                 region_id: region._id,

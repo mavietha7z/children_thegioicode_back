@@ -52,11 +52,6 @@ const cartProductSchema = new Schema({
         max: 100,
         required: true,
     },
-    partner_service_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'PartnerService',
-        default: null,
-    },
     coupon_id: {
         type: Schema.Types.ObjectId,
         ref: 'Coupon',

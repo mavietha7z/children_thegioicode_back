@@ -18,7 +18,6 @@ const controlUserGetCart = async (req, res) => {
                 select: 'id service_id price discount bonus_point cycles_id',
                 populate: { path: 'cycles_id', select: 'id unit value display_name' },
             })
-            .populate({ path: 'partner_service_id', select: 'id discount_rules service_register' })
             .populate({ path: 'coupon_id', select: 'id code discount_type discount_value description' })
             .sort({ created_at: -1 });
 
@@ -53,13 +52,6 @@ const controlUserGetCart = async (req, res) => {
 
                 // Áp dụng chiết khấu đối tác
                 let partner_discount = 0;
-                if (product.partner_service_id) {
-                    partner_discount = configGetDiscountRulePartner(
-                        product.partner_service_id.service_register,
-                        product.partner_service_id.discount_rules,
-                    );
-                    product_price -= (product_price * partner_discount) / 100;
-                }
 
                 // Áp dụng mã giảm giá
                 if (product.coupon_id) {
@@ -95,14 +87,6 @@ const controlUserGetCart = async (req, res) => {
                         },
                     },
                 };
-
-                if (product.partner_service_id) {
-                    data.partner_service = {
-                        discount: partner_discount,
-                        id: product.partner_service_id.id,
-                        service_register: product.partner_service_id.service_register,
-                    };
-                }
 
                 if (product.coupon_id) {
                     const coupon = {

@@ -43,10 +43,6 @@ const sourceSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    published: {
-        type: Boolean,
-        default: false,
-    },
     view_count: {
         type: Number,
         default: 0,

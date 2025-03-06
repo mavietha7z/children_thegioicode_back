@@ -31,14 +31,21 @@ const controlAuthCreateTemplate = async (req, res) => {
         const data = {
             title,
             version,
+            modules,
+            slug_url,
+            demo_url,
+            priority,
             image_url,
+            pricing: 0,
             view_count,
+            image_meta,
+            description,
             create_count,
             id: newTemplate.id,
             key: newTemplate._id,
+            created_at: Date.now(),
+            updated_at: Date.now(),
             status: newTemplate.status,
-            created_at: newTemplate.created_at,
-            updated_at: newTemplate.updated_at,
         };
 
         res.status(200).json({

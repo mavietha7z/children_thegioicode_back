@@ -5,19 +5,9 @@ import { serviceAuthGetSources } from '~/services/manage/source/get';
 
 const controlAuthGetSources = async (req, res) => {
     try {
-        const { type, id } = req.query;
-
-        if (!['published', 'unpublished'].includes(type)) {
-            return res.status(400).json({ error: 'Tham số truy vấn không hợp lệ' });
-        }
+        const { id } = req.query;
 
         let objectSearch = {};
-        if (type === 'published') {
-            objectSearch = { published: true };
-        }
-        if (type === 'unpublished') {
-            objectSearch = { published: false };
-        }
         if (isValidMongoId(id)) {
             objectSearch._id = id;
         }

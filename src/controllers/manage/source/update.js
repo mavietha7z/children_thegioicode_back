@@ -21,13 +21,7 @@ const controlAuthUpdateSource = async (req, res) => {
             data = true;
             message = 'Bật/Tắt trạng thái mã nguồn thành công';
         }
-        if (type === 'published') {
-            source.status = false;
-            source.published = !source.published;
 
-            data = true;
-            message = 'Bật/Tắt trạng thái xuất bản thành công';
-        }
         if (type === 'info') {
             const {
                 title,
@@ -78,7 +72,6 @@ const controlAuthUpdateSource = async (req, res) => {
                 status: source.status,
                 updated_at: Date.now(),
                 category: source.category,
-                published: source.published,
                 languages: source.languages,
             };
             message = `Cập nhật mã nguồn ${source.id} thành công`;

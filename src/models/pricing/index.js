@@ -10,7 +10,6 @@ const pricingSchema = new Schema({
     },
     partner_id: {
         type: Number,
-        unique: true,
         default: null,
     },
     service_id: {

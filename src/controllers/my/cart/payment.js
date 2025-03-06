@@ -18,7 +18,6 @@ const controlUserPaymentCart = async (req, res) => {
                 path: 'pricing_id',
                 populate: { path: 'cycles_id' },
             })
-            .populate({ path: 'partner_service_id', select: 'id discount_rules service_register' })
             .populate({ path: 'coupon_id', select: 'id code discount_type discount_value description' })
             .sort({ created_at: -1 });
 
@@ -32,13 +31,6 @@ const controlUserPaymentCart = async (req, res) => {
 
         for (const product of products) {
             let partnerDiscount = 0;
-
-            if (product.partner_service_id) {
-                partnerDiscount = configGetDiscountRulePartner(
-                    product.partner_service_id.service_register,
-                    product.partner_service_id.discount_rules,
-                );
-            }
 
             // Áp dụng partnerDiscount trước
             const priceAfterPartnerDiscount = product.pricing_id.price * (1 - partnerDiscount / 100);

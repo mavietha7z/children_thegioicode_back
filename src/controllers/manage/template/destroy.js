@@ -30,25 +30,25 @@ const controlAuthDestroyOrderTemplate = async (req, res) => {
     try {
         const { id } = req.query;
 
-        const orderTemplate = await OrderTemplate.findById(id);
-        if (!orderTemplate) {
+        const order = await OrderTemplate.findById(id);
+        if (!order) {
             return res.status(404).json({ error: 'Đơn tạo website không tồn tại' });
         }
 
         const currentTime = new Date();
-        const expirationTime = new Date(orderTemplate.expired_at);
+        const expirationTime = new Date(order.expired_at);
 
         if (currentTime < expirationTime) {
             return res.status(400).json({ error: 'Thời gian sử dụng chưa hết không thể xoá' });
         }
 
-        await serviceAuthRemoveDomainFromCloudflare(orderTemplate.cloudflare.id);
+        await serviceAuthRemoveDomainFromCloudflare(order.cloudflare.id);
 
-        await orderTemplate.deleteOne();
+        await order.deleteOne();
 
         res.status(200).json({
             status: 200,
-            message: `Xoá đơn tạo website #${orderTemplate.id} thành công`,
+            message: `Xoá đơn tạo website #${order.id} thành công`,
         });
     } catch (error) {
         configCreateLog('controllers/manage/template/destroy.log', 'controlAuthDestroyOrderTemplate', error.message);

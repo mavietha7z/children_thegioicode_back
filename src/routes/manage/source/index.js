@@ -1,7 +1,6 @@
 import express from 'express';
 
 import { controlAuthGetSources } from '~/controllers/manage/source/get';
-import { controlAuthSearchSource } from '~/controllers/manage/source/search';
 import { controlAuthCreateSource } from '~/controllers/manage/source/create';
 import { controlAuthUpdateSource } from '~/controllers/manage/source/update';
 import { controlAuthDestroySource } from '~/controllers/manage/source/destroy';
@@ -11,8 +10,6 @@ import { validatorAuthCreateSource } from '~/validators/manage/source/create';
 import { validatorAuthUpdateSource } from '~/validators/manage/source/update';
 
 const router = express.Router();
-
-router.get('/search', controlAuthSearchSource);
 
 router.get('/', validatorCheckPages, controlAuthGetSources);
 

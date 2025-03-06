@@ -14,11 +14,11 @@ const controlUserGetSources = async (req, res) => {
 
         const pageSize = 20;
         const skip = (req.page - 1) * pageSize;
-        const count = await Source.countDocuments({ status: true, published: true });
+        const count = await Source.countDocuments({ status: true });
         const pages = Math.ceil(count / pageSize);
 
-        const sources = await Source.find({ status: true, published: true })
-            .select('id title status published version slug_url image_url view_count created_at purchase_count')
+        const sources = await Source.find({ status: true })
+            .select('id title status version slug_url image_url view_count created_at purchase_count')
             .skip(skip)
             .limit(pageSize)
             .sort({ priority: 1 });
@@ -91,7 +91,7 @@ const controlUserGetSourceBySlug = async (req, res) => {
             });
         }
 
-        const source = await Source.findOne({ status: true, published: true, slug_url });
+        const source = await Source.findOne({ status: true, slug_url });
         if (!source) {
             return res.status(404).json({
                 error: 'Mã nguồn cần tìm không tồn tại',

@@ -30,7 +30,6 @@ const controlAuthCreateSource = async (req, res) => {
             view_count,
             description,
             purchase_count,
-            published: true,
             user_id: req.user.id,
         }).save();
 
@@ -46,7 +45,6 @@ const controlAuthCreateSource = async (req, res) => {
             view_count,
             pricing: 0,
             purchase_count,
-            published: true,
             key: newSource._id,
             status: newSource.status,
             created_at: newSource.created_at,

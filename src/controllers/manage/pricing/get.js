@@ -1,7 +1,4 @@
-import { Cycles } from '~/models/cycles';
-import { Source } from '~/models/source';
 import { Pricing } from '~/models/pricing';
-import { Template } from '~/models/template';
 import { configCreateLog } from '~/configs';
 import { isValidMongoId } from '~/validators';
 
@@ -84,56 +81,4 @@ const controlAuthGetPricings = async (req, res) => {
     }
 };
 
-const controlAuthSearchPricing = async (req, res) => {
-    try {
-        const { type, keyword } = req.query;
-
-        if (!['service', 'cycles'].includes(type)) {
-            return res.status(400).json({ error: 'Tham số truy vấn không hợp lệ' });
-        }
-
-        let data = [];
-        if (type === 'service') {
-            const [templates, sources] = await Promise.all([
-                Template.find({
-                    title: { $regex: keyword, $options: 'i' },
-                }),
-                Source.find({
-                    title: { $regex: keyword, $options: 'i' },
-                }),
-            ]);
-
-            const combinedResults = [...templates, ...sources];
-
-            data = combinedResults.map((result) => {
-                return {
-                    id: result._id,
-                    title: result.title,
-                };
-            });
-        }
-
-        if (type === 'cycles') {
-            const cycles = await Cycles.find({
-                display_name: { $regex: keyword, $options: 'i' },
-            });
-
-            data = cycles.map((cycle) => {
-                return {
-                    id: cycle._id,
-                    title: cycle.display_name,
-                };
-            });
-        }
-
-        res.status(200).json({
-            data,
-            status: 200,
-        });
-    } catch (error) {
-        configCreateLog('controllers/manage/pricing/get.log', 'controlAuthSearchPricing', error.message);
-        res.status(500).json({ error: 'Lỗi hệ thống vui lòng thử lại sau' });
-    }
-};
-
-export { controlAuthGetPricings, controlAuthSearchPricing };
+export { controlAuthGetPricings };

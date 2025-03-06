@@ -49,7 +49,6 @@ const controlUserApplyCoupon = async (req, res) => {
                 select: 'id service_id price discount bonus_point cycles_id',
                 populate: { path: 'cycles_id', select: 'id unit value display_name' },
             })
-            .populate({ path: 'partner_service_id' })
             .sort({ created_at: -1 });
 
         let appliedProducts = [];

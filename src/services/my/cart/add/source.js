@@ -6,7 +6,7 @@ import { CartProduct } from '~/models/cartProduct';
 
 const serviceUserAddSourceToCart = async (user, id) => {
     try {
-        const source = await Source.findOne({ id, status: true, published: true });
+        const source = await Source.findOne({ id, status: true });
         if (!source) {
             return {
                 status: 404,

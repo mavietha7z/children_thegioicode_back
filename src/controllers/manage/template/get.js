@@ -1,3 +1,4 @@
+import { Pricing } from '~/models/pricing';
 import { configCreateLog } from '~/configs';
 import { Template } from '~/models/template';
 import { isValidMongoId } from '~/validators';
@@ -19,45 +20,50 @@ const controlAuthGetTemplates = async (req, res) => {
 
         const templates = await Template.find(objectQuery).skip(skip).limit(pageSize).sort({ priority: 1 });
 
-        const data = templates.map((template) => {
-            const {
-                id,
-                title,
-                status,
-                version,
-                _id: key,
-                image_url,
-                view_count,
-                updated_at,
-                created_at,
-                create_count,
-                slug_url,
-                description,
-                priority,
-                image_meta,
-                modules,
-                demo_url,
-            } = template;
+        const data = await Promise.all(
+            templates.map(async (template) => {
+                const {
+                    id,
+                    title,
+                    status,
+                    version,
+                    modules,
+                    _id: key,
+                    slug_url,
+                    priority,
+                    demo_url,
+                    image_url,
+                    view_count,
+                    updated_at,
+                    created_at,
+                    image_meta,
+                    description,
+                    create_count,
+                } = template;
 
-            return {
-                id,
-                key,
-                title,
-                status,
-                version,
-                image_url,
-                view_count,
-                created_at,
-                updated_at,
-                create_count,
-                slug_url,
-                description,
-                priority,
-                image_meta,
-                modules,
-                demo_url,
-            };
-        });
+                const pricing = await Pricing.countDocuments({ service_id: key, service_type: 'Template' });
+
+                return {
+                    id,
+                    key,
+                    title,
+                    status,
+                    version,
+                    modules,
+                    pricing,
+                    slug_url,
+                    demo_url,
+                    priority,
+                    image_url,
+                    view_count,
+                    created_at,
+                    updated_at,
+                    image_meta,
+                    description,
+                    create_count,
+                };
+            }),
+        );
 
         res.status(200).json({
             data,

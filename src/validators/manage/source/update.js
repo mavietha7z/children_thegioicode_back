@@ -13,27 +13,27 @@ const validatorAuthUpdateSource = async (req, res, next) => {
     const { slug_url } = req.body;
     const { id, type } = req.query;
 
-    if (!['published', 'status', 'info'].includes(type)) {
+    if (!['status', 'info'].includes(type)) {
         return res.status(400).json({
             error: 'Tham số truy vấn không hợp lệ',
         });
     }
 
-    if (['published', 'status'].includes(type)) {
+    if (['status'].includes(type)) {
         return next();
     }
 
     validatorAuthCreateSource(req, res, async () => {
         if (!slug_url || !isValidSlug(slug_url)) {
             return res.status(400).json({
-                error: 'Đường dẫn seo không hợp lệ',
+                error: 'Đường dẫn SEO không hợp lệ',
             });
         }
 
         const isSlug = await Source.findOne({ slug_url, _id: { $ne: id } });
         if (isSlug) {
             return res.status(400).json({
-                error: 'Đường dẫn seo đã tồn tại',
+                error: 'Đường dẫn SEO đã tồn tại',
             });
         }
 

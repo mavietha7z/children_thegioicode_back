@@ -25,9 +25,17 @@ const controlUserGetTemplates = async (req, res) => {
                     })
                     .sort({ price: 1 });
 
+                if (!pricingLowest) {
+                    return null;
+                }
+
                 const pricingPromotion = await Pricing.findOne({ status: true, service_id: template._id })
                     .select('discount')
                     .sort({ discount: -1 });
+
+                if (!pricingPromotion) {
+                    return null;
+                }
 
                 return {
                     id: template.id,

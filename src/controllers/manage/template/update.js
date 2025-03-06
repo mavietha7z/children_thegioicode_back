@@ -1,3 +1,4 @@
+import { Pricing } from '~/models/pricing';
 import { configCreateLog } from '~/configs';
 import { Template } from '~/models/template';
 import { OrderTemplate } from '~/models/orderTemplate';
@@ -36,15 +37,24 @@ const controlAuthUpdateTemplate = async (req, res) => {
             template.description = description;
             template.create_count = create_count;
 
+            const pricing = await Pricing.countDocuments({ service_id: id, service_type: 'Template' });
+
             message = `Cập nhật template #${template.id} thành công`;
             data = {
                 title,
+                key: id,
                 version,
+                modules,
+                pricing,
+                slug_url,
+                demo_url,
+                priority,
                 image_url,
                 view_count,
+                image_meta,
+                description,
                 create_count,
                 id: template.id,
-                key: template._id,
                 updated_at: Date.now(),
                 status: template.status,
                 created_at: template.created_at,

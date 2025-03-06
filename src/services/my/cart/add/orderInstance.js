@@ -16,11 +16,6 @@ const serviceUserAddOrderInstanceToCart = async (user, id) => {
             };
         }
 
-        let partner_service_id = null;
-        if (result.data.service) {
-            partner_service_id = result.data.service._id;
-        }
-
         const order = await OrderCloudServer.findOne({ id });
         if (!order) {
             return {
@@ -78,7 +73,6 @@ const serviceUserAddOrderInstanceToCart = async (user, id) => {
                 product_type: 'OrderCloudServer',
                 pricing_id: pricing._id,
                 quantity: 1,
-                partner_service_id,
                 status: 'pending',
             }).save();
         }
