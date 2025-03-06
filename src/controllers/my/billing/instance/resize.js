@@ -5,8 +5,6 @@ import { configCreateLog } from '~/configs';
 import { isValidDataId } from '~/validators';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
-import { CloudServerPartner } from '~/models/partner';
-import { serviceAuthManageVPS } from '~/services/partner/cloudServer';
 import { serviceUserCreateNewInvoice } from '~/services/user/createInvoice';
 import {
     serviceCalculateUpgradeCost,
@@ -90,11 +88,6 @@ const controlUserBillingResizeInstance = async (req, res) => {
             });
         }
 
-        const partner = await CloudServerPartner.findOne({}).select('url key password');
-        if (!partner) {
-            return res.status(500).json({ error: 'Máy chủ đang bảo trì hoặc không hoạt động' });
-        }
-
         const wallet = await Wallet.findOne({ user_id: req.user.id, status: 'activated' }).select('total_balance');
         if (!wallet) {
             return res.status(400).json({ error: 'Ví của bạn không tồn tại hoặc đã bị khoá' });
@@ -123,7 +116,7 @@ const controlUserBillingResizeInstance = async (req, res) => {
             plid: newProduct.code,
         };
 
-        serviceAuthManageVPS(partner.url, partner.key, partner.password, instance.order_info.order_id, data);
+        // serviceAuthManageVPS(partner.url, partner.key, partner.password, instance.order_info.order_id, data);
 
         // Thời gian sử dụng cho gói nâng cấp (Tháng)
         const remainingRatio = serviceCalculateRemainingRatio(remainingDays, daysInMonth);

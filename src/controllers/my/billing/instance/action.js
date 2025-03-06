@@ -3,8 +3,6 @@ import { configCreateLog } from '~/configs';
 import { isValidDataId } from '~/validators';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
-import { CloudServerPartner } from '~/models/partner';
-import { serviceAuthActionVPSById } from '~/services/partner/cloudServer';
 
 const controlUserBillingActionInstance = async (req, res) => {
     try {
@@ -54,13 +52,8 @@ const controlUserBillingActionInstance = async (req, res) => {
                 return res.status(400).json({ error: 'Máy chủ đang dừng hoạt động không thể khởi động' });
             }
 
-            const partner = await CloudServerPartner.findOne({}).select('url key password');
-            if (!partner) {
-                return res.status(500).json({ error: 'Máy chủ đang bảo trì hoặc không hoạt động' });
-            }
-
             // Chỉ gửi hành động đi không thêm await
-            serviceAuthActionVPSById(partner.url, partner.key, partner.password, action, instance.order_info.order_id);
+            // serviceAuthActionVPSById(partner.url, partner.key, partner.password, action, instance.order_info.order_id);
 
             if (action === 'stop') {
                 instance.status = 'stopping';

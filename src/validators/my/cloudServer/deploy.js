@@ -1,6 +1,5 @@
 import { Pricing } from '~/models/pricing';
 import { isValidDataId } from '~/validators';
-import { CloudServerPartner } from '~/models/partner';
 import { CloudServerImage } from '~/models/cloudServerImage';
 import { CloudServerRegion } from '~/models/cloudServerRegion';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
@@ -57,11 +56,6 @@ const validatorUserDeployCloudServer = async (body) => {
         }
         if (!isValidDataId(product_id)) {
             return { success: false, status: 400, error: 'Gói dịch vụ máy chủ không hợp lệ' };
-        }
-
-        const partner = await CloudServerPartner.findOne({ status: true }).select('id url node_select key password');
-        if (!partner) {
-            return { success: false, status: 400, error: 'Máy chủ đang bảo trì thử lại sau' };
         }
 
         const region = await CloudServerRegion.findOne({ id: region_id, status: true }).select('id title image_url');

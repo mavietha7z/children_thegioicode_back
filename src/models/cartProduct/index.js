@@ -62,11 +62,6 @@ const cartProductSchema = new Schema({
         ref: 'Coupon',
         default: null,
     },
-    partner_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'CloudServerPartner',
-        default: null,
-    },
     region_id: {
         type: Schema.Types.ObjectId,
         ref: 'CloudServerRegion',

@@ -2,8 +2,6 @@ import { configCreateLog } from '~/configs';
 import { isValidDataId } from '~/validators';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerImage } from '~/models/cloudServerImage';
-import { CloudServerPartner } from '~/models/partner';
-import { serviceAuthRebuildVPS } from '~/services/partner/cloudServer';
 
 const controlUserBillingRebuildInstance = async (req, res) => {
     try {
@@ -33,11 +31,6 @@ const controlUserBillingRebuildInstance = async (req, res) => {
             });
         }
 
-        const partner = await CloudServerPartner.findOne({}).select('url key password');
-        if (!partner) {
-            return res.status(404).json({ error: 'Máy chủ đang bảo trì hoặc không hoạt động' });
-        }
-
         const data = {
             reos: 1,
             osid: image.code,
@@ -46,7 +39,7 @@ const controlUserBillingRebuildInstance = async (req, res) => {
             newpass: instance.order_info.password,
         };
 
-        serviceAuthRebuildVPS(partner.url, partner.key, partner.password, data);
+        // serviceAuthRebuildVPS(partner.url, partner.key, partner.password, data);
 
         instance.status = 'rebuilding';
         instance.image_id = image._id;

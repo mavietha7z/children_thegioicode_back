@@ -6,11 +6,9 @@ import { OrderTemplate } from '~/models/orderTemplate';
 import { configCreateLog, convertCurrency } from '~/configs';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { serverUserCalculateExpired } from '../user/calculate';
-import { CloudServerPartner } from '~/models/partner';
 import { serviceUserCreateNewInvoice } from '../user/createInvoice';
 import { serviceCreateNotificationUser } from '../user/notification';
 import { serviceAuthRemoveDomainFromCloudflare } from '../my/template/payment';
-import { serviceAuthDeleteVPS, serviceAuthSuspendAndUnsuspendVPS } from '../partner/cloudServer';
 
 const serviceAutoRenewOrderTemplate = async (order) => {
     try {
@@ -437,13 +435,13 @@ const serviceCronExpiredOrders = async () => {
                     await order.save();
 
                     // Khoá máy chủ
-                    await serviceAuthSuspendAndUnsuspendVPS(
-                        partner.url,
-                        partner.key,
-                        partner.password,
-                        order.order_info.order_id,
-                        'suspend',
-                    );
+                    // await serviceAuthSuspendAndUnsuspendVPS(
+                    //     partner.url,
+                    //     partner.key,
+                    //     partner.password,
+                    //     order.order_info.order_id,
+                    //     'suspend',
+                    // );
                 }
             }
 
@@ -452,11 +450,6 @@ const serviceCronExpiredOrders = async () => {
                 order.status = 'deleted';
                 order.updated_at = Date.now();
                 await order.save();
-
-                const partner = await CloudServerPartner.findOne({}).select('id url key password');
-                if (partner) {
-                    await serviceAuthDeleteVPS(partner.url, partner.key, partner.password, order.order_info.order_id);
-                }
             }
         }
     } catch (error) {

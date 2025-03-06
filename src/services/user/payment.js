@@ -4,8 +4,6 @@ import { CartProduct } from '~/models/cartProduct';
 import { OrderTemplate } from '~/models/orderTemplate';
 import { serverUserCalculateExpired } from './calculate';
 import { OrderCloudServer } from '~/models/orderCloudServer';
-import { CloudServerPartner } from '~/models/partner';
-import { serviceAuthSuspendAndUnsuspendVPS } from '../partner/cloudServer';
 import { serviceUserPaymentOrderRegisterCloudServer } from '../my/order/payment/cloudServer';
 
 const serviceUserPaymentOrderOrInvoice = async (product, order, invoice) => {
@@ -71,19 +69,14 @@ const serviceUserPaymentOrderOrInvoice = async (product, order, invoice) => {
                 if (order.status === 'expired') {
                     order.status = 'activated';
 
-                    const partner = await CloudServerPartner.findOne({}).select('id url key password');
-                    if (!partner) {
-                        return { success: false, status: 404, error: 'Máy chủ đã bị tắt hoặc không tồn tại' };
-                    }
-
                     // Mở khoá máy chủ
-                    await serviceAuthSuspendAndUnsuspendVPS(
-                        partner.url,
-                        partner.key,
-                        partner.password,
-                        order.order_info.order_id,
-                        'unsuspend',
-                    );
+                    // await serviceAuthSuspendAndUnsuspendVPS(
+                    //     partner.url,
+                    //     partner.key,
+                    //     partner.password,
+                    //     order.order_info.order_id,
+                    //     'unsuspend',
+                    // );
                 }
 
                 order.expired_at = expired_at;
