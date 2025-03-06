@@ -8,6 +8,11 @@ const pricingSchema = new Schema({
         required: true,
         immutable: true,
     },
+    partner_id: {
+        type: Number,
+        unique: true,
+        default: null,
+    },
     service_id: {
         type: Schema.Types.ObjectId,
         refPath: 'service_type',

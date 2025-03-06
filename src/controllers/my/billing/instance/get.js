@@ -9,7 +9,6 @@ const controlUserBillingGetInstances = async (req, res) => {
         const pages = Math.ceil(count / pageSize);
 
         const results = await OrderCloudServer.find({ user_id: req.user.id })
-            .populate({ path: 'plan_id', select: 'id title' })
             .populate({ path: 'region_id', select: 'id title image_url' })
             .populate({ path: 'image_id', select: 'id title group image_url' })
             .populate({ path: 'product_id', select: 'id title core memory disk' })
@@ -22,10 +21,7 @@ const controlUserBillingGetInstances = async (req, res) => {
         const data = results.map((result, index) => {
             return {
                 id: result.id,
-                plan: {
-                    id: result.plan_id.id,
-                    title: result.plan_id.title,
-                },
+                plan: result.plan,
                 image: {
                     id: result.image_id.id,
                     title: result.image_id.title,
@@ -85,7 +81,6 @@ const controlUserBillingGetInstanceDetail = async (req, res) => {
         }
 
         const instance = await OrderCloudServer.findOne({ user_id: req.user.id, id: instance_id })
-            .populate({ path: 'plan_id', select: '-_id id title' })
             .populate({ path: 'region_id', select: '-_id id title' })
             .populate({ path: 'image_id', select: '-_id id title group image_url' })
             .populate({ path: 'product_id', select: '-_id id title core memory disk bandwidth' });
@@ -97,12 +92,12 @@ const controlUserBillingGetInstanceDetail = async (req, res) => {
 
         let data = {
             id: instance.id,
-            image: instance.image_id,
-            plan: instance.plan_id,
+            plan: instance.plan,
             status: instance.status,
+            image: instance.image_id,
             region: instance.region_id,
-            product: instance.product_id,
             slug_url: instance.slug_url,
+            product: instance.product_id,
             cpu_usage: instance.cpu_usage,
             auto_renew: instance.auto_renew,
             created_at: instance.created_at,

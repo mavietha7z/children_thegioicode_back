@@ -17,7 +17,6 @@ const controlUserBillingActionInstance = async (req, res) => {
         }
 
         const instance = await OrderCloudServer.findOne({ user_id: req.user.id, id: instance_id, status: { $nin: ['deleted', 'expired'] } })
-            .populate({ path: 'plan_id', select: 'id title' })
             .populate({ path: 'region_id', select: 'id title' })
             .populate({ path: 'image_id', select: 'id title group image_url' })
             .populate({ path: 'product_id', select: 'id title core memory disk priority' })
@@ -85,7 +84,7 @@ const controlUserBillingActionInstance = async (req, res) => {
             }
 
             const products = await CloudServerProduct.find({
-                plan_id: instance.plan_id._id,
+                plan_id: instance.plan.id,
                 status: true,
                 _id: { $ne: instance.product_id._id },
                 priority: { $gt: instance.product_id.priority },
@@ -156,7 +155,7 @@ const controlUserBillingActionInstance = async (req, res) => {
                         },
                     },
                     id: instance.id,
-                    plan: instance.plan_id,
+                    plan: instance.plan,
                     status: instance.status,
                     image: instance.image_id,
                     region: instance.region_id,

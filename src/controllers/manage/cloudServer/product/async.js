@@ -72,6 +72,7 @@ const controlAuthAsyncCloudServerProduct = async (req, res) => {
                                 const price = Math.round(pricing.price / (1 - pricing.discount / 100));
 
                                 await new Pricing({
+                                    partner_id: pricing.id,
                                     service_id: newProduct._id,
                                     service_type: 'CloudServerProduct',
                                     cycles_id: cycles._id,

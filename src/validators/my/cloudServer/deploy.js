@@ -1,9 +1,9 @@
 import { Pricing } from '~/models/pricing';
 import { isValidDataId } from '~/validators';
+import { CloudServerPartner } from '~/models/partner';
 import { CloudServerImage } from '~/models/cloudServerImage';
 import { CloudServerRegion } from '~/models/cloudServerRegion';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
-import { CloudServerPartner } from '~/models/partner';
 
 const validateDisplayName = (names) => {
     for (const name of names) {
@@ -62,11 +62,6 @@ const validatorUserDeployCloudServer = async (body) => {
         const partner = await CloudServerPartner.findOne({ status: true }).select('id url node_select key password');
         if (!partner) {
             return { success: false, status: 400, error: 'Máy chủ đang bảo trì thử lại sau' };
-        }
-
-        const plan = await CloudServerPlan.findOne({ id: plan_id, status: true }).select('id title image_url');
-        if (!plan) {
-            return { success: false, status: 400, error: 'Loại máy chủ không tồn tại' };
         }
 
         const region = await CloudServerRegion.findOne({ id: region_id, status: true }).select('id title image_url');

@@ -10,7 +10,7 @@ const controlAuthUpdateCloudServerProduct = async (req, res) => {
             return res.status(400).json({ error: 'Tham số truy vấn không hợp lệ' });
         }
 
-        const product = await CloudServerProduct.findById(id).populate({ path: 'plan_id', select: 'id title' });
+        const product = await CloudServerProduct.findById(id);
         if (!product) {
             return res.status(404).json({ error: 'Cấu hình cần cập nhật không tồn tại' });
         }
@@ -40,7 +40,6 @@ const controlAuthUpdateCloudServerProduct = async (req, res) => {
                 title,
                 memory,
                 commit,
-                plan_id,
                 support,
                 priority,
                 disk_info,
@@ -54,11 +53,6 @@ const controlAuthUpdateCloudServerProduct = async (req, res) => {
                 network_inter,
                 customize_config,
             } = req.body;
-
-            const plan = await CloudServerPlan.findById(plan_id).select('id title');
-            if (!plan) {
-                return res.status(400).json({ error: 'Máy chủ bạn chọn không tồn tại' });
-            }
 
             product.ipv4 = ipv4;
             product.ipv6 = ipv6;

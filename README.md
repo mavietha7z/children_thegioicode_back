@@ -247,10 +247,6 @@ mongoimport --db netcode --collection cloudserverimages --file /var/www/netcode/
 ```
 
 ```
-mongoimport --db netcode --collection cloudserverplans --file /var/www/netcode/back/html/cloudserverplans.json --jsonArray
-```
-
-```
 mongoimport --db netcode --collection cloudserverproducts --file /var/www/netcode/back/html/cloudserverproducts.json --jsonArray
 ```
 

@@ -10,7 +10,6 @@ const controlAuthGetCloudServerOrders = async (req, res) => {
 
         const results = await OrderCloudServer.find({})
             .populate({ path: 'user_id', select: 'id email full_name' })
-            .populate({ path: 'plan_id', select: 'id title' })
             .populate({ path: 'region_id', select: 'id title' })
             .populate({ path: 'image_id', select: 'id title image_url' })
             .populate({ path: 'product_id', select: 'id title core memory disk' })
@@ -22,6 +21,7 @@ const controlAuthGetCloudServerOrders = async (req, res) => {
         const data = results.map((result) => {
             const {
                 id,
+                plan,
                 status,
                 method,
                 _id: key,
@@ -38,7 +38,6 @@ const controlAuthGetCloudServerOrders = async (req, res) => {
                 display_name,
                 memory_usage,
                 user_id: user,
-                plan_id: plan,
                 backup_server,
                 override_price,
                 image_id: image,

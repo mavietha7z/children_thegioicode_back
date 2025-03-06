@@ -26,7 +26,6 @@ const controlUserBillingResizeInstance = async (req, res) => {
         }
 
         const instance = await OrderCloudServer.findOne({ user_id: req.user.id, id: instance_id, status: { $nin: ['deleted', 'expired'] } })
-            .populate({ path: 'plan_id', select: 'id title' })
             .populate({ path: 'region_id', select: 'id title' })
             .populate({ path: 'image_id', select: 'id title group image_url' })
             .populate({ path: 'product_id', select: 'id title core memory disk priority' })
@@ -51,7 +50,7 @@ const controlUserBillingResizeInstance = async (req, res) => {
             partnerDiscount = result.data.discount;
         }
 
-        const newProduct = await CloudServerProduct.findOne({ plan_id: instance.plan_id._id, id: product_id, status: true });
+        const newProduct = await CloudServerProduct.findOne({ plan_id: instance.plan.id, id: product_id, status: true });
         if (!newProduct) {
             return res.status(404).json({
                 error: `Gói máy chủ #${product_id} không tồn tại`,

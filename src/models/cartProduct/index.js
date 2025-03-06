@@ -67,11 +67,6 @@ const cartProductSchema = new Schema({
         ref: 'CloudServerPartner',
         default: null,
     },
-    plan_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'CloudServerPlan',
-        default: null,
-    },
     region_id: {
         type: Schema.Types.ObjectId,
         ref: 'CloudServerRegion',
@@ -81,6 +76,24 @@ const cartProductSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'CloudServerImage',
         default: null,
+    },
+    plan: {
+        id: {
+            type: Number,
+            default: null,
+        },
+        title: {
+            type: String,
+            default: null,
+        },
+        image_url: {
+            type: String,
+            default: null,
+        },
+        description: {
+            type: String,
+            default: null,
+        },
     },
     display_name: {
         type: String,

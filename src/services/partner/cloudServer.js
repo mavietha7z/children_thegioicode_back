@@ -51,3 +51,37 @@ export const servicePartnerGetProducts = async (plan_id) => {
         };
     }
 };
+
+export const servicePartnerGetOrders = async (page) => {
+    try {
+        const request = new ThegioicodeAPI();
+
+        const result = await request.get('/api/v2/cloud-server/orders', {}, { page });
+
+        return result.data;
+    } catch (error) {
+        configCreateLog('services/partner/cloudServer.log', 'servicePartnerGetOrders', error.response?.data?.error || error.message);
+
+        return {
+            status: 400,
+            error: error.response?.data?.error || 'Lỗi kết nối đến đối tác vui lòng thử lại sau',
+        };
+    }
+};
+
+export const servicePartnerGetOrderDetail = async (order_id) => {
+    try {
+        const request = new ThegioicodeAPI();
+
+        const result = await request.get(`/api/v2/cloud-server/orders/${order_id}`);
+
+        return result.data;
+    } catch (error) {
+        configCreateLog('services/partner/cloudServer.log', 'servicePartnerGetOrders', error.response?.data?.error || error.message);
+
+        return {
+            status: 400,
+            error: error.response?.data?.error || 'Lỗi kết nối đến đối tác vui lòng thử lại sau',
+        };
+    }
+};

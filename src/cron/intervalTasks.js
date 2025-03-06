@@ -1,7 +1,6 @@
 import { serviceCronSendMail } from '~/services/cron/sendMail';
 import { serviceCronCloudflare } from '~/services/cron/cloudflare';
 import { serviceCronCloudServer } from '~/services/cron/cloudServer';
-import { serviceCronExpiredOrderTryIt } from '~/services/cron/expiredTryIt';
 import { serviceCronRemoveOrderFromCart, serviceCronUnpaidOrder } from '~/services/cron/order';
 
 export const startIntervalTasks = () => {
@@ -16,12 +15,6 @@ export const startIntervalTasks = () => {
         // Cloud server
         await serviceCronCloudServer();
     }, 20000);
-
-    // Tác vụ lặp mỗi 1 phút
-    setInterval(async () => {
-        // Order Cloud Server Try It
-        await serviceCronExpiredOrderTryIt();
-    }, 60000);
 
     // Tác vụ lặp mỗi 3 phút
     setInterval(async () => {

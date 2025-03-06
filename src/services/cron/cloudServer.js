@@ -1,17 +1,7 @@
 import { configCreateLog } from '~/configs';
 import { OrderCloudServer } from '~/models/orderCloudServer';
-import { serviceAuthGetStatusVPS } from '../partner/cloudServer';
-import { CloudServerPartner } from '~/models/partner';
+import { servicePartnerGetOrderDetail } from '../partner/cloudServer';
 
-function getVpsStatus(vpsIds, result) {
-    const statuses = {};
-    vpsIds.forEach((vpsId) => {
-        if (result.status[vpsId]) {
-            statuses[vpsId] = result.status[vpsId];
-        }
-    });
-    return statuses;
-}
 const serviceCronCloudServer = async () => {
     try {
         const orders = await OrderCloudServer.find({
@@ -24,51 +14,20 @@ const serviceCronCloudServer = async () => {
             return;
         }
 
-        const partner = await CloudServerPartner.findOne({}).select('id url key password');
-        if (!partner) {
-            return;
-        }
-        const orderIds = orders.map((order) => order.order_info.order_id);
+        for (let i = 0; i < orders.length; i++) {
+            const order = orders[i];
 
-        const result = await serviceAuthGetStatusVPS(partner.url, partner.key, partner.password, orderIds);
-
-        const statuses = getVpsStatus(orderIds, result);
-
-        for (const order of orders) {
-            const status = statuses[order.order_info.order_id];
-            if (!status) {
+            const result = await servicePartnerGetOrderDetail(order.order_info.order_id);
+            if (result.status !== 200) {
                 continue;
             }
 
-            // Cập nhật trạng thái VPS
-            if (status.status === 1) {
-                order.status = 'activated';
-            }
-            if (
-                status.status === 0 &&
-                order.status !== 'starting' &&
-                order.status !== 'restarting' &&
-                order.status !== 'rebuilding' &&
-                order.status !== 'resizing'
-            ) {
-                order.status = 'stopped';
-            }
-            if (
-                status.status === 2 &&
-                order.status !== 'starting' &&
-                order.status !== 'restarting' &&
-                order.status !== 'rebuilding' &&
-                order.status !== 'resizing'
-            ) {
-                order.status = 'suspended';
-            }
-
-            // Cập nhật các thông tin khác
-            order.cpu_usage = status.used_cpu;
-            order.disk_usage = status.used_disk;
-            order.memory_usage = status.used_ram;
-            order.bandwidth_usage = status.used_bandwidth;
             order.updated_at = Date.now();
+            order.status = result.data.status;
+            order.cpu_usage = result.data.used_cpu;
+            order.disk_usage = result.data.used_disk;
+            order.memory_usage = result.data.used_ram;
+            order.bandwidth_usage = result.data.used_bandwidth;
 
             await order.save();
         }

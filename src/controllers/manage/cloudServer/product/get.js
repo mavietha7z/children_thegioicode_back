@@ -17,16 +17,13 @@ const controlAuthGetCloudServerProduct = async (req, res) => {
         const count = await CloudServerProduct.countDocuments(objectQuery);
         const pages = Math.ceil(count / pageSize);
 
-        const products = await CloudServerProduct.find(objectQuery)
-            .populate({ path: 'plan_id', select: 'id title' })
-            .skip(skip)
-            .limit(pageSize)
-            .sort({ priority: 1 });
+        const products = await CloudServerProduct.find(objectQuery).skip(skip).limit(pageSize).sort({ priority: 1 });
 
         const data = await Promise.all(
             products.map(async (product) => {
                 const {
                     id,
+                    plan,
                     disk,
                     core,
                     ipv4,
@@ -51,7 +48,6 @@ const controlAuthGetCloudServerProduct = async (req, res) => {
                     network_port,
                     network_speed,
                     network_inter,
-                    plan_id: plan,
                     customize_config,
                 } = product;
 

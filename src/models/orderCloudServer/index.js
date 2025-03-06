@@ -13,11 +13,6 @@ const orderCloudServerSchema = new Schema({
         ref: 'User',
         required: true,
     },
-    plan_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'CloudServerPlan',
-        required: true,
-    },
     region_id: {
         type: Schema.Types.ObjectId,
         ref: 'CloudServerRegion',
@@ -37,6 +32,24 @@ const orderCloudServerSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Pricing',
         required: true,
+    },
+    plan: {
+        id: {
+            type: Number,
+            required: true,
+        },
+        title: {
+            type: String,
+            required: true,
+        },
+        image_url: {
+            type: String,
+            required: true,
+        },
+        description: {
+            type: String,
+            required: true,
+        },
     },
     slug_url: {
         type: String,
@@ -82,12 +95,8 @@ const orderCloudServerSchema = new Schema({
         },
     ],
     order_info: {
-        uuid: {
-            type: String,
-            required: true,
-        },
         order_id: {
-            type: String,
+            type: Number,
             required: true,
         },
         access_ipv4: {
@@ -119,10 +128,6 @@ const orderCloudServerSchema = new Schema({
         type: String,
         enum: ['activated', 'starting', 'restarting', 'stopping', 'rebuilding', 'resizing', 'stopped', 'suspended', 'expired', 'deleted'],
         required: true,
-    },
-    try_it: {
-        type: Boolean,
-        default: false,
     },
     method: {
         type: String,

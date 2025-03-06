@@ -17,7 +17,6 @@ const serviceUserPaymentOrderRegisterCloudServer = async (order_id, invoice) => 
                 populate: { path: 'cycles_id', select: 'id value unit display_name' },
             })
             .populate({ path: 'partner_id', select: 'id url node_select key password' })
-            .populate({ path: 'plan_id', select: 'id title image_url' })
             .populate({ path: 'region_id', select: 'id title image_url' })
             .populate({ path: 'image_id', select: 'id title group code image_url' })
             .populate({ path: 'image_id', select: 'id title group code image_url' });
