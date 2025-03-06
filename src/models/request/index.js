@@ -35,18 +35,6 @@ const requestSchema = new Schema({
         type: Object,
         required: true,
     },
-    ip: {
-        type: String,
-        default: '',
-    },
-    address: {
-        type: String,
-        default: '',
-    },
-    proxy: {
-        type: Object,
-        default: null,
-    },
     status: {
         type: Number,
         required: true,

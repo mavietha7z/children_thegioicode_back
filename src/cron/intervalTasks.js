@@ -1,3 +1,4 @@
+import { serviceCronPublicApis } from '~/services/cron/api';
 import { serviceCronSendMail } from '~/services/cron/sendMail';
 import { serviceCronCloudflare } from '~/services/cron/cloudflare';
 import { serviceCronCloudServer } from '~/services/cron/cloudServer';
@@ -14,6 +15,9 @@ export const startIntervalTasks = () => {
     setInterval(async () => {
         // Cloud server
         await serviceCronCloudServer();
+
+        // Public API
+        await serviceCronPublicApis();
     }, 20000);
 
     // Tác vụ lặp mỗi 3 phút

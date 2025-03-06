@@ -73,7 +73,7 @@ const controlAuthAsyncCloudServerOrder = async (req, res) => {
                     },
                     slug_url: order.slug_url,
                     display_name: order.display_name,
-                    override_price: order.override_price,
+                    override_price: 0,
                     auto_renew: order.auto_renew,
                     backup_server: order.backup_server,
                     bandwidth_usage: order.backup_server,

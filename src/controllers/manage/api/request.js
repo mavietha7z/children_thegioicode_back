@@ -5,7 +5,7 @@ import { isValidMongoId } from '~/validators';
 
 const controlCreateRequest = async (requests) => {
     try {
-        const { req, user_id, proxy, address, status, response, ip, service_id } = requests;
+        const { req, user_id, status, response, service_id } = requests;
         const { method, path, headers, body, params, query } = req;
 
         const newRequest = await new Request({
@@ -17,9 +17,6 @@ const controlCreateRequest = async (requests) => {
             params,
             query,
             body,
-            proxy,
-            ip,
-            address,
             status,
             response,
         }).save();
@@ -58,16 +55,14 @@ const controlGetApisRequests = async (req, res) => {
             .sort({ created_at: -1 });
 
         const data = requests.map((request) => {
-            const { _id: key, user_id: user, method, path, ip, address, status, created_at, updated_at } = request;
+            const { _id: key, user_id: user, method, path, status, created_at, updated_at } = request;
 
             return {
-                ip,
                 key,
                 user,
                 path,
                 method,
                 status,
-                address,
                 created_at,
                 updated_at,
             };

@@ -24,10 +24,10 @@ const serviceCronCloudServer = async () => {
 
             order.updated_at = Date.now();
             order.status = result.data.status;
-            order.cpu_usage = result.data.used_cpu;
-            order.disk_usage = result.data.used_disk;
-            order.memory_usage = result.data.used_ram;
-            order.bandwidth_usage = result.data.used_bandwidth;
+            order.cpu_usage = result.data.cpu_usage;
+            order.disk_usage = result.data.disk_usage;
+            order.memory_usage = result.data.memory_usage;
+            order.bandwidth_usage = result.data.bandwidth_usage;
 
             await order.save();
         }

@@ -1,7 +1,7 @@
 import { configCreateLog } from '~/configs';
 import { controlCreatePlayer } from '../manage/api/player';
 import { controlCreateRequest } from '../manage/api/request';
-import { serviceLoginVngGamesByQuick, serviceLoginVngGamesByRole } from '~/services/v2/vnggames';
+import { serviceFetchLoginVngGames } from '~/services/v2/vnggames';
 
 const controlV2LoginVngGames = async (req, res) => {
     const { _id: service_id } = req.currentApi;
@@ -12,18 +12,13 @@ const controlV2LoginVngGames = async (req, res) => {
     let accounts = null;
     let requests = null;
     try {
-        let result = null;
-        if (module === 'quick') {
-            result = await serviceLoginVngGamesByQuick(role_id, front_id);
-        }
-        if (module === 'role') {
-            result = await serviceLoginVngGamesByRole(role_id, front_id);
-        }
-        if (!result) {
-            return res.status(404).json({
-                error: 'Không tìm thấy nhân vật hoặc mô-đun',
-            });
-        }
+        const data = {
+            module,
+            role_id,
+            front_id,
+        };
+
+        const result = await serviceFetchLoginVngGames(`${req.partner.url}/api/v2/vnggames_login`, data, req.currentApi.apikey.key);
 
         if (result.success) {
             accounts = {

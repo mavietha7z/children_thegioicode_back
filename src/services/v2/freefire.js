@@ -1,58 +1,38 @@
-import fetch from 'node-fetch';
-
+import axios from 'axios';
 import { configCreateLog } from '~/configs';
 
-const serviceFetchLoginFreeFire = async (url, config, retries = 3, timeout = 5000) => {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
-
+const serviceFetchLoginFreeFire = async (url, data, apikey) => {
     try {
-        const response = await fetch(`${url}/api/auth/player_id_login`, { ...config, signal: controller.signal });
-        clearTimeout(timeoutId);
+        const response = await axios.post(url, data, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${apikey}`,
+            },
+            timeout: 5000,
+            family: 4,
+        });
 
-        const json = await response.json();
-        if (json.error) {
-            return { success: false, status: 200, error: json.error, retries };
-        }
-        if (json.url) {
-            return { success: false, status: 403, error: 'Lỗi giải Captcha vui lòng thử lại sau', retries };
+        if (response.data.error === 'invalid_id') {
+            return { success: false, status: 200, error: 'invalid_id' };
         }
 
-        return { success: true, status: 200, data: json, retries };
+        if (response.data.error) {
+            return { success: false, status: 400, error: response.data.error };
+        }
+
+        return { success: true, status: 200, data: response.data.data };
     } catch (error) {
-        clearTimeout(timeoutId);
-
-        if (error.name === 'AbortError') {
-            return { success: false, status: 502, error: 'Máy chủ đăng nhập đang quá tải', retries };
+        if (error?.response?.data?.error === 'invalid_id') {
+            return { success: false, status: 200, error: 'invalid_id' };
         }
 
-        if (retries > 0) {
-            return serviceFetchLoginFreeFire(url, config, retries - 1, timeout);
-        } else {
-            configCreateLog('services/v2/freefire.log', 'serviceFetchLoginFreeFire', error.message);
-
-            return { success: false, status: 400, error: 'Lỗi đăng nhập vui lòng thử lại', retries };
+        if (error?.response?.data?.error) {
+            return { success: false, status: 400, error: error.response.data.error };
         }
+
+        configCreateLog('services/v2/freefire.log', 'serviceFetchLoginFreeFire', error.message);
+        return { success: false, status: 400, error: 'Lỗi đăng nhập vui lòng thử lại' };
     }
 };
 
-const domain = [
-    'https://topup.pk',
-    'https://napthe.vn',
-    'https://ggtopup.com',
-    'https://termgame.com',
-    'https://shop.garena.my',
-    'https://shop.garena.sg',
-    'https://kiosgamer.co.id',
-    'https://bdgamesbazar.com',
-];
-
-let currentIndex = 0;
-
-const serviceV2GetDomainFreeFire = () => {
-    const config = domain[currentIndex];
-    currentIndex = (currentIndex + 1) % domain.length;
-    return config;
-};
-
-export { serviceFetchLoginFreeFire, serviceV2GetDomainFreeFire };
+export { serviceFetchLoginFreeFire };

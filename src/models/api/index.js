@@ -8,6 +8,11 @@ const apiSchema = new Schema({
         required: true,
         immutable: true,
     },
+    partner_id: {
+        type: Number,
+        unique: true,
+        required: true,
+    },
     title: {
         type: String,
         required: true,
@@ -63,17 +68,23 @@ const apiSchema = new Schema({
         type: String,
         default: '',
     },
-    proxy: {
-        type: String,
-        default: '',
-    },
-    datadome: {
-        type: String,
-        default: '',
-    },
-    count_get_datadome: {
-        type: Number,
-        default: 0,
+    apikey: {
+        key: {
+            type: String,
+            required: true,
+        },
+        used: {
+            type: Number,
+            default: 0,
+        },
+        status: {
+            type: Boolean,
+            default: true,
+        },
+        free_usage: {
+            type: Number,
+            default: 0,
+        },
     },
     created_at: {
         type: Date,

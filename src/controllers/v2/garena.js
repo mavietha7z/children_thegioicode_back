@@ -1,29 +1,24 @@
-import { HttpProxyAgent } from 'http-proxy-agent';
-
 import { Player } from '~/models/player';
 import { configCreateLog } from '~/configs';
 import { controlCreatePlayer } from '../manage/api/player';
-import { serviceV2GarenaLogin } from '~/services/v2/garena';
 import { controlCreateRequest } from '../manage/api/request';
+import { serviceFetchLoginGarena } from '~/services/v2/garena';
 
 const controlV2CheckGarenaLogin = async (req, res) => {
     const { username, password } = req.body;
     const { _id: service_id } = req.currentApi;
-
-    if (!req.apiProxy) {
-        return res.status(404).json({
-            error: 'Proxy không tồn tại',
-        });
-    }
 
     let status = null;
     let response = null;
     let accounts = null;
     let requests = null;
     try {
-        const httpAgent = new HttpProxyAgent(req.apiProxy);
+        const data = {
+            username,
+            password,
+        };
 
-        const result = await serviceV2GarenaLogin(username, password, httpAgent, req.currentApi);
+        const result = await serviceFetchLoginGarena(`${req.partner.url}/api/v2/garena_login`, data, req.currentApi.apikey.key);
 
         if (result.success) {
             accounts = {
@@ -49,11 +44,8 @@ const controlV2CheckGarenaLogin = async (req, res) => {
             requests = {
                 req,
                 status,
-                ip: '',
                 response,
                 service_id,
-                proxy: null,
-                address: '',
                 user_id: req.user._id,
             };
         } else {
@@ -65,11 +57,8 @@ const controlV2CheckGarenaLogin = async (req, res) => {
                 requests = {
                     req,
                     status,
-                    ip: '',
                     response,
                     service_id,
-                    proxy: null,
-                    address: '',
                     user_id: req.user._id,
                 };
             } else if (garena && garena.account_garena.password === password) {
@@ -87,11 +76,8 @@ const controlV2CheckGarenaLogin = async (req, res) => {
                 requests = {
                     req,
                     status,
-                    ip: '',
                     response,
                     service_id,
-                    proxy: null,
-                    address: '',
                     user_id: req.user._id,
                 };
             } else {
@@ -100,11 +86,8 @@ const controlV2CheckGarenaLogin = async (req, res) => {
                 requests = {
                     req,
                     status,
-                    ip: '',
                     response,
                     service_id,
-                    proxy: null,
-                    address: '',
                     user_id: req.user._id,
                 };
             }

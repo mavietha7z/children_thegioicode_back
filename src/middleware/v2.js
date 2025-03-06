@@ -2,7 +2,8 @@ import { Api } from '~/models/api';
 import { User } from '~/models/user';
 import { Wallet } from '~/models/wallet';
 import { Apikey } from '~/models/apikey';
-import { configCreateLog, configGetDiscountRulePartner } from '~/configs';
+import { Partner } from '~/models/partner';
+import { configCreateLog } from '~/configs';
 import { serviceCreateWalletHistoryUser } from '~/services/user/walletHistory';
 
 const middlewareVerifyApiKey = async (req, res, next) => {
@@ -41,7 +42,7 @@ const middlewareVerifyApiKey = async (req, res, next) => {
             });
         }
 
-        const currentApi = await Api.findOne({ category: currentApikey.category }).select('title status price category datadome proxy');
+        const currentApi = await Api.findOne({ category: currentApikey.category }).select('title status price category apikey');
         if (!currentApi) {
             return res.status(400).json({
                 error: 'API cần truy vấn không tồn tại',
@@ -62,6 +63,13 @@ const middlewareVerifyApiKey = async (req, res, next) => {
         if (currentApikey.free_usage === 0 && wallet.total_balance < currentApi.price) {
             return res.status(400).json({
                 error: 'Số dư ví của bạn không đủ',
+            });
+        }
+
+        const partner = await Partner.findOne({ status: true }).select('url');
+        if (!partner) {
+            return res.status(400).json({
+                error: 'Đối tác không tồn tại hoặc đã tắt',
             });
         }
 
@@ -99,13 +107,12 @@ const middlewareVerifyApiKey = async (req, res, next) => {
         if (currentApikey.free_usage > 0) {
             currentApikey.free_usage -= 1;
         }
-        currentApikey.use += 1;
+        currentApikey.used += 1;
         await currentApikey.save();
 
         req.user = user;
+        req.partner = partner;
         req.currentApi = currentApi;
-        req.apiProxy = currentApi.proxy;
-        req.apiDatadome = currentApi.datadome;
 
         next();
     } catch (error) {

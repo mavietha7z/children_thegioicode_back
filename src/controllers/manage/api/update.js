@@ -5,21 +5,7 @@ import { configCreateLog } from '~/configs';
 const controlAuthUpdateApi = async (req, res) => {
     try {
         const { id: service_id } = req.query;
-        const {
-            title,
-            price,
-            proxy,
-            status,
-            version,
-            slug_url,
-            priority,
-            datadome,
-            image_url,
-            old_price,
-            free_usage,
-            description,
-            count_get_datadome,
-        } = req.body;
+        const { title, price, status, version, slug_url, priority, old_price, free_usage, description } = req.body;
 
         const result = await Api.findById(service_id);
         if (!result) {
@@ -27,19 +13,15 @@ const controlAuthUpdateApi = async (req, res) => {
         }
 
         result.title = title;
-        result.proxy = proxy;
         result.price = price;
         result.status = status;
         result.version = version;
-        result.datadome = datadome;
         result.slug_url = slug_url;
         result.priority = priority;
-        result.image_url = image_url;
         result.old_price = old_price;
         result.free_usage = free_usage;
         result.updated_at = Date.now();
         result.description = description;
-        result.count_get_datadome = count_get_datadome;
         await result.save();
 
         const success = await Request.countDocuments({ service_id, status: 200 });
@@ -48,21 +30,19 @@ const controlAuthUpdateApi = async (req, res) => {
         const data = {
             title,
             price,
-            proxy,
             status,
             version,
-            datadome,
             slug_url,
             priority,
             old_price,
-            image_url,
             free_usage,
             description,
             id: result.id,
             key: service_id,
-            count_get_datadome,
+            apikey: result.apikey,
             updated_at: Date.now(),
             category: result.category,
+            image_url: result.image_url,
             created_at: result.created_at,
             requests: {
                 error,
