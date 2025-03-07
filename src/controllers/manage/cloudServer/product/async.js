@@ -1,21 +1,20 @@
-import { Partner } from '~/models/partner';
+import { Cycles } from '~/models/cycles';
+import { Pricing } from '~/models/pricing';
 import { configCreateLog } from '~/configs';
 import { CloudServerRegion } from '~/models/cloudServerRegion';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
 import { servicePartnerGetProducts } from '~/services/partner/cloudServer';
-import { Pricing } from '~/models/pricing';
-import { Cycles } from '~/models/cycles';
 
 const controlAuthAsyncCloudServerProduct = async (req, res) => {
     try {
         const regions = await CloudServerRegion.find({}).select('plans');
-
         if (regions.length === 0) {
             return res.status(400).json({
                 error: 'Vui lòng đồng bộ vui vực chứa máy chủ',
             });
         }
 
+        let allProductIds = [];
         for (let i = 0; i < regions.length; i++) {
             const region = regions[i];
 
@@ -23,7 +22,6 @@ const controlAuthAsyncCloudServerProduct = async (req, res) => {
                 const plan = region.plans[j];
 
                 const result = await servicePartnerGetProducts(plan.id);
-
                 if (result.status !== 200) {
                     return res.status(400).json({
                         error: result.error,
@@ -32,6 +30,7 @@ const controlAuthAsyncCloudServerProduct = async (req, res) => {
 
                 for (let l = 0; l < result.data.length; l++) {
                     const product = result.data[l];
+                    allProductIds.push(product.id);
 
                     const isProduct = await CloudServerProduct.findOne({ partner_id: product.id });
                     if (!isProduct) {
@@ -140,6 +139,12 @@ const controlAuthAsyncCloudServerProduct = async (req, res) => {
                 }
             }
         }
+
+        // Xoá sản phẩm không có trong mảng trả về
+        const existingProducts = await CloudServerProduct.find().select('partner_id');
+        const existingProductIds = existingProducts.map((product) => product.partner_id);
+        const productsToDelete = existingProductIds.filter((id) => !allProductIds.includes(id));
+        await CloudServerProduct.deleteMany({ partner_id: { $in: productsToDelete } });
 
         res.status(200).json({
             status: 200,

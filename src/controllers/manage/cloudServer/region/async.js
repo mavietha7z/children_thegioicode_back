@@ -5,7 +5,6 @@ import { servicePartnerGetRegions } from '~/services/partner/cloudServer';
 const controlAuthAsyncCloudServerRegion = async (req, res) => {
     try {
         const result = await servicePartnerGetRegions();
-
         if (result.status !== 200) {
             return res.status(400).json({
                 error: result.error,
@@ -14,7 +13,6 @@ const controlAuthAsyncCloudServerRegion = async (req, res) => {
 
         for (let i = 0; i < result.data.length; i++) {
             const region = result.data[i];
-            const isRegion = await CloudServerRegion.findOne({ partner_id: region.id });
 
             const plans = region.plans.map((plan) => {
                 return {
@@ -25,6 +23,7 @@ const controlAuthAsyncCloudServerRegion = async (req, res) => {
                 };
             });
 
+            const isRegion = await CloudServerRegion.findOne({ partner_id: region.id });
             if (!isRegion) {
                 await new CloudServerRegion({
                     plans,
@@ -44,6 +43,14 @@ const controlAuthAsyncCloudServerRegion = async (req, res) => {
                 await isRegion.save();
             }
         }
+
+        // Xoá những khu vực không có trong mảng trả về
+        const existingRegions = await CloudServerRegion.find().select('partner_id');
+        const existingRegionIds = existingRegions.map((region) => region.partner_id);
+
+        const regionIds = result.data.map((region) => region.id);
+        const regionsToDelete = existingRegionIds.filter((id) => !regionIds.includes(id));
+        await CloudServerRegion.deleteMany({ partner_id: { $in: regionsToDelete } });
 
         res.status(200).json({
             status: 200,

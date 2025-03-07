@@ -15,7 +15,6 @@ const controlAuthAsyncCloudServerOrder = async (req, res) => {
         // Lặp đến khi không còn trang tiếp theo
         do {
             result = await servicePartnerGetOrders(page);
-
             if (result.status !== 200) {
                 return res.status(400).json({
                     error: result.error,
@@ -28,18 +27,10 @@ const controlAuthAsyncCloudServerOrder = async (req, res) => {
             page++;
         } while (page <= result.pages);
 
-        // Lấy tất cả các order_id trong database trước vòng lặp
-        const existingOrders = await OrderCloudServer.find({ user_id: req.user.id }).select('order_info.order_id');
-        const existingOrderIds = existingOrders.map((order) => order.order_info.order_id);
-
-        // Mảng chứa order_id trong mảng orders
-        const orderIds = orders.map((order) => order.id);
-
         for (let i = 0; i < orders.length; i++) {
             const order = orders[i];
 
             const isOrder = await OrderCloudServer.findOne({ 'order_info.order_id': order.id });
-
             if (!isOrder) {
                 const region = await CloudServerRegion.findOne({ partner_id: order.region.id });
                 if (!region) continue;
@@ -92,8 +83,25 @@ const controlAuthAsyncCloudServerOrder = async (req, res) => {
                     created_at: new Date(order.created_at),
                     expired_at: new Date(order.expired_at),
                 }).save();
+            } else {
+                isOrder.status = order.status;
+                isOrder.updated_at = Date.now();
+                isOrder.cpu_usage = order.cpu_usage;
+                isOrder.disk_usage = order.disk_usage;
+                isOrder.auto_renew = order.auto_renew;
+                isOrder.memory_usage = order.memory_usage;
+                isOrder.backup_server = order.backup_server;
+                isOrder.bandwidth_usage = order.bandwidth_usage;
+                await isOrder.save();
             }
         }
+
+        // Lấy tất cả các order_id trong database trước vòng lặp
+        const existingOrders = await OrderCloudServer.find({ user_id: req.user.id }).select('order_info.order_id');
+        const existingOrderIds = existingOrders.map((order) => order.order_info.order_id);
+
+        // Mảng chứa order_id trong mảng orders
+        const orderIds = orders.map((order) => order.id);
 
         // Xoá những đơn đã có nhưng không có trong mảng orders
         const ordersToDelete = existingOrderIds.filter((id) => !orderIds.includes(id));

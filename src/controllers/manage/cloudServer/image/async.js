@@ -5,7 +5,6 @@ import { servicePartnerGetImages } from '~/services/partner/cloudServer';
 const controlAuthAsyncCloudServerImage = async (req, res) => {
     try {
         const result = await servicePartnerGetImages();
-
         if (result.status !== 200) {
             return res.status(400).json({
                 error: result.error,
@@ -14,8 +13,8 @@ const controlAuthAsyncCloudServerImage = async (req, res) => {
 
         for (let i = 0; i < result.data.length; i++) {
             const image = result.data[i];
-            const isImage = await CloudServerImage.findOne({ partner_id: image.id });
 
+            const isImage = await CloudServerImage.findOne({ partner_id: image.id });
             if (!isImage) {
                 await new CloudServerImage({
                     title: image.title,
@@ -35,6 +34,10 @@ const controlAuthAsyncCloudServerImage = async (req, res) => {
                 await isImage.save();
             }
         }
+
+        // Xóa các image không có trong mảng trả về
+        const partnerImageIds = result.data.map((image) => image.id);
+        await CloudServerImage.deleteMany({ partner_id: { $nin: partnerImageIds } });
 
         res.status(200).json({
             status: 200,
