@@ -7,7 +7,7 @@ const serviceCronCloudServer = async () => {
         const orders = await OrderCloudServer.find({
             status: { $nin: ['deleted', 'expired'] },
         })
-            .select('order_info status bandwidth_usage disk_usage cpu_usage memory_usage updated_at')
+            .select('order_info status auto_renew backup_server bandwidth_usage disk_usage cpu_usage memory_usage updated_at')
             .sort({ created_at: -1 });
 
         if (orders.length < 1) {
@@ -25,8 +25,10 @@ const serviceCronCloudServer = async () => {
             order.updated_at = Date.now();
             order.status = result.data.status;
             order.cpu_usage = result.data.cpu_usage;
+            order.auto_renew = result.data.auto_renew;
             order.disk_usage = result.data.disk_usage;
             order.memory_usage = result.data.memory_usage;
+            order.backup_server = result.data.backup_server;
             order.bandwidth_usage = result.data.bandwidth_usage;
 
             await order.save();

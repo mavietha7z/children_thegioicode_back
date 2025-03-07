@@ -7,15 +7,6 @@ import { CloudServerProduct } from '~/models/cloudServerProduct';
 
 const serviceUserAddOrderInstanceToCart = async (user, id) => {
     try {
-        const result = await serviceUserVerifyTokenPartner('CloudServer', user.id);
-        if (!result.success) {
-            return {
-                status: 40,
-                success: false,
-                error: result.error,
-            };
-        }
-
         const order = await OrderCloudServer.findOne({ id });
         if (!order) {
             return {

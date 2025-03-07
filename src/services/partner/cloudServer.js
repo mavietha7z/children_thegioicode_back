@@ -119,3 +119,54 @@ export const servicePartnerAction = async (data) => {
         };
     }
 };
+
+export const servicePartnerRebuild = async (data) => {
+    try {
+        const request = new ThegioicodeAPI();
+
+        const result = await request.post('/api/v2/cloud-server/rebuild', data);
+
+        return result.data;
+    } catch (error) {
+        configCreateLog('services/partner/cloudServer.log', 'servicePartnerRebuild', error.response?.data?.error || error.message);
+
+        return {
+            status: 400,
+            error: error.response?.data?.error || 'Lỗi kết nối đến đối tác vui lòng thử lại sau',
+        };
+    }
+};
+
+export const servicePartnerResizeInfo = async (order_id) => {
+    try {
+        const request = new ThegioicodeAPI();
+
+        const result = await request.get(`/api/v2/cloud-server/resize/${order_id}`);
+
+        return result.data;
+    } catch (error) {
+        configCreateLog('services/partner/cloudServer.log', 'servicePartnerResizeInfo', error.response?.data?.error || error.message);
+
+        return {
+            status: 400,
+            error: error.response?.data?.error || 'Lỗi kết nối đến đối tác vui lòng thử lại sau',
+        };
+    }
+};
+
+export const servicePartnerResize = async (data) => {
+    try {
+        const request = new ThegioicodeAPI();
+
+        const result = await request.post('/api/v2/cloud-server/resize', data);
+
+        return result.data;
+    } catch (error) {
+        configCreateLog('services/partner/cloudServer.log', 'servicePartnerResize', error.response?.data?.error || error.message);
+
+        return {
+            status: 400,
+            error: error.response?.data?.error || 'Lỗi kết nối đến đối tác vui lòng thử lại sau',
+        };
+    }
+};

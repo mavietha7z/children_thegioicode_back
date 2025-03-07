@@ -6,6 +6,8 @@ import { isValidDataId } from '~/validators';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
 import { serviceUserCreateNewInvoice } from '~/services/user/createInvoice';
+import { servicePartnerResize, servicePartnerResizeInfo } from '~/services/partner/cloudServer';
+
 import {
     serviceCalculateUpgradeCost,
     serviceGetDaysInCurrentMonth,
@@ -36,16 +38,6 @@ const controlUserBillingResizeInstance = async (req, res) => {
             return res.status(404).json({
                 error: `Máy chủ #${instance_id} không tồn tại`,
             });
-        }
-
-        const result = await serviceUserVerifyTokenPartner('CloudServer', req.user.id);
-        if (!result.success) {
-            return res.status(400).json({ error: result.error });
-        }
-
-        let partnerDiscount = 0;
-        if (result.data.discount && result.data.discount > 0) {
-            partnerDiscount = result.data.discount;
         }
 
         const newProduct = await CloudServerProduct.findOne({ plan_id: instance.plan.id, id: product_id, status: true });
@@ -101,8 +93,8 @@ const controlUserBillingResizeInstance = async (req, res) => {
 
         // Số tiền cần trả nếu nâng cấp gói
         const totalPriceUpgrade = serviceCalculateUpgradeCost(
-            currentPricing.price * (1 - partnerDiscount / 100),
-            newPricing.price * (1 - partnerDiscount / 100),
+            currentPricing.price * (1 - currentPricing.discount / 100),
+            newPricing.price * (1 - newPricing.discount / 100),
             remainingDays,
             daysInMonth,
         );
@@ -111,12 +103,37 @@ const controlUserBillingResizeInstance = async (req, res) => {
             return res.status(400).json({ error: 'Số dư ví không đủ để thanh toán' });
         }
 
-        const data = {
-            editvps: 1,
-            plid: newProduct.code,
+        const resizeInfo = await servicePartnerResizeInfo(instance.order_info.order_id);
+        if (resizeInfo.status !== 200) {
+            return res.status(400).json({
+                error: resizeInfo.error,
+            });
+        }
+
+        const productUpgrade = resizeInfo.data.find((product) => product.id === newProduct.partner_id);
+        if (!productUpgrade) {
+            return res.status(404).json({
+                error: 'Gói máy chủ nâng cấp không tồn tại',
+            });
+        }
+
+        if (totalPriceUpgrade > productUpgrade.pricing.price) {
+            return res.status(400).json({
+                error: 'Số tiền cần trả phải nhỏ hơn số tiền đối tác',
+            });
+        }
+
+        const dataPost = {
+            product_id: newProduct.partner_id,
+            order_id: instance.order_info.order_id,
         };
 
-        // serviceAuthManageVPS(partner.url, partner.key, partner.password, instance.order_info.order_id, data);
+        const result = await servicePartnerResize(dataPost);
+        if (result.status !== 200) {
+            return res.status(400).json({
+                error: result.error,
+            });
+        }
 
         // Thời gian sử dụng cho gói nâng cấp (Tháng)
         const remainingRatio = serviceCalculateRemainingRatio(remainingDays, daysInMonth);

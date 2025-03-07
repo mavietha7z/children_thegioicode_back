@@ -3,6 +3,7 @@ import { configCreateLog } from '~/configs';
 import { isValidDataId } from '~/validators';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerProduct } from '~/models/cloudServerProduct';
+import { servicePartnerAction } from '~/services/partner/cloudServer';
 
 const controlUserBillingActionInstance = async (req, res) => {
     try {
@@ -52,9 +53,6 @@ const controlUserBillingActionInstance = async (req, res) => {
                 return res.status(400).json({ error: 'Máy chủ đang dừng hoạt động không thể khởi động' });
             }
 
-            // Chỉ gửi hành động đi không thêm await
-            // serviceAuthActionVPSById(partner.url, partner.key, partner.password, action, instance.order_info.order_id);
-
             if (action === 'stop') {
                 instance.status = 'stopping';
             }
@@ -65,17 +63,21 @@ const controlUserBillingActionInstance = async (req, res) => {
             message = 'Đã gửi lệnh thực hiện thao tác thành công';
         }
 
+        if (action !== 'resize') {
+            const dataPost = {
+                action,
+                order_id: instance.order_info.order_id,
+            };
+
+            const result = await servicePartnerAction(dataPost);
+            if (result.status !== 200) {
+                return res.status(400).json({
+                    error: result.error,
+                });
+            }
+        }
+
         if (action === 'resize') {
-            const partner = await serviceUserVerifyTokenPartner('CloudServer', req.user.id);
-            if (!partner.success) {
-                return res.status(400).json({ error: partner.error });
-            }
-
-            let discount = 0;
-            if (partner.data.discount && partner.data.discount > 0) {
-                discount = partner.data.discount;
-            }
-
             const products = await CloudServerProduct.find({
                 plan_id: instance.plan.id,
                 status: true,
@@ -85,7 +87,7 @@ const controlUserBillingActionInstance = async (req, res) => {
                 .select('id title core memory disk bandwidth network_speed customize sold_out status description')
                 .sort({ priority: 1 });
 
-            const result = await Promise.all(
+            const resultProducts = await Promise.all(
                 products.map(async (product) => {
                     const pricingProduct = await Pricing.findOne({
                         service_id: product._id,
@@ -97,9 +99,9 @@ const controlUserBillingActionInstance = async (req, res) => {
                         .sort({ price: 1 });
 
                     const pricing = {
-                        discount,
                         id: pricingProduct.id,
                         price: pricingProduct.price,
+                        discount: pricingProduct.discount,
                         cycles: {
                             id: pricingProduct.cycles_id.id,
                             unit: pricingProduct.cycles_id.unit,
@@ -137,9 +139,9 @@ const controlUserBillingActionInstance = async (req, res) => {
             data = {
                 instance: {
                     pricing: {
-                        discount,
                         id: currentPricing.id,
                         price: currentPricing.price,
+                        discount: currentPricing.discount,
                         cycles: {
                             id: currentPricing.cycles_id.id,
                             unit: currentPricing.cycles_id.unit,
@@ -173,7 +175,7 @@ const controlUserBillingActionInstance = async (req, res) => {
                         access_ipv6: instance.order_info.access_ipv6,
                     },
                 },
-                products: result,
+                products: resultProducts,
             };
         }
 

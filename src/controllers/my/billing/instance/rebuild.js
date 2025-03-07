@@ -2,6 +2,7 @@ import { configCreateLog } from '~/configs';
 import { isValidDataId } from '~/validators';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { CloudServerImage } from '~/models/cloudServerImage';
+import { servicePartnerRebuild } from '~/services/partner/cloudServer';
 
 const controlUserBillingRebuildInstance = async (req, res) => {
     try {
@@ -31,15 +32,17 @@ const controlUserBillingRebuildInstance = async (req, res) => {
             });
         }
 
-        const data = {
-            reos: 1,
-            osid: image.code,
-            conf: instance.order_info.password,
-            vpsid: instance.order_info.order_id,
-            newpass: instance.order_info.password,
+        const dataPost = {
+            image_id: image.partner_id,
+            order_id: instance.order_info.order_id,
         };
 
-        // serviceAuthRebuildVPS(partner.url, partner.key, partner.password, data);
+        const result = await servicePartnerRebuild(dataPost);
+        if (result.status !== 200) {
+            return res.status(400).json({
+                error: result.error,
+            });
+        }
 
         instance.status = 'rebuilding';
         instance.image_id = image._id;
