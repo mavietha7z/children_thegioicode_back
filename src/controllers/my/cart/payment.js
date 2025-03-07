@@ -1,7 +1,7 @@
 import { Cart } from '~/models/cart';
 import { Order } from '~/models/order';
+import { configCreateLog } from '~/configs';
 import { CartProduct } from '~/models/cartProduct';
-import { configCreateLog, configGetDiscountRulePartner } from '~/configs';
 import { serviceUserCreateNewInvoice } from '~/services/user/createInvoice';
 
 const controlUserPaymentCart = async (req, res) => {
@@ -30,11 +30,7 @@ const controlUserPaymentCart = async (req, res) => {
         let recurring_type = null;
 
         for (const product of products) {
-            let partnerDiscount = 0;
-
-            // Áp dụng partnerDiscount trước
-            const priceAfterPartnerDiscount = product.pricing_id.price * (1 - partnerDiscount / 100);
-            let priceAfterDiscount = priceAfterPartnerDiscount;
+            let priceAfterDiscount = product.pricing_id.price;
 
             if (product.coupon_id) {
                 coupons.push({
@@ -45,12 +41,12 @@ const controlUserPaymentCart = async (req, res) => {
                 });
 
                 if (product.coupon_id.discount_type === 'percentage') {
-                    priceAfterDiscount = priceAfterPartnerDiscount * (1 - product.coupon_id.discount_value / 100);
+                    priceAfterDiscount = product.pricing_id.price * (1 - product.coupon_id.discount_value / 100);
                 } else if (product.coupon_id.discount_type === 'fixed') {
-                    priceAfterDiscount = priceAfterPartnerDiscount - product.coupon_id.discount_value;
+                    priceAfterDiscount = product.pricing_id.price - product.coupon_id.discount_value;
                 }
             } else {
-                priceAfterDiscount = priceAfterPartnerDiscount * (1 - product.pricing_id.discount / 100);
+                priceAfterDiscount = product.pricing_id.price * (1 - product.pricing_id.discount / 100);
             }
 
             const discountedPrice = priceAfterDiscount * product.quantity;

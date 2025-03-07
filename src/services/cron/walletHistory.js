@@ -8,18 +8,17 @@ import { serviceCreateNotificationUser } from '~/services/user/notification';
 
 const services = [
     { title: 'API Check Login Garena', service: 'Service\\Apis\\Garena_login' },
+    { title: 'API Check Login VNGGames', service: 'Service\\Apis\\VngGames_login' },
     { title: 'API Check Login Free Fire', service: 'Service\\Apis\\FreeFire_login' },
 ];
-const servicesDelete = ['Service\\Apis\\FreeFire_login', 'Service\\Apis\\Garena_login'];
+
+const servicesDelete = ['Service\\Apis\\FreeFire_login', 'Service\\Apis\\Garena_login', 'Service\\Apis\\VngGames_login'];
 
 const serviceCronWalletHistory = async () => {
     try {
         for (const service of services) {
             // Tìm tất cả biến động số dư 24h trước
-            const walletHistories = await WalletHistory.find({
-                service: service.service,
-            });
-
+            const walletHistories = await WalletHistory.find({ service: service.service });
             if (walletHistories.length < 1) {
                 continue;
             }
@@ -66,14 +65,16 @@ const serviceCronWalletHistory = async () => {
                     false,
                 );
                 if (!newInvoice.success) {
-                    return;
+                    continue;
                 }
 
                 newInvoice.data.status = 'completed';
                 await newInvoice.data.save();
 
                 const user = await User.findById(userId).select('email full_name');
-                if (!user) return;
+                if (!user) {
+                    continue;
+                }
 
                 // Tạo thông web
                 await serviceCreateNotificationUser(
@@ -91,12 +92,7 @@ const serviceCronWalletHistory = async () => {
             }
         }
 
-        const result = await WalletHistory.deleteMany({
-            service: { $in: servicesDelete },
-        });
-        if (result.deletedCount < 1) {
-            return;
-        }
+        await WalletHistory.deleteMany({ service: { $in: servicesDelete } });
     } catch (error) {
         configCreateLog('services/cron/walletHistory.log', 'serviceCronWalletHistory', error.message);
     }

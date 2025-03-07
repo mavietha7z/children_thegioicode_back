@@ -25,28 +25,6 @@ const serverUserCalculateExpired = (created_at, cycles_unit, cycles_value) => {
     }
 };
 
-function serviceUserCalculateExpiredTryIt(timeString) {
-    // Lấy thời gian hiện tại
-    const now = new Date();
-
-    // Tách giờ, phút, giây từ chuỗi HH:mm:ss
-    const [hours, minutes, seconds] = timeString.split(':').map(Number);
-
-    // Tính tổng số mi li giây cần cộng thêm
-    const expirationMs = (hours * 3600 + minutes * 60 + seconds) * 1000;
-
-    // Tính thời gian hết hạn bằng cách cộng vào thời gian hiện tại
-    const expirationDate = new Date(now.getTime() + expirationMs);
-
-    return expirationDate;
-}
-
-// Tính tổng giảm giá cho đối tác
-const serviceCalculateTotalDiscount = (discountOne, discountTwo) => {
-    const totalDiscount = 100 * (1 - (1 - discountOne / 100) * (1 - discountTwo / 100));
-    return Math.round(totalDiscount * 100) / 100;
-};
-
 // Tính số ngày còn lại cho gói dịch vụ
 const serviceCalculateRemainingDays = (expirationDate) => {
     const currentDate = new Date();
@@ -102,8 +80,6 @@ export {
     serverUserCalculateExpired,
     serviceCalculateUpgradeCost,
     serviceGetDaysInCurrentMonth,
-    serviceCalculateTotalDiscount,
     serviceCalculateRemainingDays,
     serviceCalculateRemainingRatio,
-    serviceUserCalculateExpiredTryIt,
 };

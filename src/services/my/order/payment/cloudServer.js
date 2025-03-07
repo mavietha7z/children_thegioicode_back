@@ -4,7 +4,6 @@ import { OrderCloudServer } from '~/models/orderCloudServer';
 import { serverUserCalculateExpired } from '~/services/user/calculate';
 import { serviceCreateNotificationUser } from '~/services/user/notification';
 import { serverAuthCheckUserVPS, serviceAuthCreateVPS } from '~/services/partner/cloudServer';
-import { generateVncPassword, randomPasswordCloudServer } from '../../cloudServer/random';
 
 const serviceUserPaymentOrderRegisterCloudServer = async (order_id, invoice) => {
     try {

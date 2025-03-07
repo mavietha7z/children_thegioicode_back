@@ -29,7 +29,7 @@ const controlAuthGetInvoices = async (req, res) => {
             .limit(pageSize)
             .sort({ created_at: -1 });
 
-        const data = await serviceAuthGetInvoices(invoices);
+        const data = serviceAuthGetInvoices(invoices);
 
         res.status(200).json({
             data,

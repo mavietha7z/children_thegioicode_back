@@ -20,7 +20,7 @@ const controlAuthGetCartUsers = async (req, res) => {
             carts.map(async (cart) => {
                 const { _id: key, id, user_id: user, status, created_at, updated_at } = cart;
 
-                const products = await CartProduct.find({ user_id: user._id, cart_id: key }).populate({
+                const products = await CartProduct.find({ user_id: user._id, cart_id: key, status: 'pending' }).populate({
                     path: 'pricing_id',
                     select: 'id price discount bonus_point cycles_id',
                     populate: { path: 'cycles_id', select: 'id unit value display_name' },

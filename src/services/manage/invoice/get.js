@@ -1,6 +1,6 @@
 import { configCreateLog } from '~/configs';
 
-const serviceAuthGetInvoices = async (invoices = []) => {
+const serviceAuthGetInvoices = (invoices = []) => {
     try {
         return invoices.map((invoice) => {
             const {

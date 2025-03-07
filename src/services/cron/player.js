@@ -7,10 +7,7 @@ const serviceCronPlayers = async () => {
     try {
         const thresholdDate = moment.tz('Asia/Ho_Chi_Minh').subtract(30, 'days').toDate();
 
-        const result = await Player.deleteMany({ created_at: { $lt: thresholdDate } });
-        if (result.deletedCount < 1) {
-            return;
-        }
+        await Player.deleteMany({ created_at: { $lt: thresholdDate } });
     } catch (error) {
         configCreateLog('services/cron/player.log', 'serviceCronPlayers', error.message);
     }

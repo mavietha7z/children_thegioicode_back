@@ -3,10 +3,7 @@ import { configCreateLog } from '~/configs';
 
 const serviceCronRequests = async () => {
     try {
-        const result = await Request.deleteMany({});
-        if (result.deletedCount < 1) {
-            return;
-        }
+        await Request.deleteMany({});
     } catch (error) {
         configCreateLog('services/cron/request.log', 'serviceCronRequests', error.message);
     }
