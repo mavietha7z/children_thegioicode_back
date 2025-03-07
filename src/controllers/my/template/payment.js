@@ -5,8 +5,8 @@ import { Template } from '~/models/template';
 import { OrderTemplate } from '~/models/orderTemplate';
 import { configCreateLog, convertCurrency } from '~/configs';
 import { serverUserCalculateExpired } from '~/services/user/calculate';
+import { serviceCreateNotification } from '~/services/user/notification';
 import { serviceUserCreateNewInvoice } from '~/services/user/createInvoice';
-import { serviceCreateNotificationUser } from '~/services/user/notification';
 import { serviceUserAddDomainToCloudflare } from '~/services/my/template/payment';
 
 const controlUserPaymentTemplate = async (req, res) => {
@@ -155,7 +155,7 @@ const controlUserPaymentTemplate = async (req, res) => {
         template.save();
 
         // Thông báo email
-        await serviceCreateNotificationUser(
+        await serviceCreateNotification(
             req.user.id,
             'Email',
             'Xác nhận đơn hàng tạo website',
@@ -164,7 +164,7 @@ const controlUserPaymentTemplate = async (req, res) => {
         );
 
         // Tạo thông web
-        await serviceCreateNotificationUser(
+        await serviceCreateNotification(
             req.user.id,
             'Web',
             `Hoá đơn mã #${newInvoice.data.id} đã được xuất`,

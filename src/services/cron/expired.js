@@ -6,8 +6,8 @@ import { OrderTemplate } from '~/models/orderTemplate';
 import { configCreateLog, convertCurrency } from '~/configs';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { serverUserCalculateExpired } from '../user/calculate';
+import { serviceCreateNotification } from '../user/notification';
 import { serviceUserCreateNewInvoice } from '../user/createInvoice';
-import { serviceCreateNotificationUser } from '../user/notification';
 import { serviceAuthRemoveDomainFromCloudflare } from '../my/template/payment';
 
 const serviceAutoRenewOrderTemplate = async (order) => {
@@ -22,7 +22,7 @@ const serviceAutoRenewOrderTemplate = async (order) => {
         const totalPrice = discountedPrice + order.pricing_id.renewal_fee;
         if (wallet.total_balance < totalPrice) {
             // Thông báo email
-            await serviceCreateNotificationUser(
+            await serviceCreateNotification(
                 order.user_id._id,
                 'Email',
                 'Số dư ví không đủ thanh toán',
@@ -31,7 +31,7 @@ const serviceAutoRenewOrderTemplate = async (order) => {
             );
 
             // Tạo thông web
-            await serviceCreateNotificationUser(
+            await serviceCreateNotification(
                 order.user_id._id,
                 'Web',
                 'Số dư ví không đủ thanh toán',
@@ -134,7 +134,7 @@ const serviceAutoRenewOrderTemplate = async (order) => {
         await newOrder.save();
 
         // Thông báo email
-        await serviceCreateNotificationUser(
+        await serviceCreateNotification(
             order.user_id._id,
             'Email',
             'Tự động gia hạn dịch vụ',
@@ -143,7 +143,7 @@ const serviceAutoRenewOrderTemplate = async (order) => {
         );
 
         // Tạo thông web
-        await serviceCreateNotificationUser(
+        await serviceCreateNotification(
             order.user_id._id,
             'Web',
             `Hoá đơn mã #${newInvoice.data.id} đã được xuất`,
@@ -172,7 +172,7 @@ const serviceAutoRenewOrderCloudServer = async (order) => {
         const totalPrice = discountedPrice + order.pricing_id.renewal_fee;
         if (wallet.total_balance < totalPrice) {
             // Thông báo email
-            await serviceCreateNotificationUser(
+            await serviceCreateNotification(
                 order.user_id._id,
                 'Email',
                 'Số dư ví không đủ thanh toán',
@@ -181,7 +181,7 @@ const serviceAutoRenewOrderCloudServer = async (order) => {
             );
 
             // Tạo thông web
-            await serviceCreateNotificationUser(
+            await serviceCreateNotification(
                 order.user_id._id,
                 'Web',
                 'Số dư ví không đủ thanh toán',
@@ -281,7 +281,7 @@ const serviceAutoRenewOrderCloudServer = async (order) => {
         await newOrder.save();
 
         // Thông báo email
-        await serviceCreateNotificationUser(
+        await serviceCreateNotification(
             order.user_id._id,
             'Email',
             'Tự động gia hạn dịch vụ',
@@ -290,7 +290,7 @@ const serviceAutoRenewOrderCloudServer = async (order) => {
         );
 
         // Tạo thông web
-        await serviceCreateNotificationUser(
+        await serviceCreateNotification(
             order.user_id._id,
             'Web',
             `Hoá đơn mã #${newInvoice.data.id} đã được xuất`,
@@ -345,7 +345,7 @@ const serviceCronExpiredOrders = async () => {
                 const minutesLeft = duration.minutes();
 
                 // Thông báo email
-                await serviceCreateNotificationUser(
+                await serviceCreateNotification(
                     order.user_id._id,
                     'Email',
                     'Thông báo dịch vụ sắp hết hạn',
@@ -354,7 +354,7 @@ const serviceCronExpiredOrders = async () => {
                 );
 
                 // Tạo thông web
-                await serviceCreateNotificationUser(
+                await serviceCreateNotification(
                     order.user_id._id,
                     'Web',
                     'Thông báo dịch vụ sắp hết hạn',
@@ -404,7 +404,7 @@ const serviceCronExpiredOrders = async () => {
                 const minutesLeft = duration.minutes();
 
                 // Thông báo email
-                await serviceCreateNotificationUser(
+                await serviceCreateNotification(
                     order.user_id._id,
                     'Email',
                     'Thông báo máy chủ sắp bị xóa',
@@ -413,7 +413,7 @@ const serviceCronExpiredOrders = async () => {
                 );
 
                 // Tạo thông web
-                await serviceCreateNotificationUser(
+                await serviceCreateNotification(
                     order.user_id._id,
                     'Web',
                     'Thông báo dịch vụ sắp hết hạn',

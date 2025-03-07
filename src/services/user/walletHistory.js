@@ -5,8 +5,8 @@ import { Wallet } from '~/models/wallet';
 import { BonusPoint } from '~/models/bonusPoint';
 import { serviceMembershipUser } from './membership';
 import { WalletHistory } from '~/models/walletHistory';
+import { serviceCreateNotification } from './notification';
 import { configCreateLog, convertCurrency } from '~/configs';
-import { serviceCreateNotificationUser } from './notification';
 
 const hoursRemaining = 12;
 
@@ -134,7 +134,7 @@ const serviceCreateWalletHistoryUser = async (user_id, walletHistory, bonusHisto
                 const title = `Số dư tài khoản sẽ hết sau ${hoursRemaining} giờ`;
 
                 // Thông báo email
-                const isSendMail = await serviceCreateNotificationUser(
+                const isSendMail = await serviceCreateNotification(
                     user_id,
                     'Email',
                     title,
@@ -143,7 +143,7 @@ const serviceCreateWalletHistoryUser = async (user_id, walletHistory, bonusHisto
                 );
 
                 // Thông báo web
-                await serviceCreateNotificationUser(
+                await serviceCreateNotification(
                     user_id,
                     'Web',
                     title,

@@ -28,35 +28,33 @@ const controlAuthAsyncCloudServerOrder = async (req, res) => {
             page++;
         } while (page <= result.pages);
 
+        // Lấy tất cả các order_id trong database trước vòng lặp
+        const existingOrders = await OrderCloudServer.find({ user_id: req.user.id }).select('order_info.order_id');
+        const existingOrderIds = existingOrders.map((order) => order.order_info.order_id);
+
+        // Mảng chứa order_id trong mảng orders
+        const orderIds = orders.map((order) => order.id);
+
         for (let i = 0; i < orders.length; i++) {
             const order = orders[i];
+
             const isOrder = await OrderCloudServer.findOne({ 'order_info.order_id': order.id });
 
             if (!isOrder) {
                 const region = await CloudServerRegion.findOne({ partner_id: order.region.id });
-                if (!region) {
-                    continue;
-                }
+                if (!region) continue;
 
                 const plan = region.plans.find((pl) => pl.id === order.plan.id);
-                if (!plan) {
-                    continue;
-                }
+                if (!plan) continue;
 
                 const image = await CloudServerImage.findOne({ partner_id: order.image.id });
-                if (!image) {
-                    continue;
-                }
+                if (!image) continue;
 
                 const product = await CloudServerProduct.findOne({ partner_id: order.product.id });
-                if (!product) {
-                    continue;
-                }
+                if (!product) continue;
 
                 const pricing = await Pricing.findOne({ service_id: product._id, service_type: 'CloudServerProduct' }).sort({ price: 1 });
-                if (!pricing) {
-                    continue;
-                }
+                if (!pricing) continue;
 
                 await new OrderCloudServer({
                     user_id: req.user.id,
@@ -96,6 +94,10 @@ const controlAuthAsyncCloudServerOrder = async (req, res) => {
                 }).save();
             }
         }
+
+        // Xoá những đơn đã có nhưng không có trong mảng orders
+        const ordersToDelete = existingOrderIds.filter((id) => !orderIds.includes(id));
+        await OrderCloudServer.deleteMany({ 'order_info.order_id': { $in: ordersToDelete } });
 
         res.status(200).json({
             status: 200,

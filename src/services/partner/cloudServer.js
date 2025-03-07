@@ -85,3 +85,37 @@ export const servicePartnerGetOrderDetail = async (order_id) => {
         };
     }
 };
+
+export const servicePartnerDeploy = async (data) => {
+    try {
+        const request = new ThegioicodeAPI();
+
+        const result = await request.post('/api/v2/cloud-server/deploy', data);
+
+        return result.data;
+    } catch (error) {
+        configCreateLog('services/partner/cloudServer.log', 'servicePartnerDeploy', error.response?.data?.error || error.message);
+
+        return {
+            status: 400,
+            error: error.response?.data?.error || 'Lỗi kết nối đến đối tác vui lòng thử lại sau',
+        };
+    }
+};
+
+export const servicePartnerAction = async (data) => {
+    try {
+        const request = new ThegioicodeAPI();
+
+        const result = await request.post('/api/v2/cloud-server/action', data);
+
+        return result.data;
+    } catch (error) {
+        configCreateLog('services/partner/cloudServer.log', 'servicePartnerAction', error.response?.data?.error || error.message);
+
+        return {
+            status: 400,
+            error: error.response?.data?.error || 'Lỗi kết nối đến đối tác vui lòng thử lại sau',
+        };
+    }
+};

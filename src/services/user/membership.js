@@ -2,7 +2,7 @@ import { User } from '~/models/user';
 import { Wallet } from '~/models/wallet';
 import { configCreateLog } from '~/configs';
 import { Membership } from '~/models/membership';
-import { serviceCreateNotificationUser } from './notification';
+import { serviceCreateNotification } from './notification';
 
 const serviceMembershipUser = async (user_id) => {
     try {
@@ -43,7 +43,7 @@ const serviceMembershipUser = async (user_id) => {
             const disCountNextMembership = user.membership.next_membership.discount;
 
             // Thông báo email
-            await serviceCreateNotificationUser(
+            await serviceCreateNotification(
                 user._id,
                 'Email',
                 'Chúc mừng nâng hạng thành viên',
@@ -52,7 +52,7 @@ const serviceMembershipUser = async (user_id) => {
             );
 
             // Thông báo web
-            await serviceCreateNotificationUser(
+            await serviceCreateNotification(
                 user._id,
                 'Web',
                 'Chúc mừng nâng hạng thành viên',

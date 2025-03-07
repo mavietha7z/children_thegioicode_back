@@ -58,9 +58,14 @@ const validatorUserDeployCloudServer = async (body) => {
             return { success: false, status: 400, error: 'Gói dịch vụ máy chủ không hợp lệ' };
         }
 
-        const region = await CloudServerRegion.findOne({ id: region_id, status: true }).select('id title image_url');
+        const region = await CloudServerRegion.findOne({ id: region_id, status: true }).select('id title image_url plans');
         if (!region) {
             return { success: false, status: 400, error: 'Khu vực máy chủ không tồn tại' };
+        }
+
+        const plan = region.plans.find((plan) => plan.id === plan_id);
+        if (!plan) {
+            return { success: false, status: 400, error: 'Loại máy chủ không tồn tại' };
         }
 
         const image = await CloudServerImage.findOne({ id: image_id, status: true }).select('id title group code image_url');
@@ -94,7 +99,6 @@ const validatorUserDeployCloudServer = async (body) => {
             plan,
             image,
             region,
-            partner,
             pricing,
             product,
         };

@@ -3,8 +3,8 @@ import { Wallet } from '~/models/wallet';
 import { Paygate } from '~/models/paygate';
 import { convertCurrency } from '~/configs';
 import { configCreateLog } from '~/configs';
+import { serviceCreateNotification } from '~/services/user/notification';
 import { serviceUserCreateNewInvoice } from '~/services/user/createInvoice';
-import { serviceCreateNotificationUser } from '~/services/user/notification';
 
 const controlCallbackRecharge = async (req, res) => {
     try {
@@ -129,7 +129,7 @@ const controlCallbackRecharge = async (req, res) => {
         }
 
         // Thông báo email
-        await serviceCreateNotificationUser(
+        await serviceCreateNotification(
             user._id,
             'Email',
             'Thông báo nạp tiền thành công',
@@ -140,7 +140,7 @@ const controlCallbackRecharge = async (req, res) => {
         );
 
         // Thông báo web
-        await serviceCreateNotificationUser(
+        await serviceCreateNotification(
             user._id,
             'Web',
             'Thông báo nạp tiền thành công',

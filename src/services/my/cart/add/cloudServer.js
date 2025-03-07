@@ -5,16 +5,7 @@ import { CartProduct } from '~/models/cartProduct';
 const serviceUserAddCloudServerToCart = async (user, body, validate) => {
     try {
         const { display_name } = body;
-        const { plan, image, region, partner, pricing, product } = validate;
-
-        const result = await serviceUserVerifyTokenPartner('CloudServer', user.id);
-        if (!result.success) {
-            return {
-                status: 40,
-                success: false,
-                error: result.error,
-            };
-        }
+        const { plan, image, region, pricing, product } = validate;
 
         const cart = await Cart.findOne({ user_id: user.id, status: true }).populate({
             path: 'user_id',
@@ -41,10 +32,15 @@ const serviceUserAddCloudServerToCart = async (user, body, validate) => {
                 product_type: 'CloudServerProduct',
                 pricing_id: pricing._id,
                 quantity: 1,
-                partner_id: partner._id,
-                plan_id: plan._id,
+                coupon_id: null,
                 region_id: region._id,
                 image_id: image._id,
+                plan: {
+                    id: plan.id,
+                    title: plan.title,
+                    image_url: plan.image_url,
+                    description: plan.description,
+                },
                 display_name: displayName,
                 additional_services: [],
                 status: 'pending',

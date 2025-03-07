@@ -2,7 +2,7 @@ import { App } from '~/models/app';
 import { configCreateLog } from '~/configs';
 import { Notification } from '~/models/notification';
 
-const serviceCreateNotificationUser = async (user_id, service, title, content, note = null) => {
+const serviceCreateNotification = async (user_id, service, title, content, note = null) => {
     try {
         let from = null;
         let status = 'sent';
@@ -31,9 +31,9 @@ const serviceCreateNotificationUser = async (user_id, service, title, content, n
 
         return true;
     } catch (error) {
-        configCreateLog('services/user/notification.log', 'serviceCreateNotificationUser', error.message);
+        configCreateLog('services/user/notification.log', 'serviceCreateNotification', error.message);
         return false;
     }
 };
 
-export { serviceCreateNotificationUser };
+export { serviceCreateNotification };

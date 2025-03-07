@@ -4,8 +4,8 @@ import { Invoice } from '~/models/invoice';
 import { convertCurrency } from '~/configs';
 import { configCreateLog } from '~/configs';
 import { isValidDataId } from '~/validators';
+import { serviceCreateNotification } from '~/services/user/notification';
 import { serviceUserPaymentOrderOrInvoice } from '~/services/user/payment';
-import { serviceCreateNotificationUser } from '~/services/user/notification';
 import { serviceCreateWalletHistoryUser } from '~/services/user/walletHistory';
 
 const controlUserPaymentInvoice = async (req, res) => {
@@ -110,7 +110,7 @@ const controlUserPaymentInvoice = async (req, res) => {
         await invoice.save();
 
         // Tạo thông web
-        await serviceCreateNotificationUser(
+        await serviceCreateNotification(
             req.user.id,
             'Web',
             `Hoá đơn mã #${invoice.id} đã được xuất`,

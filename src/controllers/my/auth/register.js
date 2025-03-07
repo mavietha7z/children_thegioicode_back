@@ -10,8 +10,8 @@ import { Apikey } from '~/models/apikey';
 import { sendEmailNotification } from '~/email';
 import { Membership } from '~/models/membership';
 import { configCreateLog, generateRandomNumber } from '~/configs';
+import { serviceCreateNotification } from '~/services/user/notification';
 import { serviceCreateUniqueUsernameUser } from '~/services/user/username';
-import { serviceCreateNotificationUser } from '~/services/user/notification';
 import { serviceUserCreateToken, serviceUserVerifyToken } from '~/services/user/token';
 
 const regexEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
@@ -125,7 +125,7 @@ const controlUserRegisterAccount = async (req, res) => {
         }
 
         // Thông báo web
-        await serviceCreateNotificationUser(
+        await serviceCreateNotification(
             newUser._id,
             'Web',
             'Chúc mừng quý khách đăng ký tài khoản thành công!',

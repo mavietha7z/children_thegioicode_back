@@ -5,7 +5,7 @@ import { User } from '~/models/user';
 import { configCreateLog } from '~/configs';
 import { serviceUserGetIPAddress } from '~/services/user/address';
 import { serviceGetCurrentUser } from '~/services/user/currentUser';
-import { serviceCreateNotificationUser } from '~/services/user/notification';
+import { serviceCreateNotification } from '~/services/user/notification';
 import { serviceCreateLoginHistoryUser } from '~/services/user/loginHistory';
 import { generateAccessTokenUser, serviceUserCreateToken, serviceUserSendOtpVerifyEmail } from '~/services/user/token';
 
@@ -78,7 +78,7 @@ const controlUserLoginByEmail = async (req, res) => {
             await serviceCreateLoginHistoryUser(user._id, ip, req);
 
             // Tạo thông báo đăng nhập mới
-            await serviceCreateNotificationUser(
+            await serviceCreateNotification(
                 user._id,
                 'Web',
                 'Quý khách đăng nhập từ thiết bị mới?',

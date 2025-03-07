@@ -4,7 +4,7 @@ import { User } from '~/models/user';
 import { WalletHistory } from '~/models/walletHistory';
 import { configCreateLog, convertCurrency } from '~/configs';
 import { serviceUserCreateNewInvoice } from '../user/createInvoice';
-import { serviceCreateNotificationUser } from '~/services/user/notification';
+import { serviceCreateNotification } from '~/services/user/notification';
 
 const services = [
     { title: 'API Check Login Garena', service: 'Service\\Apis\\Garena_login' },
@@ -77,7 +77,7 @@ const serviceCronWalletHistory = async () => {
                 }
 
                 // Tạo thông web
-                await serviceCreateNotificationUser(
+                await serviceCreateNotification(
                     userId,
                     'Web',
                     `Hoá đơn mã #${newInvoice.data.id} đã được xuất`,

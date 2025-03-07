@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 
 import { Token } from '~/models/token';
 import { generateRandomNumber } from '~/configs';
-import { serviceCreateNotificationUser } from './notification';
+import { serviceCreateNotification } from './notification';
 
 // Tạo token admin
 const generateAccessTokenAuth = (user) => {
@@ -105,7 +105,7 @@ const serviceUserSendOtpVerifyEmail = async (user_id, module) => {
         await serviceUserCreateToken(user_id, module, 'email', 'random', token, created_at, expired_at);
 
         // Thông báo email
-        await serviceCreateNotificationUser(
+        await serviceCreateNotification(
             user_id,
             'Email',
             'Mã xác nhận tài khoản Netcode',
