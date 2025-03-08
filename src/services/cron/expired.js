@@ -433,15 +433,6 @@ const serviceCronExpiredOrders = async () => {
                     order.status = 'expired';
                     order.updated_at = Date.now();
                     await order.save();
-
-                    // Khoá máy chủ
-                    // await serviceAuthSuspendAndUnsuspendVPS(
-                    //     partner.url,
-                    //     partner.key,
-                    //     partner.password,
-                    //     order.order_info.order_id,
-                    //     'suspend',
-                    // );
                 }
             }
 

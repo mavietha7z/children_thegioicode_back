@@ -117,12 +117,6 @@ const controlUserBillingResizeInstance = async (req, res) => {
             });
         }
 
-        if (totalPriceUpgrade > productUpgrade.pricing.price) {
-            return res.status(400).json({
-                error: 'Số tiền cần trả phải nhỏ hơn số tiền đối tác',
-            });
-        }
-
         const dataPost = {
             product_id: newProduct.partner_id,
             order_id: instance.order_info.order_id,

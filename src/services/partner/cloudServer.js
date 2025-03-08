@@ -170,3 +170,37 @@ export const servicePartnerResize = async (data) => {
         };
     }
 };
+
+export const servicePartnerRenewInfo = async (order_id) => {
+    try {
+        const request = new ThegioicodeAPI();
+
+        const result = await request.get(`/api/v2/cloud-server/renew/${order_id}`);
+
+        return result.data;
+    } catch (error) {
+        configCreateLog('services/partner/cloudServer.log', 'servicePartnerRenewInfo', error.response?.data?.error || error.message);
+
+        return {
+            status: 400,
+            error: error.response?.data?.error || 'Lỗi kết nối đến đối tác vui lòng thử lại sau',
+        };
+    }
+};
+
+export const servicePartnerRenew = async (data) => {
+    try {
+        const request = new ThegioicodeAPI();
+
+        const result = await request.post('/api/v2/cloud-server/renew', data);
+
+        return result.data;
+    } catch (error) {
+        configCreateLog('services/partner/cloudServer.log', 'servicePartnerRenew', error.response?.data?.error || error.message);
+
+        return {
+            status: 400,
+            error: error.response?.data?.error || 'Lỗi kết nối đến đối tác vui lòng thử lại sau',
+        };
+    }
+};

@@ -4,6 +4,7 @@ import { CartProduct } from '~/models/cartProduct';
 import { OrderTemplate } from '~/models/orderTemplate';
 import { serverUserCalculateExpired } from './calculate';
 import { OrderCloudServer } from '~/models/orderCloudServer';
+import { servicePartnerRenew, servicePartnerRenewInfo } from '../partner/cloudServer';
 import { serviceUserPaymentOrderRegisterCloudServer } from '../my/order/payment/cloudServer';
 
 const serviceUserPaymentOrderOrInvoice = async (product, order, invoice) => {
@@ -20,9 +21,6 @@ const serviceUserPaymentOrderOrInvoice = async (product, order, invoice) => {
                 if (!result.success) {
                     return { success: result.success, status: result.status, error: result.error };
                 }
-
-                await CartProduct.findByIdAndDelete(product.cart_product_id);
-                product.cart_product_id = null;
             }
         }
 
@@ -66,17 +64,28 @@ const serviceUserPaymentOrderOrInvoice = async (product, order, invoice) => {
                     return { success: false, status: 404, error: 'Không tìm thấy đơn giá cần gia hạn' };
                 }
 
+                const renewInfo = await servicePartnerRenewInfo(order.order_info.order_id);
+                if (renewInfo.status !== 200) {
+                    return { success: false, status: 400, error: renewInfo.error };
+                }
+
+                const pricingRenew = renewInfo.data.find((price) => price.id === pricing.partner_id);
+                if (!pricingRenew) {
+                    return { success: false, status: 400, error: 'Chu kỳ muốn gia hạn với đối tác không tồn tại' };
+                }
+
+                const dataPost = {
+                    pricing_id: pricing.partner_id,
+                    order_id: order.order_info.order_id,
+                };
+
+                const result = await servicePartnerRenew(dataPost);
+                if (result.status !== 200) {
+                    return { success: false, status: 400, error: result.error };
+                }
+
                 if (order.status === 'expired') {
                     order.status = 'activated';
-
-                    // Mở khoá máy chủ
-                    // await serviceAuthSuspendAndUnsuspendVPS(
-                    //     partner.url,
-                    //     partner.key,
-                    //     partner.password,
-                    //     order.order_info.order_id,
-                    //     'unsuspend',
-                    // );
                 }
 
                 order.expired_at = expired_at;
@@ -86,6 +95,11 @@ const serviceUserPaymentOrderOrInvoice = async (product, order, invoice) => {
 
                 await order.save();
             }
+        }
+
+        if (product.cart_product_id) {
+            await CartProduct.findByIdAndDelete(product.cart_product_id);
+            product.cart_product_id = null;
         }
 
         return { success: true, status: 200 };
