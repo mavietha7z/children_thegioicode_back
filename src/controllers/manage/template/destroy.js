@@ -30,21 +30,12 @@ const controlAuthDestroyOrderTemplate = async (req, res) => {
     try {
         const { id } = req.query;
 
-        const order = await OrderTemplate.findById(id);
+        const order = await OrderTemplate.findByIdAndDelete(id);
         if (!order) {
             return res.status(404).json({ error: 'Đơn tạo website không tồn tại' });
         }
 
-        const currentTime = new Date();
-        const expirationTime = new Date(order.expired_at);
-
-        if (currentTime < expirationTime) {
-            return res.status(400).json({ error: 'Thời gian sử dụng chưa hết không thể xoá' });
-        }
-
         await serviceAuthRemoveDomainFromCloudflare(order.cloudflare.id);
-
-        await order.deleteOne();
 
         res.status(200).json({
             status: 200,

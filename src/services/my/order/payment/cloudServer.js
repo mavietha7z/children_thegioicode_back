@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { configCreateLog } from '~/configs';
 import { CartProduct } from '~/models/cartProduct';
 import { OrderCloudServer } from '~/models/orderCloudServer';
 import { servicePartnerDeploy } from '~/services/partner/cloudServer';
@@ -31,11 +32,8 @@ const serviceUserPaymentOrderRegisterCloudServer = async (order_id, invoice) => 
         };
 
         const result = await servicePartnerDeploy(postData);
-
         if (result.status !== 200) {
-            return res.status(400).json({
-                error: result.error,
-            });
+            return { success: false, status: 400, error: result.error };
         }
 
         const instance = result.data[0];

@@ -1,14 +1,9 @@
 const validatorAuthCreateSource = (req, res, next) => {
-    const { title, version, priority, image_url, view_count, purchase_count } = req.body;
+    const { title, priority, image_url, view_count, purchase_count } = req.body;
 
     if (!title) {
         return res.status(400).json({
             error: 'Tên mã nguồn là trường bắt buộc',
-        });
-    }
-    if (!version) {
-        return res.status(400).json({
-            error: 'Phiên bản là trường bắt buộc',
         });
     }
     if (typeof priority !== 'number' || priority < 1) {

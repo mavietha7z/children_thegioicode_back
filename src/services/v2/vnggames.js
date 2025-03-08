@@ -8,7 +8,7 @@ const serviceFetchLoginVngGames = async (url, data, apikey) => {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${apikey}`,
             },
-            timeout: 5000,
+            timeout: 10000,
             family: 4,
         });
 

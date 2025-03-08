@@ -73,7 +73,7 @@ const controlUserPaymentInvoice = async (req, res) => {
         // Ghi lịch sử giao dịch
         const before = wallet.total_balance;
         const after = wallet.total_balance - Math.abs(invoice.total_payment);
-        const amount = before - after;
+        const amount = after - before;
 
         const walletHistory = {
             type: 'service',
