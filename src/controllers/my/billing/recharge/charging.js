@@ -138,7 +138,7 @@ const controlUserRechargeCharging = async (req, res) => {
 
 const controlUserGetChargings = async (req, res) => {
     try {
-        const chargings = await Charging.find({ user_id: req.user.id });
+        const chargings = await Charging.find({ user_id: req.user.id }).sort({ created_at: -1 });
 
         const data = chargings.map((charging) => {
             return {
