@@ -7,6 +7,7 @@ const controlAuthUpdateInfoApps = async (req, res) => {
         const { status, reason } = website_status;
         const {
             email,
+            address,
             zalo_url,
             tiktok_url,
             twitter_url,
@@ -25,6 +26,7 @@ const controlAuthUpdateInfoApps = async (req, res) => {
 
         app.contacts.email = email;
         app.favicon_url = favicon_url;
+        app.contacts.address = address;
         app.contacts.zalo_url = zalo_url;
         app.website_status.status = status;
         app.website_status.reason = reason;

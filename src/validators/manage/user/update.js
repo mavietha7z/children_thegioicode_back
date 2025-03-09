@@ -71,7 +71,7 @@ const validatorAuthUpdateUser = async (req, res, next) => {
         }
     }
 
-    if (password && passwordRegex.test(password)) {
+    if (password && !passwordRegex.test(password)) {
         return res.status(400).json({
             error: 'Mật khẩu người dùng không hợp lệ',
         });

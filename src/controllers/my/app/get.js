@@ -11,10 +11,13 @@ const controlUserGetConfigApps = async (req, res) => {
         const data = {
             contacts: {
                 email: app.contacts.email,
+                address: app.contacts.address,
                 zalo_url: app.contacts.zalo_url,
                 website_url: app.contacts.website_url,
+                youtube_url: app.contacts.youtube_url,
                 phone_number: app.contacts.phone_number,
                 telegram_url: app.contacts.telegram_url,
+                facebook_url: app.contacts.facebook_url,
             },
             favicon_url: app.favicon_url,
             website_status: app.website_status,

@@ -98,6 +98,10 @@ const appSchema = new Schema({
             type: String,
             default: '',
         },
+        address: {
+            type: String,
+            default: '',
+        },
     },
     created_at: {
         type: Date,

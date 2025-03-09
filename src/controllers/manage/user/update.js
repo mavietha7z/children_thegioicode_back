@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { User } from '~/models/user';
+import { Wallet } from '~/models/wallet';
 import { configCreateLog } from '~/configs';
 
 const controlAuthUpdateUser = async (req, res) => {
@@ -50,27 +51,32 @@ const controlAuthUpdateUser = async (req, res) => {
         user.updated_at = Date.now();
         await user.save();
 
+        const wallet = await Wallet.findOne({ user_id: id }).select('_id id total_balance');
+
         const data = {
-            key: id,
-            full_name,
-            info: {
-                email,
-                username,
-                phone_number,
-            },
             role,
+            email,
+            wallet,
             status,
+            key: id,
+            username,
+            last_name,
+            full_name,
+            first_name,
             id: user.id,
-            wallet: user.wallet,
-            membership: user.membership,
+            phone_number,
+            phone_verified,
+            email_verified,
             created_at: user.created_at,
+            membership: user.membership,
             register_type: user.register_type,
+            last_login_at: user.last_login_at,
         };
 
         res.status(200).json({
+            data,
             status: 200,
             message: 'Cập nhật người dùng thành công',
-            data,
         });
     } catch (error) {
         configCreateLog('controllers/manage/user/update.log', 'controlAuthUpdateUser', error.message);
