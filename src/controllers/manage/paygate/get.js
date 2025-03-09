@@ -16,6 +16,7 @@ const controlAuthGetPaygates = async (req, res) => {
                 service: paygate.service,
                 logo_url: paygate.logo_url,
                 question: paygate.question,
+                discount: paygate.discount,
                 promotion: paygate.promotion,
                 created_at: paygate.created_at,
                 updated_at: paygate.updated_at,

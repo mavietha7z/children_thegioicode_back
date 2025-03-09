@@ -23,6 +23,7 @@ const paygateSchema = new Schema({
     },
     callback_code: {
         type: String,
+        enum: ['bank_transfer', 'recharge_card'],
         default: '',
     },
     bonus_point: {
@@ -42,6 +43,10 @@ const paygateSchema = new Schema({
         default: 0,
     },
     maximum_payment: {
+        type: Number,
+        default: 0,
+    },
+    discount: {
         type: Number,
         default: 0,
     },

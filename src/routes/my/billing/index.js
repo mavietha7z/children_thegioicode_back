@@ -1,7 +1,8 @@
 import express from 'express';
 
-import { controlUserGetRecharge } from '~/controllers/my/billing/recharge';
 import { controlUserGetWalletHistory } from '~/controllers/my/billing/balance';
+import { controlUserGetRecharge } from '~/controllers/my/billing/recharge/get';
+import { controlUserRechargeCharging } from '~/controllers/my/billing/recharge/charging';
 
 import { validatorCheckPages } from '~/validators';
 
@@ -22,6 +23,8 @@ router.use('/instances', instanceRouter);
 
 // Nạp tiền
 router.get('/recharge', controlUserGetRecharge);
+
+router.post('/recharge/chargingws', controlUserRechargeCharging);
 
 // Biến động số dư
 router.get('/balances', validatorCheckPages, controlUserGetWalletHistory);

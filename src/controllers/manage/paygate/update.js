@@ -28,6 +28,7 @@ const controlAuthUpdatePayGate = async (req, res) => {
                 vat_tax,
                 logo_url,
                 question,
+                discount,
                 promotion,
                 description,
                 bonus_point,
@@ -39,6 +40,7 @@ const controlAuthUpdatePayGate = async (req, res) => {
             paygate.name = name;
             paygate.service = service;
             paygate.vat_tax = vat_tax;
+            paygate.discount = discount;
             paygate.logo_url = logo_url;
             paygate.question = question;
             paygate.promotion = promotion;
@@ -55,9 +57,11 @@ const controlAuthUpdatePayGate = async (req, res) => {
                 vat_tax,
                 logo_url,
                 question,
+                discount,
                 promotion,
                 description,
                 bonus_point,
+                callback_code,
                 id: paygate.id,
                 minimum_payment,
                 maximum_payment,
@@ -65,7 +69,6 @@ const controlAuthUpdatePayGate = async (req, res) => {
                 status: paygate.status,
                 created_at: paygate.created_at,
                 updated_at: paygate.updated_at,
-                callback_code,
                 option_count: paygate.options.length,
             };
             message = `Cập nhật cổng thanh toán #${paygate.id} thành công`;

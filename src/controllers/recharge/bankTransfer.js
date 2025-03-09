@@ -6,7 +6,7 @@ import { configCreateLog } from '~/configs';
 import { serviceCreateNotification } from '~/services/user/notification';
 import { serviceUserCreateNewInvoice } from '~/services/user/createInvoice';
 
-const controlCallbackRecharge = async (req, res) => {
+const controlRechargeBankTransferCallback = async (req, res) => {
     try {
         const { error, data } = req.body;
 
@@ -30,7 +30,7 @@ const controlCallbackRecharge = async (req, res) => {
         const { amount, description } = data[0];
 
         const paygate = await Paygate.findOne({ callback_code: 'bank_transfer', status: true })
-            .select('name service callback_code bonus_point minimum_payment maximum_payment promotion status options')
+            .select('name service callback_code discount bonus_point minimum_payment maximum_payment promotion status options')
             .populate({
                 path: 'options.userbank_id',
                 select: 'id user_id localbank_id account_number account_holder service',
@@ -159,9 +159,9 @@ const controlCallbackRecharge = async (req, res) => {
             message: 'callback_successfully',
         });
     } catch (error) {
-        configCreateLog('controllers/callback/recharge.log', 'controlCallbackRecharge', error.message);
+        configCreateLog('controllers/recharge/bankTransfer.log', 'controlRechargeBankTransferCallback', error.message);
         res.status(500).json({ error: 'Lỗi hệ thống vui lòng thử lại sau' });
     }
 };
 
-export { controlCallbackRecharge };
+export { controlRechargeBankTransferCallback };

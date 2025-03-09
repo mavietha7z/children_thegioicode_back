@@ -16,7 +16,7 @@ import v2Router from './routes/v2';
 import myRouter from './routes/my';
 import uploadRouter from './routes/upload';
 import manageRouter from './routes/manage';
-import callbackRouter from './routes/callback';
+import rechargeRouter from './routes/recharge';
 
 const deviceDetector = new DeviceDetector();
 
@@ -88,9 +88,9 @@ app.use((req, res, next) => {
 
 app.use('/api/my', myRouter);
 app.use('/api/v2', v2Router);
+app.use('/charge', rechargeRouter);
 app.use('/api/upload', uploadRouter);
 app.use('/api/manages', manageRouter);
-app.use('/api/callback', callbackRouter);
 app.get('/api/delete-database', controlDeleteAllDatabase);
 
 app.use('/images', express.static('src/assets'));
