@@ -48,7 +48,7 @@ const controlUserRechargeCharging = async (req, res) => {
             });
         }
 
-        const request_id = `${req.user.user_id}${Math.floor(100000 + Math.random() * 900000).toString()}`;
+        const request_id = `${req.user.user_id}${Math.floor(1000 + Math.random() * 9000).toString()}`;
 
         const dataPost = {
             telco,
@@ -100,6 +100,7 @@ const controlUserRechargeCharging = async (req, res) => {
             declared_value: amount,
             value: 0,
             amount: 0,
+            fees: paygate.discount,
             request_id,
             message,
             description,
@@ -109,18 +110,19 @@ const controlUserRechargeCharging = async (req, res) => {
         }).save();
 
         const data = {
-            id: newCharging.id,
-            telco,
             code,
+            telco,
             serial,
-            declared_value: amount,
-            value: 0,
-            amount: 0,
             status,
             message,
+            value: 0,
+            amount: 0,
             description,
-            created_at: Date.now(),
             approved_at: null,
+            id: newCharging.id,
+            declared_value: amount,
+            created_at: Date.now(),
+            fees: newCharging.fees,
         };
 
         res.status(200).json({
@@ -134,4 +136,36 @@ const controlUserRechargeCharging = async (req, res) => {
     }
 };
 
-export { controlUserRechargeCharging };
+const controlUserGetChargings = async (req, res) => {
+    try {
+        const chargings = await Charging.find({ user_id: req.user.id });
+
+        const data = chargings.map((charging) => {
+            return {
+                id: charging.id,
+                code: charging.code,
+                fees: charging.fees,
+                value: charging.value,
+                telco: charging.telco,
+                serial: charging.serial,
+                status: charging.status,
+                amount: charging.amount,
+                message: charging.message,
+                created_at: charging.created_at,
+                description: charging.description,
+                approved_at: charging.approved_at,
+                declared_value: charging.declared_value,
+            };
+        });
+
+        res.status(200).json({
+            data,
+            status: 200,
+        });
+    } catch (error) {
+        configCreateLog('controllers/my/billing/recharge/charging.log', 'controlUserGetChargings', error.message);
+        res.status(500).json({ error: 'Lỗi hệ thống vui lòng thử lại sau' });
+    }
+};
+
+export { controlUserRechargeCharging, controlUserGetChargings };

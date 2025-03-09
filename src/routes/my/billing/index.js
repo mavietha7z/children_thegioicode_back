@@ -2,7 +2,7 @@ import express from 'express';
 
 import { controlUserGetWalletHistory } from '~/controllers/my/billing/balance';
 import { controlUserGetRecharge } from '~/controllers/my/billing/recharge/get';
-import { controlUserRechargeCharging } from '~/controllers/my/billing/recharge/charging';
+import { controlUserGetChargings, controlUserRechargeCharging } from '~/controllers/my/billing/recharge/charging';
 
 import { validatorCheckPages } from '~/validators';
 
@@ -23,6 +23,8 @@ router.use('/instances', instanceRouter);
 
 // Nạp tiền
 router.get('/recharge', controlUserGetRecharge);
+
+router.get('/recharge/chargingws', controlUserGetChargings);
 
 router.post('/recharge/chargingws', controlUserRechargeCharging);
 

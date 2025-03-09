@@ -17,6 +17,7 @@ import invoiceRouter from './invoice';
 import paygateRouter from './paygate';
 import pricingRouter from './pricing';
 import partnerRouter from './partner';
+import chargingRouter from './charging';
 import templateRouter from './template';
 import userbankRouter from './userbank';
 import localbankRouter from './localbank';
@@ -60,6 +61,8 @@ router.use('/pricings', middleware.verifyAuth, pricingRouter);
 router.use('/invoices', middleware.verifyAuth, invoiceRouter);
 
 router.use('/paygates', middleware.verifyAuth, paygateRouter);
+
+router.use('/chargings', middleware.verifyAuth, chargingRouter);
 
 router.use('/templates', middleware.verifyAuth, templateRouter);
 

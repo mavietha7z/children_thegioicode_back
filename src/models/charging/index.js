@@ -37,6 +37,10 @@ const chargingSchema = new Schema({
         type: Number,
         default: 0,
     },
+    fees: {
+        type: Number,
+        default: 0,
+    },
     request_id: {
         type: String,
         required: true,
