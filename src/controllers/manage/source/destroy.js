@@ -1,6 +1,7 @@
 import { Source } from '~/models/source';
 import { Pricing } from '~/models/pricing';
 import { configCreateLog } from '~/configs';
+import { OrderSource } from '~/models/orderSource';
 
 const controlAuthDestroySource = async (req, res) => {
     try {
@@ -13,6 +14,7 @@ const controlAuthDestroySource = async (req, res) => {
             });
         }
 
+        await OrderSource.deleteMany({ source_id: service_id });
         await Pricing.deleteMany({ service_id, service_type: 'Source' });
 
         res.status(200).json({
@@ -25,4 +27,23 @@ const controlAuthDestroySource = async (req, res) => {
     }
 };
 
-export { controlAuthDestroySource };
+const controlAuthDestroyOrderSource = async (req, res) => {
+    try {
+        const { id } = req.query;
+
+        const order = await OrderSource.findByIdAndDelete(id);
+        if (!order) {
+            return res.status(404).json({ error: 'Đơn mã nguồn không tồn tại' });
+        }
+
+        res.status(200).json({
+            status: 200,
+            message: `Xoá đơn mã nguồn #${order.id} thành công`,
+        });
+    } catch (error) {
+        configCreateLog('controllers/manage/source/destroy.log', 'controlAuthDestroyOrderSource', error.message);
+        res.status(500).json({ error: 'Lỗi hệ thống vui lòng thử lại sau' });
+    }
+};
+
+export { controlAuthDestroySource, controlAuthDestroyOrderSource };

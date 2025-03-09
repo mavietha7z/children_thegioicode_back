@@ -7,6 +7,7 @@ import { controlUserGetChargings, controlUserRechargeCharging } from '~/controll
 import { validatorCheckPages } from '~/validators';
 
 import orderRouter from './order';
+import sourceRouter from './source';
 import invoiceRouter from './invoice';
 import templateRouter from './template';
 import instanceRouter from './instance';
@@ -14,6 +15,8 @@ import instanceRouter from './instance';
 const router = express.Router();
 
 router.use('/orders', orderRouter);
+
+router.use('/sources', sourceRouter);
 
 router.use('/invoices', invoiceRouter);
 

@@ -51,10 +51,6 @@ const orderSchema = new Schema({
                 type: Number,
                 required: true,
             },
-            data_url: {
-                type: String,
-                default: '',
-            },
             product_id: {
                 type: Schema.Types.ObjectId,
                 refPath: 'products.product_type',

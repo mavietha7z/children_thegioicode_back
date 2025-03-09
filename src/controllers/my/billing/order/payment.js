@@ -21,7 +21,7 @@ const controlUserPaymentOrder = async (req, res) => {
         const order = await Order.findOne({ id: order_id })
             .populate({
                 path: 'products.product_id',
-                select: 'id user_id template_id pricing_id invoice_id bonus_point total_price total_payment status updated_at expired_at',
+                select: 'id user_id template_id pricing_id invoice_id bonus_point total_price total_payment data_url status updated_at expired_at',
             })
             .populate({
                 path: 'products.pricing_id',
@@ -132,7 +132,7 @@ const controlUserPaymentOrder = async (req, res) => {
             description: order.description,
             total_payment: order.total_payment,
             products: order.products.map((product) => {
-                const { data_url, cycles, discount, module, quantity, title, description, total_price, unit_price, ...others } = product;
+                const { cycles, discount, module, quantity, title, description, total_price, unit_price, ...others } = product;
 
                 return {
                     title,
@@ -140,7 +140,6 @@ const controlUserPaymentOrder = async (req, res) => {
                     module,
                     quantity,
                     discount,
-                    data_url,
                     unit_price,
                     total_price,
                     description,

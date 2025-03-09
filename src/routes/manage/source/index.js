@@ -1,9 +1,9 @@
 import express from 'express';
 
-import { controlAuthGetSources } from '~/controllers/manage/source/get';
 import { controlAuthCreateSource } from '~/controllers/manage/source/create';
 import { controlAuthUpdateSource } from '~/controllers/manage/source/update';
-import { controlAuthDestroySource } from '~/controllers/manage/source/destroy';
+import { controlAuthGetOrdersSources, controlAuthGetSources } from '~/controllers/manage/source/get';
+import { controlAuthDestroyOrderSource, controlAuthDestroySource } from '~/controllers/manage/source/destroy';
 
 import { validatorCheckPages, validatorMongoId } from '~/validators';
 import { validatorAuthCreateSource } from '~/validators/manage/source/create';
@@ -18,5 +18,10 @@ router.delete('/destroy', validatorMongoId, controlAuthDestroySource);
 router.post('/create', validatorAuthCreateSource, controlAuthCreateSource);
 
 router.put('/update', validatorMongoId, validatorAuthUpdateSource, controlAuthUpdateSource);
+
+// Order
+router.get('/orders', validatorCheckPages, controlAuthGetOrdersSources);
+
+router.delete('/orders/destroy', validatorMongoId, controlAuthDestroyOrderSource);
 
 export default router;

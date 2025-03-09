@@ -1,5 +1,6 @@
 import { Pricing } from '~/models/pricing';
 import { configCreateLog } from '~/configs';
+import { OrderSource } from '~/models/orderSource';
 import { CartProduct } from '~/models/cartProduct';
 import { OrderTemplate } from '~/models/orderTemplate';
 import { serverUserCalculateExpired } from './calculate';
@@ -10,12 +11,25 @@ import { serviceUserPaymentOrderRegisterCloudServer } from '../my/order/payment/
 const serviceUserPaymentOrderOrInvoice = async (product, order, invoice) => {
     try {
         if (product.module === 'buy') {
-            // Không xử lý gì
+            if (product.product_type === 'Source') {
+                await new OrderSource({
+                    user_id: order.user_id,
+                    source_id: product.product_id._id,
+                    invoice_id: invoice.id,
+                    unit_price: product.unit_price,
+                    quantity: product.quantity,
+                    cycles: product.cycles,
+                    discount: product.discount,
+                    total_price: product.total_price,
+                    data_url: product.product_id.data_url,
+                    bonus_point: invoice.bonus_point,
+                    status: 'completed',
+                    description: '',
+                }).save();
+            }
         }
 
         if (product.module === 'register') {
-            // Chưa xử lý gì
-
             if (product.product_type === 'CloudServerProduct') {
                 const result = await serviceUserPaymentOrderRegisterCloudServer(product.cart_product_id, invoice);
                 if (!result.success) {

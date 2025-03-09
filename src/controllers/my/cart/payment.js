@@ -75,7 +75,6 @@ const controlUserPaymentCart = async (req, res) => {
                 unit_price: product.pricing_id.price,
                 discount: totalDiscountPercent,
                 cycles: product.pricing_id.cycles_id.display_name,
-                data_url: product.product_id.data_url || null,
                 total_price: totalPrice,
                 product_id: product.product_id._id,
                 product_type: product.product_type,
